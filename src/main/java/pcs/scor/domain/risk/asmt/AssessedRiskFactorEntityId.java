@@ -5,13 +5,8 @@ import java.io.Serializable;
 import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
 
 public class AssessedRiskFactorEntityId implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6708760181974236421L;
-	/**
-	 * 
-	 */
 	
 	private RiskAssessmentRiskRangeTypeEntity riskAssessmentRiskRangeType;
 	private RiskFactorEntity riskFactor;
