@@ -16,8 +16,5 @@ public class RiskAssessment {
 	private Date riskAssessmentDate;
 	private String primaryRiskAssessor;
 	private String version;
-	//private Set<RiskRangeType> riskRangeTypes = new HashSet<>();
-	//private RiskFactorLevel riskFactorLevel;
-	//private List<RiskAssessmentRiskFactorAsmtLevel> riskAssessmentRiskFactors = new ArrayList<RiskAssessmentRiskFactorAsmtLevel>();
-	private List<RiskAssessmentRiskRangeType> riskRangeTypes;
+	private List<AssessedRiskRange> riskRangeTypes; 
 }

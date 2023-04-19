@@ -10,8 +10,18 @@ import pcs.scor.model.risk.tmpl.RiskFactorLevel;
 @Setter
 @NoArgsConstructor
 public class AssessedRiskFactor {
-
-	//private RiskAssessment riskAssessment;
+	public AssessedRiskFactor(long riskAssessmentId, long riskRangeTypeId, long riskFactorId, long riskFactorLevelId,
+			RiskFactor riskFactor, RiskFactorLevel riskFactorLevel) {
+		this.riskAssessmentId = riskAssessmentId;
+		this.riskRangeTypeId = riskRangeTypeId;
+		this.riskFactorId = riskFactorId;
+		this.riskFactorLevelId = riskFactorLevelId;
+	}
+	
+	private long riskAssessmentId;
+	private long riskRangeTypeId;
+	private long riskFactorId;
+	private long riskFactorLevelId;
 	private RiskFactor riskFactor;
 	private RiskFactorLevel riskFactorLevel;
 	private int score;

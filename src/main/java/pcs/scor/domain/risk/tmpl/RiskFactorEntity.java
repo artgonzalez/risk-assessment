@@ -23,6 +23,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "risk_factor")
 public class RiskFactorEntity {
+	public RiskFactorEntity(long riskFactorId) {
+		id = riskFactorId;
+	}
+	
 	public RiskFactorEntity(RiskRangeTypeEntity riskRangeType, String name, int weightMultiplier)	{
 		this.riskRangeType = riskRangeType;
 		this.name = name;

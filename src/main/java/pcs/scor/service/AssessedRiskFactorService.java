@@ -8,43 +8,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pcs.scor.data.risk.repository.AssessedRiskFactorRepository;
-import pcs.scor.data.risk.repository.RiskAssessmentRiskRangeTypeRepository;
+//import pcs.scor.data.risk.repository.RiskAssessmentRiskRangeTypeRepository;
 import pcs.scor.domain.risk.asmt.AssessedRiskFactorEntity;
 import pcs.scor.domain.risk.asmt.RiskAssessmentEntity;
-import pcs.scor.domain.risk.asmt.RiskAssessmentRiskRangeTypeEntity;
+//import pcs.scor.domain.risk.asmt.RiskAssessmentRiskRangeTypeEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorLevelEntity;
+import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
 import pcs.scor.model.risk.asmt.AssessedRiskFactor;
-import pcs.scor.model.risk.asmt.RiskAssessmentRiskRangeType;
+import pcs.scor.model.risk.asmt.AssessedRiskRange;
+//import pcs.scor.model.risk.asmt.RiskAssessmentRiskRangeType;
 
 @Service
 public class AssessedRiskFactorService {
 	@Autowired
-	AssessedRiskFactorRepository riskAssessmentRiskFactorRepository;
-	@Autowired
-	RiskAssessmentRiskRangeTypeRepository riskAssessmentRiskRangeTypeRepository;
+	AssessedRiskFactorRepository assessedRiskFactorRepository;
+	//@Autowired
+	//RiskAssessmentRiskRangeTypeRepository riskAssessmentRiskRangeTypeRepository;
 	@Autowired
     private ModelMapper modelMapper;
 
-	public List<RiskAssessmentRiskRangeType> findByRiskAssessmentId( long riskAssessmentId){
+	public List<AssessedRiskRange> findByRiskAssessmentId( long riskAssessmentId){
 		RiskAssessmentEntity a = new RiskAssessmentEntity();
 		a.setRiskAssessmentId(riskAssessmentId);
 		
-		//List<RiskAssessmentRiskFactorEntity> entities = riskAssessmentRiskFactorRepository.findByRiskAssessment(a); 				
-		List<RiskAssessmentRiskRangeTypeEntity> entities = riskAssessmentRiskRangeTypeRepository.findAll();
-		List<RiskAssessmentRiskRangeType> levels = new ArrayList<RiskAssessmentRiskRangeType>();
+		List<AssessedRiskFactorEntity> entities = assessedRiskFactorRepository.findAll();
 		
-		entities.forEach(entity -> {
-			RiskAssessmentRiskRangeType riskRangeType = modelMapper.map(entity, RiskAssessmentRiskRangeType.class);
-			riskRangeType.setId(entity.getRiskRangeType().getId());
-			riskRangeType.setName(entity.getRiskRangeType().getName());
-			
-			levels.add(riskRangeType);
-			
-			}); 
+		List<AssessedRiskRange> assessedRiskRanges = getRiskRanges(entities);
 		
-		return levels;
-	}	
+		return assessedRiskRanges;
+	}
+	
+	private List<AssessedRiskRange> getRiskRanges(List<AssessedRiskFactorEntity> assessedRiskFactors) {
+		
+		long riskRangeTypeId = 0;
+
+		List<AssessedRiskRange> assessedRiskRanges = new ArrayList<AssessedRiskRange>();
+
+		if(assessedRiskFactors.size() > 0) {
+			riskRangeTypeId = assessedRiskFactors.get(0).getRiskRangeType().getId();
+		}
+		
+		AssessedRiskRange assessedRiskRange = new AssessedRiskRange(riskRangeTypeId, assessedRiskFactors.get(0).getRiskRangeType().getName());
+		assessedRiskRanges.add(assessedRiskRange);
+		
+		for(AssessedRiskFactorEntity factor: assessedRiskFactors) {
+			
+			if(riskRangeTypeId != factor.getRiskRangeType().getId()) {
+				riskRangeTypeId = factor.getRiskRangeType().getId();
+				assessedRiskRange = new AssessedRiskRange(riskRangeTypeId, factor.getRiskRangeType().getName());
+				assessedRiskRanges.add(assessedRiskRange);
+			}
+			else {
+				assessedRiskRange.getRiskFactors().add(modelMapper.map(factor, AssessedRiskFactor.class));
+			}
+		}
+		
+		return assessedRiskRanges;
+	}
 	
 	public AssessedRiskFactor findByRiskAssessmentAndRiskFactorAndRiskFactorLevel( long riskAssessmentId, 
 			long riskFactorId, long riskFactorLevelId){
@@ -55,11 +76,22 @@ public class AssessedRiskFactorService {
 		RiskFactorLevelEntity level = new RiskFactorLevelEntity();
 		level.setRiskFactorLevelId(riskFactorLevelId);
 		
-		List<AssessedRiskFactorEntity> riskAssessmentRiskFactorEntity = 
-				riskAssessmentRiskFactorRepository.findAll();				
+		//List<AssessedRiskFactorEntity> riskAssessmentRiskFactorEntity = 
+			//	riskAssessmentRiskFactorRepository.findAll();				
 		
-		AssessedRiskFactor riskAssessmentRiskFactor = modelMapper.map(riskAssessmentRiskFactorEntity.get(0), AssessedRiskFactor.class); 
+		AssessedRiskFactor riskAssessmentRiskFactor = null; //modelMapper.map(riskAssessmentRiskFactorEntity.get(0), AssessedRiskFactor.class); 
 		
 		return riskAssessmentRiskFactor;
+	}
+	
+	public AssessedRiskFactor save(AssessedRiskFactor assessedRiskFactor) {
+		
+		AssessedRiskFactorEntity entity = assessedRiskFactorRepository.save(
+				new AssessedRiskFactorEntity(new RiskAssessmentEntity(assessedRiskFactor.getRiskAssessmentId()),
+											 new RiskRangeTypeEntity(assessedRiskFactor.getRiskRangeTypeId()),
+											 new RiskFactorEntity(assessedRiskFactor.getRiskFactorId()),
+											 new RiskFactorLevelEntity(assessedRiskFactor.getRiskFactorLevelId())));
+		
+		return modelMapper.map(entity, AssessedRiskFactor.class);
 	}
 }

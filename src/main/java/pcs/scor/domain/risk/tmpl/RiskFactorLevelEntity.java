@@ -21,6 +21,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "risk_factor_level")
 public class RiskFactorLevelEntity {
+	public RiskFactorLevelEntity(long riskFactorLevelId) {
+		this.riskFactorLevelId = riskFactorLevelId;
+	}
+	
 	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, String level, int score) 
 	{
 		this.riskFactor = riskFactor;

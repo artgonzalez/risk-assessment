@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pcs.scor.model.risk.asmt.AssessedRiskFactor;
 import pcs.scor.model.risk.asmt.RiskAssessment;
 import pcs.scor.service.RiskAssessmentService;
 
@@ -35,4 +37,17 @@ public class RiskAssessmentController {
 		
 		return new ResponseEntity<>(riskAssessment, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/contracts/{contractId}/risk-assessments")
+	public ResponseEntity<RiskAssessment> createRiskAssessment(@PathVariable("contractId") long contractId,
+			@RequestBody RiskAssessment riskAssessment){
+		
+		riskAssessment.setContractId(contractId);
+		RiskAssessment new_riskAssessment = riskAssessmentService.save(riskAssessment);
+		
+		return new ResponseEntity<>(new_riskAssessment, HttpStatus.CREATED);
+	}	 
+	 
+	 
+	 
 }

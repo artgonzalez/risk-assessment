@@ -7,12 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pcs.scor.model.risk.asmt.AssessedRiskFactor;
-import pcs.scor.model.risk.asmt.RiskAssessmentRiskRangeType;
+import pcs.scor.model.risk.asmt.AssessedRiskRange;
 import pcs.scor.service.AssessedRiskFactorService;
 
 @CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
@@ -24,12 +25,12 @@ public class AssessedRiskFactorController {
 	AssessedRiskFactorService riskAssessmentRiskFactorService;
 
 	@RequestMapping(method = RequestMethod.GET, value="risk-assessments/{riskAssessmentId}/risk-range-types/risk-factors/risk-factor-level")
-	public ResponseEntity<List<RiskAssessmentRiskRangeType>> getRiskAssessmentId(@PathVariable("riskAssessmentId") long riskAssessmentId){
+	public ResponseEntity<List<AssessedRiskRange>> getRiskAssessmentId(@PathVariable("riskAssessmentId") long riskAssessmentId){
 		
-		List<RiskAssessmentRiskRangeType> riskAssessmentRiskFactor = 
+		List<AssessedRiskRange> assessedRiskRanges = 
 				riskAssessmentRiskFactorService.findByRiskAssessmentId(riskAssessmentId);
 		
-		return new ResponseEntity<>(riskAssessmentRiskFactor, HttpStatus.OK);
+		return new ResponseEntity<>(assessedRiskRanges, HttpStatus.OK);
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET, value="risk-assessments/{riskAssessmentId}/risk-range-types/risk-factors/{riskFactorId}/risk-factor-level/{riskFactorLevelId}")
@@ -41,5 +42,16 @@ public class AssessedRiskFactorController {
 		
 		return new ResponseEntity<>(riskAssessmentRiskFactor, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(method=RequestMethod.POST, value="contracts/risk-assessments/{riskAssessmentId}/assessed-risk-factors")
+	public ResponseEntity<AssessedRiskFactor> createAssessedRiskFactor(@PathVariable("riskAssessmentId") long riskAssessmentId, 
+			@RequestBody AssessedRiskFactor assessedRiskFactor){
+		
+		AssessedRiskFactor new_riskFactor = riskAssessmentRiskFactorService.save(assessedRiskFactor);
+		
+		return new ResponseEntity<>(new_riskFactor, HttpStatus.CREATED);
+	}
+	
 	
 }

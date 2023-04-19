@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pcs.scor.domain.risk.asmt.RiskAssessmentEntity;
 
 @Getter
 @Setter
@@ -23,11 +22,15 @@ import pcs.scor.domain.risk.asmt.RiskAssessmentEntity;
 @Entity
 @Table(name = "risk_range_type")
 public class RiskRangeTypeEntity {
+	public RiskRangeTypeEntity(long riskRangeTypeId) {
+		this.id = riskRangeTypeId;
+	}
+	
 	public RiskRangeTypeEntity(RiskAssessmentTemplateEntity riskAssessmentTemplate, String name) {
 		this.riskAssessmentTemplate = riskAssessmentTemplate;
 		this.name = name;
 	}
-	
+		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "risk_range_type_id")
@@ -38,9 +41,9 @@ public class RiskRangeTypeEntity {
 	@JoinColumn(name="risk_assessment_template_id")
 	RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
-	@ManyToOne//(fetch = FetchType.LAZY)
+	/*@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name="risk_assessment_id")
-	RiskAssessmentEntity riskAssessment;
+	RiskAssessmentEntity riskAssessment;*/
 	
 	@OneToMany(mappedBy="riskRangeType")
 	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges;
