@@ -181,6 +181,17 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			$scope.baseLineRiskRangeTypeRanges[i].min += riskRangeType.riskRangeTypeRanges[i].min;
 			$scope.baseLineRiskRangeTypeRanges[i].max += riskRangeType.riskRangeTypeRanges[i].max;
 		}
+		
+		/*risk ranges produce a gap when summing risk range risk scores example:
+		   Low = 3-6    Medium = 7-10    High = 11-15
+		   Low = 3-7    Medium = 8-12    High = 13-17
+		total:  6-13			15-22          24-32 <-- notice 13 jumps to 15 and 22 to 24
+        this loop adjusts to produce correct result of
+		Low = 6-13    Medium = 14-22    High = 23-32 according to legacy risk Assessment risk calculations
+		*/
+		for(var i=1; i < riskRangeType.riskRangeTypeRanges.length; i++){
+			$scope.baseLineRiskRangeTypeRanges[i].min = $scope.baseLineRiskRangeTypeRanges[i-1].max + 1;
+		}
 	};
 	
 	$scope.getContractBaseLineRiskLevel = function(){
@@ -196,7 +207,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		}
 			
 		$scope.contractBaseLineRiskLevel = riskLevel;
-		console.log($scope.contractBaseLineRiskLevel);
 	};
 	
 	$scope.getBaseLineRiskScore = function(riskRanges){
