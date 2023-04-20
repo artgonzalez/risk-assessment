@@ -43,9 +43,4 @@ public class RiskFactorLevelEntity {
 	@JoinColumn(name="risk_factor_id")
 	@JsonIgnore
 	RiskFactorEntity riskFactor;
-	
-/*
-	@OneToOne(mappedBy="riskFactorLevel", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-	private RiskAssessmentRiskFactorEntity riskAssessmentRiskFactor;*/
 }

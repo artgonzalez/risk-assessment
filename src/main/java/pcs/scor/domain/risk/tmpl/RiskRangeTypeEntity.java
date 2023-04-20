@@ -37,26 +37,13 @@ public class RiskRangeTypeEntity {
 	private long id;
 	private String name;
 	
-	@ManyToOne//(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="risk_assessment_template_id")
 	RiskAssessmentTemplateEntity riskAssessmentTemplate;
-	
-	/*@ManyToOne//(fetch = FetchType.LAZY)
-	@JoinColumn(name="risk_assessment_id")
-	RiskAssessmentEntity riskAssessment;*/
 	
 	@OneToMany(mappedBy="riskRangeType")
 	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges;
 
 	@OneToMany(mappedBy = "riskRangeType")
 	private Set<RiskFactorEntity> riskFactors;
-	
-	/*@ManyToMany(fetch = FetchType.LAZY,
-	      cascade = {
-	          CascadeType.PERSIST,
-	          CascadeType.MERGE
-	      },
-	      mappedBy = "riskRangeTypes")
-	private Set<RiskAssessmentEntity> riskAssessments = new HashSet<>();*/
-
 }
