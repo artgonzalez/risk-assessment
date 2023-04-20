@@ -183,7 +183,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="riskFactor in riskRangeType.riskFactors"  ng-if="assessRangeTypes">
+						<tr ng-repeat="riskFactor in riskRangeType.riskFactors">
 							<td>
 							<a ng-show="isEditRiskAssessment" aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="showEdit=!showEdit">{{$index+1}}</a>
 							{{(isAddRiskAssessment) ? $index+1 : riskFactor.iddd}}
