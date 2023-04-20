@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pcs.scor.model.risk.asmt.AssessedRiskFactor;
 import pcs.scor.model.risk.asmt.RiskAssessment;
 import pcs.scor.service.RiskAssessmentService;
 
@@ -48,6 +47,14 @@ public class RiskAssessmentController {
 		return new ResponseEntity<>(new_riskAssessment, HttpStatus.CREATED);
 	}	 
 	 
-	 
+	@RequestMapping(method=RequestMethod.PUT, value="/contracts/risk-assessments/{riskAssessmentId}")
+	public ResponseEntity<RiskAssessment> updateRiskAssessment(@PathVariable("riskAssessmentId") long riskAssessmentId,
+			@RequestBody RiskAssessment riskAssessment){
+		
+		RiskAssessment new_riskAssessment = riskAssessmentService.save(riskAssessment);
+		
+		return new ResponseEntity<>(new_riskAssessment, HttpStatus.OK);
+	}	 
+
 	 
 }

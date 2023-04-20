@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Getter
 @Setter
@@ -19,4 +20,5 @@ public class AssessedRiskRange {
 	long riskRangeTypeId;
 	String name;
 	private List<AssessedRiskFactor> riskFactors = new ArrayList<AssessedRiskFactor>();
+	private List<RiskRangeTypeRange> riskRangeTypeRanges = new ArrayList<RiskRangeTypeRange>();
 }

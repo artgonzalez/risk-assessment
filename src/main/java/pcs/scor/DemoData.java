@@ -94,6 +94,8 @@ public class DemoData {
 		riskAssessmentTemplateRepository.save(new RiskAssessmentTemplateEntity("1.2", formatter.parse("12-01-2021"), 
 				formatter.parse("12-01-2022"), "Testing"));
 		
-		riskAssessmentRepository.save(new RiskAssessmentEntity(0, 1, new Date(), "00000107183"));
+		RiskAssessmentEntity entity = new RiskAssessmentEntity(0, 1, new Date(), "00000107183");
+		entity.setRiskAssessmentTemplate(template);
+		riskAssessmentRepository.save(entity);
 	}
 }

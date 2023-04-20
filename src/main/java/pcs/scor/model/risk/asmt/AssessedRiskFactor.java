@@ -18,6 +18,7 @@ public class AssessedRiskFactor {
 		this.riskFactorLevelId = riskFactorLevelId;
 	}
 	
+	private long assessedRiskFactorId;
 	private long riskAssessmentId;
 	private long riskRangeTypeId;
 	private long riskFactorId;

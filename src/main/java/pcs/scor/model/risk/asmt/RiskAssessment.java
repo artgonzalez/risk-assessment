@@ -12,9 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RiskAssessment {
 	private long riskAssessmentId;
+	private long riskAssessmentTemplateId;
 	private long contractId;
 	private Date riskAssessmentDate;
 	private String primaryRiskAssessor;
-	private String version;
+	private String riskAssessmentTemplateVersion;
 	private List<AssessedRiskRange> riskRangeTypes; 
 }
