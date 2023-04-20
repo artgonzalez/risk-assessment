@@ -466,6 +466,13 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                     riskAssessmentFactory.getContractRiskAssessment(response.data.riskAssessmentId).then(function(response) {
                         $scope.riskAssessmentObj = response.data;
 						$scope.isAddEditRiskAsmtVisible = true;
+						$scope.isAddRiskAssessment = false;
+						$scope.isEditRiskAssessment = true;
+						$scope.baseLineRiskLevelScore = 0;
+						$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
+						$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
+						$scope.getContractBaseLineRiskLevel();
+						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
                     $scope.getContractRiskAssessments($scope.vm.currentPage, $scope.noOfRecordsPerPage);
@@ -487,6 +494,13 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                     $scope.errorFromRestService = false;
                     riskAssessmentFactory.getContractRiskAssessment(response.data.resourceId).then(function(response) {
                         $scope.riskAssessmentObj = response.data;
+						$scope.isAddRiskAssessment = false;
+						$scope.isEditRiskAssessment = true;
+						$scope.baseLineRiskLevelScore = 0;
+						$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
+						$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
+						$scope.getContractBaseLineRiskLevel();
+						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
                     $scope.getContractRiskAssessments($scope.vm.currentPage, $scope.noOfRecordsPerPage);
