@@ -185,20 +185,20 @@
 					<tbody>
 						<tr ng-repeat="riskFactor in riskRangeType.riskFactors"  ng-if="assessRangeTypes">
 							<td>
-							<a ng-show="riskFactor.name == undefined" aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="showEdit=!showEdit">{{$index+1}}</a>
-							{{(riskFactor.name != undefined) ? $index : riskFactor.id}}
+							<a ng-show="isEditRiskAssessment" aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="showEdit=!showEdit">{{$index+1}}</a>
+							{{(isAddRiskAssessment) ? $index+1 : riskFactor.iddd}}
 							</td>
 							<td>
-								{{(riskFactor.name != undefined) ? riskFactor.name : riskFactor.riskFactor.name}}
+								{{riskFactor.name}}
 							     <div ng-show="showEdit"></br>
-								 <div ng-repeat="riskFactorLevel in riskFactor.riskFactor.riskFactorLevels">
-							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="editRiskRangeTotalScore(riskRangeIndex, riskFactor, riskFactorLevel)" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactor.id}}" value="{{riskFactorLevel.riskFactorLevelId}}">
+								 <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
+							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="editRiskRangeTotalScore(riskRangeIndex, riskFactor, riskFactorLevel)" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactorId}}" value="{{riskFactorLevel.riskFactorLevelId}}">
 									 <label for="html">{{riskFactorLevel.level}}</label></br>
 							    </div>
 								 </div>
 							</td>
-							<td ng-if="riskFactor.riskFactorLevel.level != undefined" >{{riskFactor.riskFactorLevel.level}}</td>
-							<td ng-if="riskFactor.riskFactorLevel.level == undefined" >
+							<td ng-if="isEditRiskAssessment" >{{riskFactor.riskFactorLevel.level}}</td>
+							<td ng-if="isAddRiskAssessment" >
 							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
 							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="riskFactor.score=riskFactorLevel.score; getRiskRangeTotalScore(riskRangeIndex, riskRangeType.riskFactors);setAssessedFactorProperties(riskRangeIndex, $parent.$index, riskRangeType, riskFactor, riskFactorLevel);" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.id}}" value="{{riskFactorLevel.riskFactorLevelId}}" required>
 									 <label for="html">{{riskFactorLevel.level}}</label>
@@ -210,24 +210,19 @@
 								</div>
 
 						    </td>
-							<td class="table-td-alignment-center">{{(riskFactor.riskFactor.weightMultiplier == undefined) ? (riskFactor.score == undefined) ? 0 : riskFactor.score : riskFactor.riskFactorLevel.score}}</td>
-							<td class="table-td-alignment-center">{{(riskFactor.name != undefined) ? riskFactor.weightMultiplier : riskFactor.riskFactor.weightMultiplier}}</td>
-							<td class="table-td-alignment-center">
-							{{(riskFactor.riskFactor.weightMultiplier == undefined) ? (riskFactor.score == undefined) ? 0 : riskFactor.score * riskFactor.weightMultiplier
-							                                                        :  riskFactor.riskFactorLevel.score * riskFactor.riskFactor.weightMultiplier}}
-							</td>
+							<td class="table-td-alignment-center">{{riskFactor.riskFactorLevel.score}}</td>
+							<td class="table-td-alignment-center">{{riskFactor.weightMultiplier}}</td>
+							<td class="table-td-alignment-center">{{riskFactor.riskPoints(riskFactor.riskFactorLevel.score, riskFactor.weightMultiplier)}}</td>
 						</tr>
 					</tbody>
 				</table>
 				<div>
 					<div class="col-md-4 risk-range-box">
 						<div class="wordwrap">
-							Risk Range {{riskRangeType.riskRangeTypeRanges[0].min}} - {{riskRangeType.riskRangeTypeRanges[2].max}}
+							Risk Range {{riskRangeType.riskRangeText(riskRangeType.riskRangeTypeRanges)}}
 						</div>
 						<div class="wordwrap">
-							Low = {{riskRangeType.riskRangeTypeRanges[0].min}}-{{riskRangeType.riskRangeTypeRanges[0].max}} &nbsp;&nbsp; 
-							Medium = {{riskRangeType.riskRangeTypeRanges[1].min}}-{{riskRangeType.riskRangeTypeRanges[1].max}} &nbsp;&nbsp; 
-							High = {{riskRangeType.riskRangeTypeRanges[2].min}}-{{riskRangeType.riskRangeTypeRanges[2].max}}
+							{{riskRangeType.riskRangesText(riskRangeType.riskRangeTypeRanges)}}
 						</div>
 					</div>
 					<div class="col-md-7 text-right">
