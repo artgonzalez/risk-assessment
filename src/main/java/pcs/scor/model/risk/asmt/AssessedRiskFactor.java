@@ -1,5 +1,7 @@
 package pcs.scor.model.risk.asmt;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +25,10 @@ public class AssessedRiskFactor {
 	private long riskRangeTypeId;
 	private long riskFactorId;
 	private long riskFactorLevelId;
-	private RiskFactor riskFactor;
+	private String name;
+	private int weightMultiplier;
+	//private RiskFactor riskFactor;
 	private RiskFactorLevel riskFactorLevel;
+	private List<RiskFactorLevel> riskFactorLevels;
 	private int score;
 }

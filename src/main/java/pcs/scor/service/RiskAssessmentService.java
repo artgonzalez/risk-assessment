@@ -130,6 +130,8 @@ public class RiskAssessmentService {
 			}
 
 			AssessedRiskFactor assessedRiskFactor = modelMapper.map(factor, AssessedRiskFactor.class);
+			assessedRiskFactor.setName(factor.getRiskFactor().getName());
+			assessedRiskFactor.setWeightMultiplier(factor.getRiskFactor().getWeightMultiplier());
 			assessedRiskFactor.setRiskFactorLevelId(factor.getRiskFactorLevel().getRiskFactorLevelId());
 			
 			assessedRiskRange.getRiskFactors().add(assessedRiskFactor);
