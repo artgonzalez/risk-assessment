@@ -1,6 +1,7 @@
 package pcs.scor.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -145,6 +146,8 @@ public class RiskAssessmentService {
 				riskRangeTypeRanges.add(modelMapper.map(entity, RiskRangeTypeRange.class));
 			}
 			);
+		
+		riskRangeTypeRanges.sort(Comparator.comparing(RiskRangeTypeRange::getMin));
 		
 		return riskRangeTypeRanges;
 	}

@@ -1,6 +1,7 @@
 package pcs.scor.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import pcs.scor.data.risk.repository.RiskRangeTypeRangeRepository;
 import pcs.scor.data.risk.repository.RiskRangeTypeRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
+import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Service
 public class RiskAsmtTemplateService {
@@ -43,7 +45,12 @@ public class RiskAsmtTemplateService {
 	public RiskAssessmentTemplate getRiskAssessmentTemplateById(long riskAssessmentTemplateId) {
 		RiskAssessmentTemplateEntity templateEntity = riskAsmtTemplateRepository.findOne(riskAssessmentTemplateId);
 		
-		return modelMapper.map(templateEntity, RiskAssessmentTemplate.class);
+		RiskAssessmentTemplate template = modelMapper.map(templateEntity, RiskAssessmentTemplate.class);
+		
+		template.getRiskRangeTypes().forEach(range -> 
+						range.getRiskRangeTypeRanges().sort(Comparator.comparing(RiskRangeTypeRange::getMin)));
+		
+		return template;
 	}
 	
 	public RiskAssessmentTemplate createRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
