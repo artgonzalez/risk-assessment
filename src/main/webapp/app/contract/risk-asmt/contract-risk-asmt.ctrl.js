@@ -34,14 +34,11 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
     $scope.displayPagination = false;
     $scope.isOtherRiskLevelRequired = false;
     $scope.required = false;
-	$scope.assessRangeTypes = true;
 	$scope.riskRangeTypeTotalScore = [];
 	$scope.riskRangeTypeRiskLevel = [];
 	$scope.baseLineRiskLevelScore = 0;
 	$scope.contractBaseLineRiskLevel = "";
 	$scope.baseLineRiskRangeTypeRanges = [];
-	$scope.riskRangeFactorList = [];
-	$scope.riskRangeFactorLevelList = [];
 	$scope.isAddEditRiskAsmtVisible = false;
 	
 	var msg;
