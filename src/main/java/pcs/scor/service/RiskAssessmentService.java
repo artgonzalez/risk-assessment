@@ -127,12 +127,11 @@ public class RiskAssessmentService {
 				assessedRiskRange.setRiskRangeTypeRanges(riskRangeTypeRanges);
 				assessedRiskRanges.add(assessedRiskRange);
 			}
-			//else {
+
 			AssessedRiskFactor assessedRiskFactor = modelMapper.map(factor, AssessedRiskFactor.class);
 			assessedRiskFactor.setRiskFactorLevelId(factor.getRiskFactorLevel().getRiskFactorLevelId());
 			
 			assessedRiskRange.getRiskFactors().add(assessedRiskFactor);
-			//}
 		}
 		
 		return assessedRiskRanges;
