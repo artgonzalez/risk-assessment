@@ -1,0 +1,122 @@
+.contract-riskasmt-div-paginate-align {
+    padding-bottom: 1em;
+    text-align: right;
+}
+
+.contract-riskasmt-div-align-other-risk-delete {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: right;
+}
+
+.contract-riskasmt-div-align-other-risk {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.contract-riskasmt-div-paginate-select-style {
+    width: 70px;
+}
+
+.contract-riskamt-paginate-footer-style {
+    text-align: center;
+}
+
+.contractor-riskasmt-table-borderless td,
+.table-borderless th {
+    border: 0 !important;
+}
+
+.contract-riskasmt-tableheader-width4x {
+    width: 4%;
+    border: 1px solid white;
+    text-align: center;
+}
+
+.contract-riskasmt-tableheader-width13 {
+    width: 13%;
+    border: 1px solid white;
+}
+
+.contract-riskasmt-tableheader-width12 {
+    width: 12%;
+    text-align: center;
+    border: 1px solid white;
+}
+
+.contract-riskasmt-tableheader-width11 {
+    width: 11%;
+    border: 1px solid white;
+}
+
+.contract-riskasmt-tableheader-width9 {
+    width: 9%;
+    border: 1px solid white;
+    text-align: center;
+}
+
+.contract-riskasmt-tableheader-inner-row {
+    width: 12%;
+    border: 1px solid white;
+}
+
+.contract-riskasmt-table-legend-display {
+    align-content: right;
+    padding-left: 4em;
+}
+
+.contract-riskasmt-paddingleft-10px {
+    padding: 10px;
+}
+
+.contract-riskasmt-contract-table-style1 {
+    width: 12%;
+    border: 1px solid white;
+    text-align: center
+}
+
+.contract-riskasmt-contract-table-style2 {
+    width: 16%;
+    border: 1px solid white;
+    text-align: center;
+}
+
+.contract-riskasmt-contract-table-style3 {
+    width: 11%;
+    border: 1px solid white;
+    text-align: center;
+}
+
+.contract-riskasmt-padding-bottom-1m {
+    padding-bottom: 1em;
+}
+
+.contract-riskasmt-text-padding-7em {
+    align-content: right;
+    padding-left: 7em;
+}
+
+.contract-riskasmt-text-padding-6m {
+    padding-bottom: 6px;
+}
+
+.contract-riskasmt-text-padding-10m {
+    align-content: right;
+    padding-left: 10em;
+}
+
+.risk-range-box {
+    border-left: thin solid #337ab7;
+    border-right: thin solid #337ab7;
+    border-top: thin solid #337ab7;
+    border-bottom: thin solid #337ab7;
+    border-radius: 3px;
+}
+
+.contract-riskasmt-select-padding {
+    padding-left: 45px;
+}
+
+.contract-risk-asmt-padding-top-15px {
+    padding-top: 15px;
+}
