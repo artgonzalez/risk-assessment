@@ -15,6 +15,7 @@ public class RiskAssessment {
 	private long riskAssessmentTemplateId;
 	private long contractId;
 	private Date riskAssessmentDate;
+	private String fiscalYear;
 	private String primaryRiskAssessor;
 	private String riskAssessmentTemplateVersion;
 	private List<AssessedRiskRange> riskRangeTypes; 

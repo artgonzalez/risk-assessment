@@ -47,6 +47,7 @@ public class RiskAssessmentEntity {
 	
 	private long contractId;
 	private Date riskAssessmentDate;
+	private String fiscalYear;
 	private String primaryRiskAssessor;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

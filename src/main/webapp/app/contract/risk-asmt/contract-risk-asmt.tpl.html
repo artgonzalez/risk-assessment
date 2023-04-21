@@ -97,15 +97,15 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <span class="mandatory">*</span><label for="riskAssessmentFiscalYear">Risk Assessment Fiscal Year</label>
-                    <input id="riskAssessmentFiscalYear" name="riskAssessmentFiscalYear" type="text" class="form-control" id="dateRiskComp" placeholder="" ng-model="riskAssessmentObj.riskAssessmentFiscalYear" ng-minlength="4" ng-maxlength="4" ng-pattern="/^\d{4}$/" ng-change="validateFiscalYear()" ng-required=required aria-live="assertive" aria-describedby="riskAssessmentFiscalYearValidation">
-                    <div class="error-wrapper" id="riskAssessmentFiscalYearValidation" ng-messages="contractRiskAsmtForm.riskAssessmentFiscalYear.$error" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$invalid || invalidRiskAssessmentFiscalYear" role="alert">
-                        <div ng-message="required" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.required">
+                    <span class="mandatory">*</span><label for="fiscalYear">Risk Assessment Fiscal Year</label>
+                    <input id="fiscalYear" name="fiscalYear" type="text" class="form-control" id="dateRiskComp" placeholder="" ng-model="riskAssessmentObj.fiscalYear" ng-minlength="4" ng-maxlength="4" ng-pattern="/^\d{4}$/" ng-change="validateFiscalYear()" ng-required=required aria-live="assertive" aria-describedby="riskAssessmentFiscalYearValidation">
+                    <div class="error-wrapper" id="riskAssessmentFiscalYearValidation" ng-messages="contractRiskAsmtForm.fiscalYear.$error" ng-if="contractRiskAsmtForm.fiscalYear.$invalid || invalidRiskAssessmentFiscalYear" role="alert">
+                        <div ng-message="required" ng-if="contractRiskAsmtForm.fiscalYear.$error.required">
                             <strong>Risk Assessment Fiscal Year - is a required field.</strong>
                         </div>
-                        <div ng-message="pattern" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.pattern"><strong> Risk Assessment Fiscal Year - must be in yyyy format.</strong></div>
-                        <div ng-message="minlength" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.minlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
-                        <div ng-message="maxlength" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.maxlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
+                        <div ng-message="pattern" ng-if="contractRiskAsmtForm.fiscalYear.$error.pattern"><strong> Risk Assessment Fiscal Year - must be in yyyy format.</strong></div>
+                        <div ng-message="minlength" ng-if="contractRiskAsmtForm.fiscalYear.$error.minlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
+                        <div ng-message="maxlength" ng-if="contractRiskAsmtForm.fiscalYear.$error.maxlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
                         <div ng-message="required" ng-if="invalidRiskAssessmentFiscalYear"><strong> Risk Assessment Fiscal Year - must be relevant to the date completed.</strong></div>
                     </div>
                 </div>
