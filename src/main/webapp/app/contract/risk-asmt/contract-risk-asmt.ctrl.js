@@ -456,8 +456,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
             riskAssessmentFactory.createRiskAssessment(riskAssessment).then(function(response) {
                 if (response.success) {
                     $scope.data = response.data;
-					
-                    $scope.riskAssessmentObj.riskAssessmentId = $scope.data.riskAssessmentId;
                     $scope.displayOnlyRiskAssessment = true;
                     $scope.isAddEditRiskAsmtVisible = false;
                     $scope.displayRecordSavedMsg = true;
@@ -492,7 +490,8 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                     $scope.isAddEditRiskAsmtVisible = false;
                     $scope.displayRecordSavedMsg = true;
                     $scope.errorFromRestService = false;
-                    riskAssessmentFactory.getContractRiskAssessment(response.data.resourceId).then(function(response) {
+                    riskAssessmentFactory.getContractRiskAssessment(response.data.riskAssessmentId).then(function(response) {
+						console.log(response);
                         $scope.riskAssessmentObj = response.data;
 						$scope.isAddRiskAssessment = false;
 						$scope.isEditRiskAssessment = true;

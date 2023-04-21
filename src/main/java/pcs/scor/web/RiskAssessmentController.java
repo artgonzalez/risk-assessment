@@ -47,7 +47,7 @@ public class RiskAssessmentController {
 		return new ResponseEntity<>(new_riskAssessment, HttpStatus.CREATED);
 	}	 
 	 
-	@RequestMapping(method=RequestMethod.PUT, value="/contracts/risk-assessments/{riskAssessmentId}")
+	@RequestMapping(method=RequestMethod.POST, value="/contracts/risk-assessments/{riskAssessmentId}")
 	public ResponseEntity<RiskAssessment> updateRiskAssessment(@PathVariable("riskAssessmentId") long riskAssessmentId,
 			@RequestBody RiskAssessment riskAssessment){
 		
