@@ -127,22 +127,20 @@
             <br/>
             <div>
                 <div class="col-md-4 risk-range-box">
-                    <div class="wordwrap">
-                        Risk Range {{baseLineRiskRangeTypeRanges[0].min}}-{{baseLineRiskRangeTypeRanges[2].max}}
+                    <div class="wordwrap"> 
+                        Risk Range {{riskAssessmentObj.baseLineRiskRangeText()}}
                     </div>
                     <div class="wordwrap">
-                        Low = {{baseLineRiskRangeTypeRanges[0].min}}-{{baseLineRiskRangeTypeRanges[0].max}} &nbsp;&nbsp; 
-						Medium = {{baseLineRiskRangeTypeRanges[1].min}}-{{baseLineRiskRangeTypeRanges[1].max}} &nbsp;&nbsp; 
-						High = {{baseLineRiskRangeTypeRanges[2].min}}-{{baseLineRiskRangeTypeRanges[2].max}}
+                        {{riskAssessmentObj.baseLineRiskRangesText()}} 
                     </div>
                 </div>
                 <div class="col-md-4 wordwrap">
                     <span><strong>Baseline Risk Level </strong></span>
-                    <div> {{contractBaseLineRiskLevel}} </div>
+                    <div> {{riskAssessmentObj.baseLineRiskLevel()}} </div>
                 </div>
                 <div class="col-md-4 wordwrap">
                     <span><strong>Baseline Risk Score </strong></span>
-                    <div> {{baseLineRiskLevelScore}} </div>
+                    <div> {{riskAssessmentObj.baseLineRiskLevelScore()}} </div>
                 </div>
             </div>
             <br/>

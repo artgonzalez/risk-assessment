@@ -70,28 +70,124 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 	}
 	
 	$scope.createRiskAssessmentModelCalculatedFields = function(riskAssessment){
+		
+		var riskRangeTypes = riskAssessment.riskRangeTypes;
+		
+		riskAssessment.createBaseLineRiskRanges = function (){
+			var baseLineRiskRangesText = [];
+
+			for(var j=0; j < riskRangeTypes[0].riskRangeTypeRanges.length; j++){
+				baseLineRiskRangesText[j] = {
+													level : "",
+													min : 0,
+													max : 0
+												};
+				
+			}
+			
+			for(var i=0; i < riskRangeTypes.length; i++){
+				
+				for(var j=0; j < riskRangeTypes[i].riskRangeTypeRanges.length; j++){
+					baseLineRiskRangesText[j].level = riskRangeTypes[i].riskRangeTypeRanges[j].level;
+					baseLineRiskRangesText[j].min += riskRangeTypes[i].riskRangeTypeRanges[j].min;
+					baseLineRiskRangesText[j].max += riskRangeTypes[i].riskRangeTypeRanges[j].max;
+					
+				}
+				
+				/*risk ranges produce a gap when summing risk range risk scores example:
+				   Low = 3-6    Medium = 7-10    High = 11-15
+				   Low = 3-7    Medium = 8-12    High = 13-17
+				total:  6-13			15-22          24-32 <-- notice 13 jumps to 15 and 22 to 24
+				this loop adjusts to produce correct result of
+				Low = 6-13    Medium = 14-22    High = 23-32 according to legacy risk Assessment risk calculations
+				*/
+				
+				for(var k=1; k < riskRangeTypes[i].riskRangeTypeRanges.length; k++){
+					baseLineRiskRangesText[k].min = baseLineRiskRangesText[k-1].max + 1;
+				}
+			}
+			
+			riskAssessment.baseLineRiskRanges = baseLineRiskRangesText;
+			
+		};
+		
+		riskAssessment.baseLineRiskRangesText = function (){
+			var riskRanges = riskAssessment.createBaseLineRiskRanges();
+			var riskRangesText = "";
+			var riskRanges = riskAssessment.baseLineRiskRanges;
+			
+			for(var i=0; i < riskRanges.length; i++){
+				riskRangesText += riskRanges[i].level + ' = ' + riskRanges[i].min + '-' + riskRanges[i].max + ' ';
+			}
+			
+			return riskRangesText;
+		};
+		
+		riskAssessment.baseLineRiskRangeText = function(){
+			riskAssessment.createBaseLineRiskRanges();
+			
+			var riskRanges = riskAssessment.baseLineRiskRanges;
+			console.log(riskRanges);
+				
+			return riskRanges[0].min + ' - ' + riskRanges[riskRanges.length-1].max;
+		};
+			
+		riskAssessment.baseLineRiskLevelScore = 
+			function(){
+				var sum = 0;
+				
+				for(var i=0; i < riskRangeTypes.length; i++){
+					for(var j=0; j < riskRangeTypes[i].riskFactors.length; j++){
+						if(riskRangeTypes[i].riskFactors[j].riskFactorLevel == undefined){
+							if(riskRangeTypes[i].riskFactors[j].score != undefined){
+								sum = sum + riskRangeTypes[i].riskFactors[j].score;
+							}
+						}
+						else{
+							sum = sum + riskRangeTypes[i].riskFactors[j].riskFactorLevel.score;
+						}
+					}
+				}
+				
+			return sum;
+		};
+				
+		riskAssessment.baseLineRiskLevel = 
+			function(){
+				var riskLevel = "";
+				var riskScore = riskAssessment.baseLineRiskLevelScore();
+				var ranges = riskAssessment.baseLineRiskRanges;
+				
+				for(var i=0; i < ranges.length; i++){
+					if(riskScore >= ranges[i].min && riskScore <= ranges[i].max){
+						riskLevel = ranges[i].level;
+						break;
+					}
+				}
+				
+				return riskLevel;
+		};
+		
 		for(var i=0; i < riskAssessment.riskRangeTypes.length; i++){
 			
 			for(var j=0; j < riskAssessment.riskRangeTypes[i].riskFactors.length; j++){
 				
-				var riskFactor = $scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j];
-				
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskPoints = 
+				var riskFactor = riskAssessment.riskRangeTypes[i].riskFactors[j];
+				//create riskFactor riskPoint
+				riskAssessment.riskRangeTypes[i].riskFactors[j].riskPoints = 
 					function(score, weightMultiplier){
 							return (score == undefined || weightMultiplier == undefined) ? 0 : score * weightMultiplier;
 					};
 			}
 			
 			for(var j=0; j < riskAssessment.riskRangeTypes[i].riskRangeTypeRanges.length; j++){
-				
-				//var ranges = $scope.riskAssessmentObj.riskRangeTypes[i].riskRangeTypeRanges;
-				
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskRangeText = 
+				//create risk range riskRangeText
+				riskAssessment.riskRangeTypes[i].riskRangeText = 
 					function(ranges){
 						return ranges[0].min + ' - ' + ranges[ranges.length-1].max;
 					};
-				
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskRangesText = 
+				//create risk range riskRangesText
+				riskAssessment.riskRangeTypes[i].riskRangesText = 
 					function(ranges){
 						var rangesText = "";
 						
@@ -164,8 +260,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                 $scope.riskAssessmentObj = response.data;
 				
 				$scope.initializeRiskAssessmentModel($scope.riskAssessmentObj);
-				$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
-				$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
 				$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
 									
 				for(var i=0; i < response.data.length; i++){
@@ -197,7 +291,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 
 	}
 	
-	$scope.createBaseLineRiskRanges = function(riskRangeType){
+	/*$scope.createBaseLineRiskRanges = function(riskRangeType){
 		
 		for(var i=0; i < riskRangeType.length; i++){
 			for(var j=0; j < riskRangeType[i].riskRangeTypeRanges.length; j++){
@@ -209,7 +303,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			}
 			break;
 		}
-	};
+	};*/
 	
 	$scope.getBaseLineRiskRanges = function(riskRangeType){
 		for(var i=0; i < riskRangeType.riskRangeTypeRanges.length; i++){
@@ -229,7 +323,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			$scope.baseLineRiskRangeTypeRanges[i].min = $scope.baseLineRiskRangeTypeRanges[i-1].max + 1;
 		}
 	};
-	
+	/*
 	$scope.getContractBaseLineRiskLevel = function(){
 		var riskLevel = "";
 		var riskScore = $scope.baseLineRiskLevelScore;
@@ -253,7 +347,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			$scope.baseLineRiskLevelScore += $scope.riskRangeTypeTotalScore[i];
 			$scope.getBaseLineRiskRanges(riskRanges[i]);
 		}
-	};
+	};*/
 	
 	$scope.getRiskRangeTotalScore = function(riskRangeIndex, riskFactors) {
 		var sum = 0;
@@ -276,7 +370,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		}
 		
 		$scope.riskRangeTypeTotalScore[riskRangeIndex] = sum;
-		$scope.updateBaselineRiskScore(sum);
 	};
 	
 	$scope.getRiskRangeRiskLevel = function(riskRangeIndex, riskRange){
@@ -296,7 +389,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			
 			$scope.riskRangeTypeRiskLevel[riskRangeIndex] = riskLevel;
 		}
-	}
+	};
 	
 	$scope.editRiskRangeTotalScore = function(riskRangeIndex, riskFactor, riskFactorLevel){
 
@@ -308,16 +401,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		riskFactor.riskFactorLevel = riskFactorLevel;
 	
 		$scope.riskRangeTypeTotalScore[riskRangeIndex] = sum;
-	};
-	
-	$scope.updateBaselineRiskScore = function(riskRangeScore){
-		
-		$scope.baseLineRiskLevelScore = 0;
-		for(var i=0; i < $scope.riskRangeTypeTotalScore.length; i++){
-			$scope.baseLineRiskLevelScore += $scope.riskRangeTypeTotalScore[i];
-		}
-		
-		$scope.getContractBaseLineRiskLevel();
 	};
 
     $scope.showAddRiskAsmtPanel = function(scrollLocation) {
@@ -353,9 +436,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				$scope.isAddRiskAssessment = false;
 				$scope.isEditRiskAssessment = true;
 				$scope.baseLineRiskLevelScore = 0;
-				$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
-				$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
-				$scope.getContractBaseLineRiskLevel();
 				$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
 			}
 		});
@@ -467,9 +547,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 						$scope.isAddRiskAssessment = false;
 						$scope.isEditRiskAssessment = true;
 						$scope.baseLineRiskLevelScore = 0;
-						$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
-						$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
-						$scope.getContractBaseLineRiskLevel();
 						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
@@ -496,9 +573,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 						$scope.isAddRiskAssessment = false;
 						$scope.isEditRiskAssessment = true;
 						$scope.baseLineRiskLevelScore = 0;
-						$scope.createBaseLineRiskRanges($scope.riskAssessmentObj.riskRangeTypes);
-						$scope.getBaseLineRiskScore($scope.riskAssessmentObj.riskRangeTypes);
-						$scope.getContractBaseLineRiskLevel();
 						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
