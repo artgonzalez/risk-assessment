@@ -3,6 +3,7 @@ package pcs.scor.domain.risk.asmt;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,8 @@ public class RiskAssessmentEntity {
 	private Date riskAssessmentDate;
 	private String primaryRiskAssessor;
 	
-	@OneToMany(mappedBy = "riskAssessment")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name= "risk_assessment_id")
 	private List<AssessedRiskFactorEntity> assessedRiskFactors;
 
 }

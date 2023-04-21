@@ -51,7 +51,7 @@ public class RiskAssessmentController {
 	public ResponseEntity<RiskAssessment> updateRiskAssessment(@PathVariable("riskAssessmentId") long riskAssessmentId,
 			@RequestBody RiskAssessment riskAssessment){
 		
-		RiskAssessment new_riskAssessment = riskAssessmentService.save(riskAssessment);
+		RiskAssessment new_riskAssessment = riskAssessmentService.update(riskAssessment);
 		
 		return new ResponseEntity<>(new_riskAssessment, HttpStatus.OK);
 	}	 

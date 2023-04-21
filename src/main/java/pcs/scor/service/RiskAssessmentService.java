@@ -58,27 +58,50 @@ public class RiskAssessmentService {
 	
 	@Transactional
 	public RiskAssessment save(RiskAssessment riskAssessment) {
+		RiskAssessmentEntity riskAssessmentEntity = modelMapper.map(riskAssessment, RiskAssessmentEntity.class);
+		riskAssessmentEntity.setAssessedRiskFactors(getAssessedRiskFactorEntities(riskAssessmentEntity, riskAssessment));
 		
-		RiskAssessmentEntity riskAssessmentEntity = riskAssessmentRepository.save(modelMapper.map(riskAssessment, RiskAssessmentEntity.class));
-		RiskAssessment new_riskAssessment = modelMapper.map(riskAssessmentEntity, RiskAssessment.class);
+		RiskAssessmentEntity newRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessmentEntity);
 		
-		riskAssessment.setRiskAssessmentId(riskAssessmentEntity.getRiskAssessmentId());
-		saveAssessedRiskFactors(riskAssessment);
+		RiskAssessment newRiskAssessment = modelMapper.map(newRiskAssessmentEntity, RiskAssessment.class);
 		
-		return new_riskAssessment;
+		return newRiskAssessment;
 	}
 	
 	@Transactional
 	public RiskAssessment update(RiskAssessment riskAssessment) {
-		RiskAssessmentEntity riskAssessmentEntity = riskAssessmentRepository.save(modelMapper.map(riskAssessment, RiskAssessmentEntity.class));
-		RiskAssessment new_riskAssessment = modelMapper.map(riskAssessmentEntity, RiskAssessment.class);
+		RiskAssessmentEntity riskAssessmentEntity = modelMapper.map(riskAssessment, RiskAssessmentEntity.class);
+		riskAssessmentEntity.setAssessedRiskFactors(getAssessedRiskFactorEntities(riskAssessmentEntity, riskAssessment));
 		
-		saveAssessedRiskFactors(riskAssessment);
+		RiskAssessmentEntity updatedRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessmentEntity);
+		RiskAssessment newRiskAssessment = modelMapper.map(updatedRiskAssessmentEntity, RiskAssessment.class);
 		
-		return new_riskAssessment;
+		return newRiskAssessment;
 	}
 	
-	private void saveAssessedRiskFactors(RiskAssessment riskAssessment) {
+	private List<AssessedRiskFactorEntity> getAssessedRiskFactorEntities(RiskAssessmentEntity riskAssessmentEntity,RiskAssessment riskAssessment) {
+		List<AssessedRiskFactorEntity> assessedRiskFactorEntities = new ArrayList<AssessedRiskFactorEntity>();
+		
+		for(AssessedRiskRange riskRange: riskAssessment.getRiskRangeTypes()) {
+			for(AssessedRiskFactor factor: riskRange.getRiskFactors()) {
+				AssessedRiskFactorEntity entity = new AssessedRiskFactorEntity
+													(riskAssessmentEntity,
+													 new RiskRangeTypeEntity(factor.getRiskRangeTypeId()),
+													 new RiskFactorEntity(factor.getRiskFactorId()),
+													 new RiskFactorLevelEntity(factor.getRiskFactorLevelId()));
+													 
+				if(factor.getAssessedRiskFactorId() != 0) {
+					entity.setAssessedRiskFactorId(factor.getAssessedRiskFactorId());
+				}
+				
+				assessedRiskFactorEntities.add(entity);
+			}
+		}
+		return assessedRiskFactorEntities;
+	}
+
+	
+	/*private void saveAssessedRiskFactors(RiskAssessment riskAssessment) {
 		for(AssessedRiskRange riskRange: riskAssessment.getRiskRangeTypes()) {
 			for(AssessedRiskFactor factor: riskRange.getRiskFactors()) {
 				AssessedRiskFactorEntity entity = new AssessedRiskFactorEntity
@@ -95,7 +118,7 @@ public class RiskAssessmentService {
 			}
 		}
 
-	}
+	}*/
 	
 	private List<AssessedRiskRange> getRiskRanges(RiskAssessmentEntity riskAssessmentEntity) {
 		
