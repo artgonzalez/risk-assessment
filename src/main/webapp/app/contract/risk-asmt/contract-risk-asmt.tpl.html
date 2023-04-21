@@ -38,7 +38,7 @@
                 <tr ng-repeat="riskAssessment in riskAssessments | orderObjectBy:orderByField:reverseSort track by $index">
                     <td class="table-td-alignment-center wordwrap"> <a aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="editRiskAssessment(riskAssessment,'addEditRiskAsmt', $index)"> {{riskAssessment.riskAssessmentId}} </a> </td>
                     <td class="table-td-alignment-center wordwrap">{{riskAssessment.riskAssessmentDate | date:'MM/dd/yyyy'}}</td>
-                    <td class="wordwrap">{{riskAssessment.baselineRiskLevel}}</td>
+                    <td class="wordwrap">{{riskAssessment.baseLineRiskLevel()}}</td>
                     <td class="table-td-alignment-center wordwrap">{{riskAssessment.riskAssessmentTemplateVersion | number:1}}</td>
                 </tr>
             </tbody>

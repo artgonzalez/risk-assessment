@@ -112,7 +112,10 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		};
 		
 		riskAssessment.baseLineRiskRangesText = function (){
-			var riskRanges = riskAssessment.createBaseLineRiskRanges();
+			if(riskAssessment.baseLineRiskRanges == undefined){
+				riskAssessment.createBaseLineRiskRanges();
+			}
+			
 			var riskRangesText = "";
 			var riskRanges = riskAssessment.baseLineRiskRanges;
 			
@@ -124,7 +127,9 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		};
 		
 		riskAssessment.baseLineRiskRangeText = function(){
-			riskAssessment.createBaseLineRiskRanges();
+			if(riskAssessment.baseLineRiskRanges == undefined){
+				riskAssessment.createBaseLineRiskRanges();
+			}
 			
 			var riskRanges = riskAssessment.baseLineRiskRanges;
 			console.log(riskRanges);
@@ -154,10 +159,14 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				
 		riskAssessment.baseLineRiskLevel = 
 			function(){
+				if(riskAssessment.baseLineRiskRanges == undefined){
+					riskAssessment.createBaseLineRiskRanges();
+				}
+				
 				var riskLevel = "";
 				var riskScore = riskAssessment.baseLineRiskLevelScore();
 				var ranges = riskAssessment.baseLineRiskRanges;
-				
+				console.log(riskAssessment);
 				for(var i=0; i < ranges.length; i++){
 					if(riskScore >= ranges[i].min && riskScore <= ranges[i].max){
 						riskLevel = ranges[i].level;
@@ -207,7 +216,10 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                 $scope.data = response.data;
 				$scope.riskAssessments = $scope.data;
 				
-                //$scope.riskAssessments = $scope.data._embedded.riskAssessmentSummaryList;
+				for(var i=0; i < $scope.riskAssessments.length; i++){
+					$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessments[i]);
+				}
+				
                 $scope.totalItems = $scope.data.length;
                 /*$scope.isNoRecordsMessageDisabled = true;
                 $scope.displayPagination = true;*/
