@@ -133,7 +133,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			}
 			
 			var riskRanges = riskAssessment.baseLineRiskRanges;
-			console.log(riskRanges);
 				
 			return riskRanges[0].min + ' - ' + riskRanges[riskRanges.length-1].max;
 		};
@@ -167,7 +166,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				var riskLevel = "";
 				var riskScore = riskAssessment.baseLineRiskLevelScore();
 				var ranges = riskAssessment.baseLineRiskRanges;
-				console.log(riskAssessment);
+				
 				for(var i=0; i < ranges.length; i++){
 					if(riskScore >= ranges[i].min && riskScore <= ranges[i].max){
 						riskLevel = ranges[i].level;
@@ -301,7 +300,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		
 		$scope.riskAssessmentObj.riskRangeTypes[riskRangeTypeId].riskFactors[riskFactorId].riskFactorLevelId = riskFactorLevel.riskFactorLevelId;
 		$scope.riskAssessmentObj.riskRangeTypes[riskRangeTypeId].riskFactors[riskFactorId].riskFactorLevel = riskFactorLevel;
-		console.log($scope.riskAssessmentObj.riskRangeTypes[riskRangeTypeId].riskFactors[riskFactorId]);
 
 	}
 	
@@ -629,6 +627,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
             if ($scope.contractRiskAsmtForm.$dirty && !$scope.formNotChanged()) {
                 dialogMessageFactory.getConfirmation(msg).then(function() {
                     $scope.riskAssessmentObj = {};
+					$scope.isAddRiskAssessment = false;
                     $scope.isOtherRiskLevelRequired = false;
                     $scope.contractRiskAsmtForm.$setPristine();
                     $scope.isAddEditRiskAsmtVisible = false;
@@ -638,6 +637,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                     $anchorScroll();
                 }, function() {});
             } else {
+				$scope.isAddRiskAssessment = false;
                 $scope.riskAssessmentObj = {};
                 $scope.resetSelectAll();
                 $location.hash('');
@@ -649,6 +649,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
         } else {
             if ($scope.contractRiskAsmtForm.$dirty && !$scope.formNotChanged()) {
                 dialogMessageFactory.getConfirmation(msg).then(function() {
+					$scope.isEditRiskAssessment = false;
                     $scope.resetSelectAll();
                     $scope.isOtherRiskLevelRequired = false;
                     $scope.contractRiskAsmtForm.$setPristine();
@@ -658,6 +659,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                     $anchorScroll();
                 }, function() {});
             } else {
+				$scope.isEditRiskAssessment = false;
                 $scope.resetSelectAll();
                 $location.hash('');
                 $anchorScroll();

@@ -1,9 +1,9 @@
 <div ng-cloak>
-    <div class="text-center">
+    <div class="text-center" ng-if="!(isEditRiskAssessment || isAddRiskAssessment)">
         <h1><strong>Risk Assessment</strong></h1>
     </div>
     <ng-include src="'common/contract-header/contract-header.tpl.html'" scope="" onload=""></ng-include>
-    <div class="row" style="padding-top: 10px;padding-bottom: 10px">
+    <div class="row" style="padding-top: 10px;padding-bottom: 10px" ng-if="!(isEditRiskAssessment || isAddRiskAssessment)">
         <div class="col-md-5 text-left">
 		<!--contractpermission="['riskAsmtCreate']"-->
             <button type="button"  ng-click="showAddRiskAsmtPanel('addEditRiskAsmt')" class="btn btn-sm btn-primary" ng-disabled="disableAdd">Add New Risk Assessment</button>
@@ -20,7 +20,7 @@
             </select>
         </div>
     </div>
-    <div id="riskAssessmentTable">
+    <div id="riskAssessmentTable" ng-if="!(isEditRiskAssessment || isAddRiskAssessment)">
         <table class="table table-striped">
             <thead>
                 <tr>
