@@ -11,8 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,6 +42,5 @@ public class RiskFactorLevelEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="risk_factor_id", foreignKey=@ForeignKey(name = "FK_risk_factor_level_risk_factor"))
-	@JsonIgnore
 	RiskFactorEntity riskFactor;
 }
