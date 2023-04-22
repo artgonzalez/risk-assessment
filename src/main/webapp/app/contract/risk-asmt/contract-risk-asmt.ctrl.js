@@ -40,6 +40,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 	$scope.contractBaseLineRiskLevel = "";
 	$scope.baseLineRiskRangeTypeRanges = [];
 	$scope.isAddEditRiskAsmtVisible = false;
+	$scope.addEditRiskAmtLabel = "";
 	
 	var msg;
     $scope.disableAdd = false;
@@ -269,6 +270,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		
 		riskAssessmentFactory.getRiskAssessmentTemplate(1).then(function(response) {
             if (response.success) {
+				$scope.addEditRiskAmtLabel = "Add Risk Assessment";
                 $scope.riskAssessmentObj = response.data;
 				
 				$scope.initializeRiskAssessmentModel($scope.riskAssessmentObj);
@@ -403,6 +405,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		riskAssessmentFactory.getContractRiskAssessment(riskAssessment.riskAssessmentId).then(function(response) {
 			
 			if (response.success) {
+				$scope.addEditRiskAmtLabel = "Edit Risk Assessment";
 				$scope.riskAssessmentObj = response.data;
 				console.log($scope.riskAssessmentObj);
 				$scope.isAddEditRiskAsmtVisible = true;
@@ -508,6 +511,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			
             riskAssessmentFactory.createRiskAssessment(riskAssessment).then(function(response) {
                 if (response.success) {
+					$scope.addEditRiskAmtLabel = "";
                     $scope.data = response.data;
                     $scope.displayOnlyRiskAssessment = true;
                     $scope.isAddEditRiskAsmtVisible = false;
@@ -535,6 +539,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			
             riskAssessmentFactory.updateRiskAssessment(riskAssessment.riskAssessmentId, riskAssessment).then(function(response) {
                 if (response.success) {
+					$scope.addEditRiskAmtLabel = "";
                     $scope.data = response.data;
                     $scope.displayOnlyRiskAssessment = true;
                     $scope.isAddEditRiskAsmtVisible = false;
