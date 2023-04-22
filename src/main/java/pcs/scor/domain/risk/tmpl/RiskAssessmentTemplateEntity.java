@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -29,7 +30,8 @@ public class RiskAssessmentTemplateEntity {
 		this.comment = comment;
 	}
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment_template")
+    @SequenceGenerator(name = "seq_gen_risk_assessment_template", sequenceName = "seq_risk_assessment_template", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_assessment_template_id")
 	private long id;
 	

@@ -5,12 +5,14 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -34,7 +36,8 @@ public class RiskFactorEntity {
 	}	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_factor")
+    @SequenceGenerator(name = "seq_gen_risk_factor", sequenceName = "seq_risk_factor", initialValue = 100, allocationSize = 1)
 	@Column(name="risk_factor_id")
 	private long id;
 	private String name;
@@ -44,6 +47,6 @@ public class RiskFactorEntity {
 	private Set<RiskFactorLevelEntity> riskFactorLevels;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="risk_range_type_id")
+	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_factor_risk_range_type"))
 	RiskRangeTypeEntity riskRangeType;
 }

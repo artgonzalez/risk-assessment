@@ -6,12 +6,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -37,12 +39,13 @@ public class RiskAssessmentEntity {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment")
+    @SequenceGenerator(name = "seq_gen_risk_assessment", sequenceName = "seq_risk_assessment", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_assessment_id")
 	private long riskAssessmentId;
 	
 	@OneToOne
-	@JoinColumn(name="risk_assessment_template_id")
+	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_risk_assessment_risk_assessment_template"))
 	private RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
 	private long contractId;
