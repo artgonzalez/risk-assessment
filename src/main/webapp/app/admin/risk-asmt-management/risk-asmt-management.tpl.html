@@ -1,0 +1,1099 @@
+<div ng-cloak>
+    <div class="text-center">
+        <h1><strong>Risk Assessment Entry</strong></h1>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4 text-right" style="padding-top: 5px;">
+            <label for="contractNumber"><strong>Search Contract No: </strong></label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="contractNumber" name="contractNumber" type="text" ng-model="contractNumber" autofocus="" ng-pattern="/^[A-Za-z0-9- ]*$/" ng-trim="false" />
+        </div>
+        <div class="col-md-4">
+            <button type="button" ng-click="getContractHeader()" class="btn btn-sm btn-primary">Search</button>
+        </div>
+    </div>
+    <div class="text-center" class="contract-detail-message">
+        <span><strong>Enter complete Contract No., as this is an exact search, including any hyphens.</strong></span>
+    </div>
+    <div id="noRecordsDisplay" style="padding-bottom:10px;padding-top:10px" class="text-center" ng-if="unableToRetrieveContractHeader">
+        <strong class="error-wrapper">{{errorMsg}}</strong>
+    </div>
+    <br/>
+    <table class="table" ng-if="!disableContractHeaderAndRiskAssessmentSection">
+        <thead>
+            <tr>
+                <th class="btn-primary contract-header-width-15">Contract No.</th>
+                <th class="btn-primary contract-header-width-7">TIN </th>
+                <th class="btn-primary contract-header-width-22">Legal Entity</th>
+                <th class="btn-primary contract-header-width-16">Current Contract Value</th>
+                <th class="btn-primary contract-header-width-13">Expenditures</th>
+                <th class="btn-primary contract-header-width-8">Status</th>
+                <th class="btn-primary contract-header-width-10">Begin Date</th>
+                <th class="btn-primary contract-header-width-9">End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="contract-header-width-15 wordwrap">{{contractInfo.contractNumber}} </td>
+                <td class="contract-header-width-7 wordwrap">{{contractInfo.tin}}</td>
+                <td class="contract-header-width-22 wordwrap">{{contractInfo.legalContractor}}</td>
+                <td class="contract-header-width-16 wordwrap">{{contractInfo.currentContractValue | currency}}</td>
+                <td class="contract-header-width-13 wordwrap">{{contractInfo.expenditures | currency}}</td>
+                <td class="contract-header-width-8 wordwrap">{{contractInfo.contractStatus.contractStatusName}}</td>
+                <td class="contract-header-width-10 wordwrap">{{contractInfo.beginDate}}</td>
+                <td class="contract-header-width-9 wordwrap">{{contractInfo.endDate}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row" style="padding-top: 10px;padding-bottom: 10px" ng-if="!disableContractHeaderAndRiskAssessmentSection">
+        <div class="col-md-5 text-left">
+            <button type="button" permission="['riskAsmtEntryCreate']" ng-click="showAddRiskAsmtPanel('addEditRiskAsmt')" class="btn btn-sm btn-primary" ng-disabled="disableAdd">Add New Risk Assessment</button>
+        </div>
+        <div class="col-md-3 text-left" style="padding-top:10px">
+            <span><strong>Total No. of Records : {{totalItems}}</strong></span>
+        </div>
+        <div class="col-md-4 text-right" style="padding-top:10px">
+            <label for="noOfRecordsPerPage">No. of records per page</label>&nbsp;
+            <select id="noOfRecordsPerPage" ng-model="$parent.noOfRecordsPerPage" ng-init="noOfRecordsPerPage='5'" ng-change="setNoOfRecordsPage(noOfRecordsPerPage)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+        </div>
+    </div>
+    <div id="riskAssessmentTable" ng-if="!disableContractHeaderAndRiskAssessmentSection">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="btn-primary table-th-child" ng-click="orderByField='riskAssessmentId'; reverseSort = !reverseSort"><span ng-if="orderByField == 'riskAssessmentId' && !reverseSort" class="fa fa-caret-up"></span>
+                        <span ng-if="orderByField == 'riskAssessmentId' && reverseSort" class="fa fa-caret-down"></span>Risk Assessment No.</th>
+                    <th class="btn-primary table-th-child" ng-click="orderByField='riskAssessmentDate'; reverseSort = !reverseSort"><span ng-if="orderByField == 'riskAssessmentDate' && !reverseSort" class="fa fa-caret-up"></span>
+                        <span ng-if="orderByField == 'riskAssessmentDate' && reverseSort" class="fa fa-caret-down"></span>Risk Assessment Date</th>
+                    <th class="btn-primary" ng-click="orderByField='baselineRiskLevel'; reverseSort = !reverseSort"><span ng-if="orderByField == 'baselineRiskLevel' && !reverseSort" class="fa fa-caret-up"></span>
+                        <span ng-if="orderByField == 'baselineRiskLevel' && reverseSort" class="fa fa-caret-down"></span> Baseline Risk Level</th>
+                    <th class="btn-primary table-th-child" ng-click="orderByField='riskAssessmentTemplateVersion'; reverseSort = !reverseSort"><span ng-if="orderByField == 'riskAssessmentTemplateVersion' && !reverseSort" class="fa fa-caret-up"></span>
+                        <span ng-if="orderByField == 'riskAssessmentTemplateVersion' && reverseSort" class="fa fa-caret-down"></span>Risk Assessment Template Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="riskAssessment in riskAssessments | orderObjectBy:orderByField:reverseSort">
+                    <td class="table-td-alignment-center wordwrap"> <a aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="editRiskAssessment(riskAssessment,'addEditRiskAsmt', $index)"> {{riskAssessment.riskAssessmentId}} </a> </td>
+                    <td class="table-td-alignment-center wordwrap">{{riskAssessment.riskAssessmentDate | date:'MM/dd/yyyy'}}</td>
+                    <td class="wordwrap">{{riskAssessment.baselineRiskLevel}}</td>
+                    <td class="table-td-alignment-center wordwrap">{{riskAssessment.riskAssessmentTemplateVersion | number:1}}</td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="displayPagination">
+                <tr>
+                    <td class="text-center" colspan="4">
+                        <uib-pagination class="pagination-sm" boundary-links="true" total-items="totalItems" ng-model="vm.currentPage" ng-change="retrievePaginatedRiskAssessments()" items-per-page="noOfRecordsPerPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" force-ellipses="true" max-size=$root.maxSize></uib-pagination>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="noRecordsDisplay" style="padding-bottom:10px" class="text-center" ng-if="!isNoRecordsMessageDisabled">
+        <strong class="error-wrapper">No records found.</strong>
+    </div>
+    <div id="errorMessageDisplay" class="text-center" style="padding-bottom:10px" ng-if="errorFromRestService">
+        <strong class="error-wrapper">{{errorMsg}}</strong>
+    </div>
+    <div id="displayRecordSavedMsg" class="text-center" style="padding-bottom:10px" ng-if="displayRecordSavedMsg">
+        <span><strong>Record Saved Successfully.</strong></span>
+    </div>
+    <div id="displayRecordDeletedMsg" class="text-center" style="padding-bottom:10px" ng-if="displayRecordDeletedMsg">
+        <span><strong>Record deleted successfully.</strong></span>
+    </div>
+    <div id="unableToRetrieveTemplate" class="text-center" style="padding-bottom:10px" ng-if="unableToRetrieveTemplate">
+        <span><strong>Unable to retrieve Risk Assessment Template.</strong></span>
+    </div>
+    <form name="contractRiskAsmtForm" ng-submit="saveRiskAssessment(riskAssessmentObj)" class="css-form" novalidate>
+        <div ng-if="isAddEditRiskAsmtVisible" id="addEditRiskAsmt">
+            <div class="btn-primary sub-header-label text-center" style="padding-bottom:10px">
+                <h2 class="sub-header-font"><strong>{{addEditRiskAmtLabel}}<span ng-if="!isAddNewRiskAssessment"> - {{riskAssessmentObj.riskAssessmentId}}</span></strong></h2>
+            </div>
+            <div class="row" style="padding-bottom:10px;padding-top:10px">
+                <div class="col-md-4" ng-controller="dateController">
+                    <span class="mandatory">*</span><label for="riskAssessmentCompletedDate">Date Risk Assessment Completed</label>
+                    <p class="input-group">
+                        <input class="form-control" id="riskAssessmentCompletedDate" name="riskAssessmentCompletedDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="riskAssessmentObj.riskAssessmentDate" is-open="popup2.opened" alt-input-formats="altInputFormats" datepicker-options="dateRangeOptions" ng-change="validateRiskAssessmentDate(); validateFiscalYear()" close-text="Close" autofocus="" ng-required=required aria-live="assertive" aria-describedby="riskAssessmentCompletedDateValidation"></input>
+                        <span class="input-group-btn">
+                           <button aria-label="calenderButton" class="btn btn-default" id="newEffectiveDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
+                    </span>
+                        <div class="error-wrapper" id="riskAssessmentCompletedDateValidation" ng-messages="contractRiskAsmtForm.riskAssessmentCompletedDate.$error" ng-if="contractRiskAsmtForm.riskAssessmentCompletedDate.$invalid || invalidRiskAssessmentDate|| riskAssessmentDateGreaterThanToday" role="alert">
+                            <div ng-message="required" ng-if="contractRiskAsmtForm.riskAssessmentCompletedDate.$error.required">
+                                <strong>Date Risk Assessment Completed - is a required field.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="contractRiskAsmtForm.riskAssessmentCompletedDate.$error.date">
+                                <strong>Date Risk Assessment Completed - must be in mm/dd/yyyy format.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="invalidRiskAssessmentDate">
+                                <strong>Date Risk Assessment Completed - must enter a valid date between 1920 to 2199.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="riskAssessmentDateGreaterThanToday">
+                                <strong>Date Risk Assessment Completed - cannot be later than {{getCreatedDate() | date:"MM/dd/yyyy"}}.</strong>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="mandatory">*</span><label for="riskAssessmentFiscalYear">Risk Assessment Fiscal Year</label>
+                    <input id="riskAssessmentFiscalYear" name="riskAssessmentFiscalYear" type="text" class="form-control" id="dateRiskComp" placeholder="" ng-model="riskAssessmentObj.riskAssessmentFiscalYear" ng-minlength="4" ng-maxlength="4" ng-pattern="/^\d{4}$/" ng-change="validateFiscalYear()" ng-required=required aria-live="assertive" aria-describedby="riskAssessmentFiscalYearValidation">
+                    <div class="error-wrapper" id="riskAssessmentFiscalYearValidation" ng-messages="contractRiskAsmtForm.riskAssessmentFiscalYear.$error" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$invalid || invalidRiskAssessmentFiscalYear" role="alert">
+                        <div ng-message="required" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.required">
+                            <strong>Risk Assessment Fiscal Year - is a required field.</strong>
+                        </div>
+                        <div ng-message="pattern" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.pattern"><strong> Risk Assessment Fiscal Year - must be in yyyy format.</strong></div>
+                        <div ng-message="minlength" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.minlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
+                        <div ng-message="maxlength" ng-if="contractRiskAsmtForm.riskAssessmentFiscalYear.$error.maxlength"><strong> Risk Assessment Fiscal Year - must be a four digit number.</strong></div>
+                        <div ng-message="required" ng-if="invalidRiskAssessmentFiscalYear"><strong> Risk Assessment Fiscal Year - must be relevant to the date completed.</strong></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <span class="mandatory">*</span><label for="primaryRiskAssessor">Primary Risk Assessor </label>
+                    <select id="primaryRiskAssessor" name="primaryRiskAssessor" ng-init="selectName='1'" ng-model="riskAssessmentObj.primaryRiskAssessor" ng-options="primaryRiskAssessor.name disable when primaryRiskAssessor.disable for primaryRiskAssessor in primaryRiskAssessorLookupList track by primaryRiskAssessor.userId" class="c-select form-control" ng-required=required aria-live="assertive" aria-describedby="primaryRiskAssessorValidation">
+                        <option selected value="">Please Select</option>
+                    </select>
+                    <div class="error-wrapper" id="primaryRiskAssessorValidation" ng-messages="contractRiskAsmtForm.primaryRiskAssessor.$error" ng-if="contractRiskAsmtForm.primaryRiskAssessor.$invalid">
+                        <div ng-message="required" ng-if="contractRiskAsmtForm.primaryRiskAssessor.$error.required">
+                            <strong>Primary Risk Assessor - is a required field.</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div>
+                <div class="col-md-4 risk-range-box">
+                    <div>
+                        Risk Range {{riskAssessmentTemplate.baselineLowMin}}-{{riskAssessmentTemplate.baselineHighMax}}
+                    </div>
+                    <div>
+                        Low = {{riskAssessmentTemplate.baselineLowMin}}-{{riskAssessmentTemplate.baselineLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.baselineMediumMin}}-{{riskAssessmentTemplate.baselineMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.baselineHighMin}}-{{riskAssessmentTemplate.baselineHighMax}}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <span><strong>Baseline Risk Level</strong></span>
+                    <div> {{riskAssessmentObj.baselineRiskLevel}} </div>
+                </div>
+                <div class="col-md-4">
+                    <span><strong>Baseline Risk Score </strong></span>
+                    <div> {{riskAssessmentObj.baselineRiskScore}} </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div ng-if="displayLastUpdatedBySection">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <span><strong>Last Updated By</strong></span>
+                    <br/> {{riskAssessmentObj.updatedBy}}
+                </div>
+                <div class="col-md-4">
+                    <span><strong>Last Updated Date </strong></span>
+                    <br/> {{riskAssessmentObj.updatedDate | date:"MM/dd/yyyy HH:mm"}}
+                </div>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+            <div id="legalEntityLblDIV">
+                <h5><strong>Legal Entity Information</strong></h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width4x">No.</th>
+                            <th rowspan="2" class="btn-primary  risk-asmt-management-tableheader-width13">Risk Factor</th>
+                            <th colspan="3" scope="colgroup" class="btn-primary risk-asmt-management-tableheader-width12">Risk Level</th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width11 table-th-child">Risk Level Score </th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width9">Weight Multiplier </th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width12">Risk Points
+                                <h6 style="color:#ffffff">Risk Level Score * Weight Multiplier</h6> </th>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Low Score</th>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Medium Score</th>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">High Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">1</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].lowScoreLabel1}}
+                                <br/><strong>Score 1</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].mediumScoreLabel1}}
+                                <br/><strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].highScoreLabel1}}
+                                <br/><strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                            <td>
+                                <select id="legalRiskLevelScore1" aria-label="RiskLevelScore1" name="legalRiskLevelScore1" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskFactorName}}" ng-model="riskAssessmentObj.legalRiskLevelScore1" ng-change="calculateLegalRisk(0)" class="form-control risk-asmt-management-select-padding" ng-required=required aria-live="assertive" aria-describedby="legalRiskLevelScore1Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="legalRiskLevelScore1Validation" ng-messages="contractRiskAsmtForm.legalRiskLevelScore1.$error" ng-if="contractRiskAsmtForm.legalRiskLevelScore1.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.legalRiskLevelScore1.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.legalRiskPoint1}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">2</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].lowScoreLabel1}}
+                                <br/><strong>Score 1</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].mediumScoreLabel1}}
+                                <br/><strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].highScoreLabel1}}
+                                <br/><strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                            <td>
+                                <select id="legalRiskLevelScore2" aria-label="RiskLevelScore2" name="legalRiskLevelScore2" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskFactorName}}" ng-model="riskAssessmentObj.legalRiskLevelScore2" ng-change="calculateLegalRisk(1)" class="form-control risk-asmt-management-select-padding required" ng-required=required aria-live="assertive" aria-describedby="legalRiskLevelScore2Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="legalRiskLevelScore2Validation" ng-messages="contractRiskAsmtForm.legalRiskLevelScore2.$error" ng-if="contractRiskAsmtForm.legalRiskLevelScore2.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.legalRiskLevelScore2.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.legalRiskPoint2}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">3</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].lowScoreLabel1}}
+                                <br/><strong>Score 1</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].mediumScoreLabel1}}
+                                <br/><strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].highScoreLabel1}}
+                                <br/><strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span></td>
+                            <td>
+                                <select id="legalRiskLevelScore3" aria-label="RiskLevelScore3" name="legalRiskLevelScore3" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskFactorName}}" ng-model="riskAssessmentObj.legalRiskLevelScore3" ng-change="calculateLegalRisk(2)" class="form-control risk-asmt-management-select-padding required" ng-required=required aria-live="assertive" aria-describedby="legalRiskLevelScore3Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="legalRiskLevelScore3Validation" ng-messages="contractRiskAsmtForm.legalRiskLevelScore3.$error" ng-if="contractRiskAsmtForm.legalRiskLevelScore3.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.legalRiskLevelScore3.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.legalRiskPoint3}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">4</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].lowScoreLabel1}}
+                                <br/><strong>Score 1</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].mediumScoreLabel1}}
+                                <br/><strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].highScoreLabel1}}
+                                <br/><strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span></td>
+                            <td>
+                                <select id="legalRiskLevelScore4" aria-label="RiskLevelScore4" name="legalRiskLevelScore4" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskFactorName}}" ng-model="riskAssessmentObj.legalRiskLevelScore4" ng-change="calculateLegalRisk(3)" class="form-control risk-asmt-management-select-padding required" ng-required=required aria-live="assertive" aria-describedby="legalRiskLevelScore4Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="legalRiskLevelScore4Validation" ng-messages="contractRiskAsmtForm.legalRiskLevelScore4.$error" ng-if="contractRiskAsmtForm.legalRiskLevelScore4.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.legalRiskLevelScore4.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.legalRiskPoint4}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">5</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].lowScoreLabel1}}
+                                <br/><strong>Score 1</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].mediumScoreLabel1}}
+                                <br/><strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].highScoreLabel1}}
+                                <br/><strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span></td>
+                            <td>
+                                <select id="legalRiskLevelScore5" aria-label="RiskLevelScore5" name="legalRiskLevelScore5" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskFactorName}}" ng-model="riskAssessmentObj.legalRiskLevelScore5" ng-change="calculateLegalRisk(4)" class="form-control risk-asmt-management-select-padding required" ng-required=required aria-live="assertive" aria-describedby="legalRiskLevelScore5Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="legalRiskLevelScore5Validation" ng-messages="contractRiskAsmtForm.legalRiskLevelScore5.$error" ng-if="contractRiskAsmtForm.legalRiskLevelScore5.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.legalRiskLevelScore5.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.legalRiskPoint5}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="col-md-4 risk-range-box">
+                    <div>
+                        Risk Range {{riskAssessmentTemplate.legalLowMin}}-{{riskAssessmentTemplate.legalHighMax}}
+                    </div>
+                    <div>
+                        Low = {{riskAssessmentTemplate.legalLowMin}}-{{riskAssessmentTemplate.legalLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.legalMediumMin}}-{{riskAssessmentTemplate.legalMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.legalHighMin}}-{{riskAssessmentTemplate.legalHighMax}}
+                    </div>
+                </div>
+                <div class="col-md-7 text-right">
+                    <div>
+                        Legal Entity Score
+                    </div>
+                    <div>
+                        Legal Entity Risk Level
+                    </div>
+                </div>
+                <div class="col-md-1 text-left">
+                    <div>
+                        {{riskAssessmentObj.legalRiskScore}}
+                    </div>
+                    <div>
+                        {{riskAssessmentObj.legalRiskLevel}}
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div>
+                <h5> <strong>Contract Information</strong> </h5>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width4x">No.</th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width13">Risk Factor</th>
+                            <th colspan="3" class="btn-primary risk-asmt-management-tableheader-width12">Risk Level</th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width11 table-th-child">Risk Level Score </th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width9">Weight Multiplier </th>
+                            <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width12">Risk Points
+                                <h6 style="color:#ffffff">Risk Level Score * Weight Multiplier</h6> </th>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Low Score</th>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Medium Score</th>
+                            <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">High Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{activeLegalTemplates + 1}}</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].lowScoreLabel1}}
+                                <br/> <strong>Score 1</strong> </td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].mediumScoreLabel1}}
+                                <br/> <strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].highScoreLabel1}}
+                                <br/> <strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span></td>
+                            <td>
+                                <select id="contractRiskLevelScore1" name="contractRiskLevelScore1" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskFactorName}}" ng-model="riskAssessmentObj.contractRiskLevelScore1" class="form-control risk-asmt-management-select-padding" ng-change="calculateContractRisk(0)" ng-required=required aria-live="assertive" aria-describedby="contractRiskLevelScore1Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="contractRiskLevelScore1Validation" ng-messages="contractRiskAsmtForm.contractRiskLevelScore1.$error" ng-if="contractRiskAsmtForm.contractRiskLevelScore1.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.contractRiskLevelScore1.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.contractRiskPoint1}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{activeLegalTemplates + 2}}</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].lowScoreLabel1}}
+                                <br/> <strong>Score 1</strong> </td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].mediumScoreLabel1}}
+                                <br/> <strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].highScoreLabel1}}
+                                <br/> <strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span></td>
+                            <td>
+                                <select id="contractRiskLevelScore2" name="contractRiskLevelScore2" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskFactorName}}" ng-model="riskAssessmentObj.contractRiskLevelScore2" class="form-control risk-asmt-management-select-padding" ng-change="calculateContractRisk(1)" ng-required=required aria-live="assertive" aria-describedby="contractRiskLevelScore2Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="contractRiskLevelScore2Validation" ng-messages="contractRiskAsmtForm.contractRiskLevelScore2.$error" ng-if="contractRiskAsmtForm.contractRiskLevelScore2.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.contractRiskLevelScore2.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.contractRiskPoint2}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{activeLegalTemplates + 3}}</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].lowScoreLabel1}}
+                                <br/> <strong>Score 1</strong> </td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].mediumScoreLabel1}}
+                                <br/> <strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].highScoreLabel1}}
+                                <br/> <strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                            <td>
+                                <select id="contractRiskLevelScore3" name="contractRiskLevelScore3" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskFactorName}}" ng-model="riskAssessmentObj.contractRiskLevelScore3" class="form-control risk-asmt-management-select-padding" ng-change="calculateContractRisk(2)" ng-required=required aria-live="assertive" aria-describedby="contractRiskLevelScore3Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="contractRiskLevelScore3Validation" ng-messages="contractRiskAsmtForm.contractRiskLevelScore3.$error" ng-if="contractRiskAsmtForm.contractRiskLevelScore3.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.contractRiskLevelScore3.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.contractRiskPoint3}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{activeLegalTemplates + 4}}</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].lowScoreLabel1}}
+                                <br/> <strong>Score 1</strong> </td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].mediumScoreLabel1}}
+                                <br/> <strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].highScoreLabel1}}
+                                <br/> <strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                            <td>
+                                <select id="contractRiskLevelScore4" name="contractRiskLevelScore4" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskFactorName}}" ng-model="riskAssessmentObj.contractRiskLevelScore4" class="form-control risk-asmt-management-select-padding" ng-change="calculateContractRisk(3)" ng-required=required aria-live="assertive" aria-describedby="contractRiskLevelScore4Validation">
+                                    <option selected value=" "> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="contractRiskLevelScore4Validation" ng-messages="contractRiskAsmtForm.contractRiskLevelScore4.$error" ng-if="contractRiskAsmtForm.contractRiskLevelScore4.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.contractRiskLevelScore4.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.contractRiskPoint4}}</td>
+                        </tr>
+                        <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskFactorStatus == true">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{activeLegalTemplates + 5}}</td>
+                            <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskFactorName}}</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].lowScoreLabel1}}
+                                <br/> <strong>Score 1</strong> </td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].mediumScoreLabel1}}
+                                <br/> <strong>Score 3</strong></td>
+                            <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].highScoreLabel1}}
+                                <br/> <strong>Score 5</strong>
+                                <br/>
+                                <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                            <td>
+                                <select id="contractRiskLevelScore5" name="contractRiskLevelScore5" aria-label="{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskFactorName}}" ng-model="riskAssessmentObj.contractRiskLevelScore5" class="form-control risk-asmt-management-select-padding" ng-change="calculateContractRisk(4)" ng-required=required aria-live="assertive" aria-describedby="contractRiskLevelScore5Validation">
+                                    <option selected value=""> </option>
+                                    <option value=1>1</option>
+                                    <option value=3>3</option>
+                                    <option value=5>5</option>
+                                    <option ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskLevelScore4Status == true" value=7>7</option>
+                                </select>
+                                <div class="error-wrapper" id="contractRiskLevelScore5Validation" ng-messages="contractRiskAsmtForm.contractRiskLevelScore5.$error" ng-if="contractRiskAsmtForm.contractRiskLevelScore5.$invalid">
+                                    <div ng-message="required" ng-if="contractRiskAsmtForm.contractRiskLevelScore5.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].weightMultiplier}}</td>
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{riskAssessmentObj.contractRiskPoint5}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="col-md-4 risk-range-box">
+                    <div>
+                        Risk Range {{riskAssessmentTemplate.contractLowMin}}-{{riskAssessmentTemplate.contractHighMax}}
+                    </div>
+                    <div>
+                        Low = {{riskAssessmentTemplate.contractLowMin}}-{{riskAssessmentTemplate.contractLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.contractMediumMin}}-{{riskAssessmentTemplate.contractMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.contractHighMin}}-{{riskAssessmentTemplate.contractHighMax}}
+                    </div>
+                </div>
+                <div class="col-md-7 text-right">
+                    <div>
+                        Contract Risk Score
+                    </div>
+                    <div>
+                        Contract Risk Level
+                    </div>
+                </div>
+                <div class="col-md-1 text-left" >
+                    <div>
+                        {{riskAssessmentObj.contractRiskScore}}
+                    </div>
+                    <div>
+                        {{riskAssessmentObj.contractRiskLevel}}
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div>
+                <button type="button" ng-click="addOtherRiskFactor()" class="btn btn-sm btn-primary">Add Other Risk Factor</button>
+            </div>
+            <div class="row">
+                <div class="col-md-6 risk-asmt-management-div-align-other-risk">
+                    <h5> <strong> Other Risk Factor</strong> </h5>
+                </div>
+                <div class="col-md-6 risk-asmt-management-div-align-other-risk-delete" ng-if="displayDeleteOtherRiskFactorsButton">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="deleteOtherRiskFactors($index)">Delete</button>
+                </div>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="btn-primary table-th-child" style="width: 3%">No.</th>
+                            <th class="btn-primary" style="width: 50%">Risk Factor</th>
+                            <th class="btn-primary table-th-child" style="width: 12%">Risk Level Score</th>
+                            <th class="btn-primary table-th-child" style="width: 12%">Weight Multiplier</th>
+                            <th class="btn-primary table-th-child" style="width: 12%">Risk Points</th>
+                            <th class="btn-primary" ng-click="selectAllRiskFactors()" style="width: 11%">{{selectOrDeselectLabel}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="otherRiskFactor in riskAssessmentObj.otherRiskFactorList track by $index">
+                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{otherRiskFactor.number}}</td>
+                            <td>
+                                <input type="text" class="form-control" id="otherRiskFactor" name="otherRiskFactor_{{$index}}" aria-label="otherRiskFactor" ng-model="otherRiskFactor.riskFactorName" ng-maxlength="100" ng-required=required aria-live="assertive" aria-describedby="otherRiskFactorValidation">
+                                <div class="error-wrapper" id="otherRiskFactorValidation" ng-messages="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error" ng-show="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$invalid">
+                                    <div ng-message="required" ng-show="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error.required">
+                                        <strong>Risk Factor - is a required field.</strong>
+                                    </div>
+                                    <div ng-message="maxlength" ng-show="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error.maxlength"><strong> Risk Factor - must be within 100 characters.</strong></div>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-text-align-center" id="otherFactorRiskLevel" name="otherFactorRiskLevel_{{$index}}" aria-label="otherRiskLevelScore" ng-model="otherRiskFactor.otherRiskLevel" ng-keyup="calculateOtherRiskScore()" 
+                                ng-pattern="/^[0-9]{1,3}$/" ng-required=required aria-live="assertive" aria-describedby="otherFactorRiskLevelValidation">
+                                <div class="error-wrapper" id="otherFactorRiskLevelValidation" ng-messages="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$invalid">
+                                    <div ng-message="required" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error.required">
+                                        <strong>Risk Level Score - is a required field.</strong>
+                                    </div>
+                                    <div ng-message="pattern" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error.pattern"><strong> Risk Level Score - must be numeric, up to 3 digits.</strong>
+                                    </div>
+                                </div>
+            </div>
+            </td>
+            <td>
+                <input type="text" class="form-control input-text-align-center" id="weight" name="weight_{{$index}}" aria-label="weightMultiplier" ng-model="otherRiskFactor.otherRiskWeight" ng-keyup="calculateOtherRiskScore()" ng-maxlength="2" ng-pattern="/^[0-9]{1,2}$/" ng-required=required aria-live="assertive" aria-describedby="weightValidation">
+                <div class="error-wrapper" id="weightValidation" ng-messages="contractRiskAsmtForm.weight_{{$index}}.$error" ng-show="contractRiskAsmtForm.weight_{{$index}}.$invalid">
+                    <div ng-message="required" ng-show="contractRiskAsmtForm.weight_{{$index}}.$error.required">
+                        <strong>Weight Multiplier - is a required field.</strong>
+                    </div>
+                    <div ng-message="pattern" ng-show="contractRiskAsmtForm.weight_{{$index}}.$error.pattern"><strong> Weight Multiplier - must be numeric, up to 2 digits.</strong></div>
+                </div>
+            </td>
+            <td class="table-td-alignment-center" style="padding-top: 15px;">{{otherRiskFactor.otherRiskPoint}}</td>
+            <td class="text-center" style="padding-top: 15px;">
+                <input type="checkbox" name="selected" aria-label="selected" ng-model="otherRiskFactor.checked" ng-click="checkedIndex(otherRiskFactor)" /> </td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+        <br/>
+        <div ng-if="displayDeleteOtherRiskFactorsButton">
+            <table>
+                <tr>
+                    <td class="risk-asmt-management-text-padding-10m">
+                        <label for="selectOtherRiskLevel"> Other Risk Level &nbsp; </label>
+                    </td>
+                    <td>
+                        <select id="selectOtherRiskLevel" name="selectOtherRiskLevel" ng-model="riskAssessmentObj.otherRiskLevelLookup" class="form-control" ng-options="otherRiskLevel.otherRiskLevelName disable when otherRiskLevel.disable for otherRiskLevel in otherRiskLevelLookupList track by otherRiskLevel.otherRiskLevelId" ng-required=isOtherRiskLevelRequired ng-change="validateOtherRiskLevel()" aria-live="assertive" aria-describedby="selectOtherRiskLevelValidation">
+                            <option selected value="">Please Select</option>
+                        </select>
+                        <div class="error-wrapper" id="selectOtherRiskLevelValidation" ng-messages="contractRiskAsmtForm.selectOtherRiskLevel.$error" ng-if="contractRiskAsmtForm.selectOtherRiskLevel.$invalid">
+                            <div ng-message="required" ng-if="contractRiskAsmtForm.selectOtherRiskLevel.$error.required">
+                                <strong>Other Risk Level - is a required field.</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="risk-asmt-management-text-padding-7em">
+                        <span><strong>Other Risk Score &nbsp;</strong></span>
+                    </td>
+                    <td> {{riskAssessmentObj.otherRiskScore}} </td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+        <div class="risk-asmt-management-padding-bottom-1m text-center">
+            <button type="submit" class="btn btn-sm btn-primary" permission="['riskAsmtEntryUpdate','riskAsmtEntryCreate']" ng-disabled="contractRiskAsmtForm.$invalid || !contractRiskAsmtForm.$dirty || formNotChanged()">Save</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessment($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-primary" permission="['riskAsmtEntryDelete']" ng-if="displayDeleteButton" ng-click="deleteRiskAssessment(riskAssessmentObj)">Delete</button>
+        </div>
+</div>
+</form>
+<div ng-if="displayOnlyRiskAssessment" id="displayOnlyRiskAssessment">
+    <div class="btn-primary sub-header-label text-center" style="padding-bottom:10px">
+       <h2 class="sub-header-font"><strong>Risk Assessment - {{riskAssessmentObj.riskAssessmentId}}</strong></h2>           
+    </div>
+    <div class="row" style="padding-bottom:10px;padding-top: 10px">
+        <div class="col-md-4" ng-controller="dateController">
+            <span>Date Risk Assessment Completed</span>
+            <br/> {{riskAssessmentObj.riskAssessmentDate | date:'MM/dd/yyyy'}}
+        </div>
+        <div class="col-md-4">
+            <span>Risk Assessment Fiscal Year</span>
+            <br/> {{riskAssessmentObj.riskAssessmentFiscalYear}}
+        </div>
+        <div class="col-md-4">
+            <span>Primary Risk Assessor </span>
+            <br/> {{riskAssessmentObj.primaryRiskAssessor.name}}
+        </div>
+    </div>
+    <br/>
+    <div>
+        <div class="col-md-4 risk-range-box">
+            <div>
+                Risk Range {{riskAssessmentTemplate.baselineLowMin}}-{{riskAssessmentTemplate.baselineHighMax}}
+            </div>
+            <div>
+                Low = {{riskAssessmentTemplate.baselineLowMin}}-{{riskAssessmentTemplate.baselineLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.baselineMediumMin}}-{{riskAssessmentTemplate.baselineMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.baselineHighMin}}-{{riskAssessmentTemplate.baselineHighMax}}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <span>Baseline Risk Level</span>
+            <br/> {{riskAssessmentObj.baselineRiskLevel}}
+        </div>
+        <div class="col-md-4">
+            <span>Baseline Risk Score </span>
+            <br/> {{riskAssessmentObj.baselineRiskScore}}
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div ng-if="displayLastUpdatedBySection">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <span>Last Updated By</span>
+            <br/> {{riskAssessmentObj.updatedBy}}
+        </div>
+        <div class="col-md-4">
+            <span>Last Updated Date </span>
+            <br/> {{riskAssessmentObj.updatedDate | date:"MM/dd/yyyy HH:mm"}}
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+    <div id="legalEntityLblDIV">
+        <h5> <strong>Legal Entity Information</strong> </h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width4x">No.</th>
+                    <th rowspan="2" class="btn-primary  risk-asmt-management-tableheader-width13 ">Risk Factor</th>
+                    <th colspan="3" scope="colgroup" class="btn-primary risk-asmt-management-tableheader-width12">Risk Level</th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width11 table-th-child">Risk Level Score </th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width9">Weight Multiplier </th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width12">Risk Points
+                        <h6 style="color:#ffffff">Risk Level Score * Weight Multiplier</h6> </th>
+                </tr>
+                <tr>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Low Score</th>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Medium Score</th>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">High Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">1</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].lowScoreLabel1}}
+                        <br/><strong>Score 1</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].mediumScoreLabel1}}
+                        <br/><strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].highScoreLabel1}}
+                        <br/><strong>Score 5</strong>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[0].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.legalRiskLevelScore1}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.legalRiskPoint1}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">2</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].lowScoreLabel1}}
+                        <br/><strong>Score 1</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].mediumScoreLabel1}}
+                        <br/><strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].highScoreLabel1}}
+                        <br/><strong>Score 5</strong>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[1].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.legalRiskLevelScore2}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[1].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.legalRiskPoint2}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">3</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].lowScoreLabel1}}
+                        <br/><strong>Score 1</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].mediumScoreLabel1}}
+                        <br/><strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].highScoreLabel1}}
+                        <br/><strong>Score 5</strong>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[2].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[0].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.legalRiskLevelScore3}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[2].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.legalRiskPoint3}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">4</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].lowScoreLabel1}}
+                        <br/><strong>Score 1</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].mediumScoreLabel1}}
+                        <br/><strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].highScoreLabel1}}
+                        <br/><strong>Score 5</strong>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[3].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.legalRiskLevelScore4}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[3].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.legalRiskPoint4}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">5</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].lowScoreLabel1}}
+                        <br/><strong>Score 1</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].mediumScoreLabel1}}
+                        <br/><strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].highScoreLabel1}}
+                        <br/><strong>Score 5</strong>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateLegals[4].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.legalRiskLevelScore5}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateLegals[4].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.legalRiskPoint5}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div class="col-md-4 risk-range-box">
+            <div>
+                Risk Range {{riskAssessmentTemplate.legalLowMin}}-{{riskAssessmentTemplate.legalHighMax}}
+            </div>
+            <div>
+                Low = {{riskAssessmentTemplate.legalLowMin}}-{{riskAssessmentTemplate.legalLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.legalMediumMin}}-{{riskAssessmentTemplate.legalMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.legalHighMin}}-{{riskAssessmentTemplate.legalHighMax}}
+            </div>
+        </div>
+        <div class="col-md-7 text-right">
+            <div>
+                Legal Entity Score
+            </div>
+            <div>
+                Legal Entity Risk Level
+            </div>
+        </div>
+        <div class="col-md-1 text-left">
+            <div>
+                {{riskAssessmentObj.legalRiskScore}}
+            </div>
+            <div>
+                {{riskAssessmentObj.legalRiskLevel}}
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div>
+        <h5> <strong>Contract Information</strong> </h5>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width4x">No.</th>
+                    <th rowspan="2" class="btn-primary  risk-asmt-management-tableheader-width13 ">Risk Factor</th>
+                    <th colspan="3" class="btn-primary risk-asmt-management-tableheader-width12">Risk Level</th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width11 table-th-child">Risk Level Score </th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width9">Weight Multiplier </th>
+                    <th rowspan="2" class="btn-primary risk-asmt-management-tableheader-width12">Risk Points
+                        <h6 style="color:#ffffff">Risk Level Score * Weight Multiplier</h6> </th>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Low Score</th>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">Medium Score</th>
+                    <th scope="col" class="btn-primary risk-asmt-management-tableheader-inner-row">High Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">{{activeLegalTemplates + 1}}</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].lowScoreLabel1}}
+                        <br/> <strong>Score 1</strong> </td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].mediumScoreLabel1}}
+                        <br/> <strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].highScoreLabel1}}
+                        <br/> <strong>Score 5</strong>
+                        <br/>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[0].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.contractRiskLevelScore1}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[0].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.contractRiskPoint1}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">{{activeLegalTemplates + 2}}</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].lowScoreLabel1}}
+                        <br/> <strong>Score 1</strong> </td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].mediumScoreLabel1}}
+                        <br/> <strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].highScoreLabel1}}
+                        <br/> <strong>Score 5</strong>
+                        <br/>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[1].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.contractRiskLevelScore2}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[1].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.contractRiskPoint2}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">{{activeLegalTemplates + 3}}</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].lowScoreLabel1}}
+                        <br/> <strong>Score 1</strong> </td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].mediumScoreLabel1}}
+                        <br/> <strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].highScoreLabel1}}
+                        <br/> <strong>Score 5</strong>
+                        <br/>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[2].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.contractRiskLevelScore3}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[2].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.contractRiskPoint3}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">{{activeLegalTemplates + 4}}</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].lowScoreLabel1}}
+                        <br/> <strong>Score 1</strong> </td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].mediumScoreLabel1}}
+                        <br/> <strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].highScoreLabel1}}
+                        <br/> <strong>Score 5</strong>
+                        <br/>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[3].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.contractRiskLevelScore4}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[3].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.contractRiskPoint4}}</td>
+                </tr>
+                <tr ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskFactorStatus == true">
+                    <td class="table-td-alignment-center">{{activeLegalTemplates + 5}}</td>
+                    <td><strong>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskFactorName}}</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].lowScoreLabel1}}
+                        <br/> <strong>Score 1</strong> </td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].mediumScoreLabel1}}
+                        <br/> <strong>Score 3</strong></td>
+                    <td>{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].highScoreLabel1}}
+                        <br/> <strong>Score 5</strong>
+                        <br/>
+                        <span ng-if="riskAssessmentTemplate.riskAssessmentTemplateContracts[4].riskLevelScore4Status == true">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].highScoreLabel3}}
+                            <br/><strong>Score 7</strong></span> </td>
+                    <td class="table-td-alignment-center">
+                        {{riskAssessmentObj.contractRiskLevelScore5}}
+                    </td>
+                    <td class="table-td-alignment-center">{{riskAssessmentTemplate.riskAssessmentTemplateContracts[4].weightMultiplier}}</td>
+                    <td class="table-td-alignment-center">{{riskAssessmentObj.contractRiskPoint5}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div class="col-md-4 risk-range-box">
+            <div>
+                Risk Range {{riskAssessmentTemplate.contractLowMin}}-{{riskAssessmentTemplate.contractHighMax}}
+            </div>
+            <div>
+                Low = {{riskAssessmentTemplate.contractLowMin}}-{{riskAssessmentTemplate.contractLowMax}} &nbsp;&nbsp; Medium = {{riskAssessmentTemplate.contractMediumMin}}-{{riskAssessmentTemplate.contractMediumMax}} &nbsp;&nbsp; High = {{riskAssessmentTemplate.contractHighMin}}-{{riskAssessmentTemplate.contractHighMax}}
+            </div>
+        </div>
+        <div class="col-md-7 text-right">
+            <div>
+                Contract Risk Score
+            </div>
+            <div>
+                Contract Risk Level
+            </div>
+        </div>
+        <div class="col-md-1 text-left">
+            <div>
+                {{riskAssessmentObj.contractRiskScore}}
+            </div>
+            <div>
+                {{riskAssessmentObj.contractRiskLevel}}
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div>
+        <button type="button" ng-click="addOtherRiskFactor()" class="btn btn-sm btn-primary" ng-disabled="displayOnlyRiskAssessment"><strong>Add Other Risk Factor</strong></button>
+    </div>
+    <div>
+        <div class="col-md-6 risk-asmt-management-div-align-other-risk">
+            <h5> <strong> Other Risk Factor</strong> </h5>
+        </div>
+        <div class="col-md-6 risk-asmt-management-div-align-other-risk-delete">
+            <button type="button" class="btn btn-sm btn-primary" ng-click="deleteOtherRiskFactors($index)" ng-disabled="displayOnlyRiskAssessment">Delete</button>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="btn-primary table-th-child" style="width: 4%">No.</th>
+                    <th class="btn-primary" style="width: 60%">Risk Factor</th>
+                    <th class="btn-primary table-th-child" style="width: 12%">Risk Level Score</th>
+                    <th class="btn-primary table-th-child" style="width: 12%">Weight Multiplier</th>
+                    <th class="btn-primary table-th-child" style="width: 12%">Risk Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="otherRiskFactor in riskAssessmentObj.otherRiskFactorList">
+                    <td class="table-td-alignment-center">{{otherRiskFactor.number}}</td>
+                    <td>
+                        {{otherRiskFactor.riskFactorName}}
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{otherRiskFactor.otherRiskLevel}}
+                    </td>
+                    <td class="table-td-alignment-center">
+                        {{otherRiskFactor.otherRiskWeight}}
+                    </td>
+                    <td class="table-td-alignment-center">{{otherRiskFactor.otherRiskPoint}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <div>
+        <table>
+            <tr>
+                <td class="risk-asmt-management-text-padding-10m">
+                    <span><strong> Other Risk Level &nbsp; </strong></span>
+                </td>
+                <td>
+                    {{riskAssessmentObj.otherRiskLevelLookup.otherRiskLevelName}}
+                </td>
+                <td class="risk-asmt-management-text-padding-7em">
+                    <span><strong>Other Risk Score &nbsp;</strong></span>
+                </td>
+                <td> {{riskAssessmentObj.otherRiskScore}} </td>
+            </tr>
+        </table>
+    </div>
+    <br/>
+    <div class="risk-asmt-management-padding-bottom-1m text-center">
+        <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessment($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
+    </div>
+</div>
+</div>
