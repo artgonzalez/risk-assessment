@@ -1,0 +1,323 @@
+<div ng-cloak>
+    <div class="text-center">
+        <h1><strong>Manage Risk Assessment Template</strong></h1>
+    </div>
+    <div class="risk-asmt-tpl-div-padding">
+        <uib-accordion close-others="false">
+            <uib-accordion-group id="riskAsmtTplVersionHistoryPanel" panel-class="panel-primary risk-asmt-tpl-panel-title" is-open="riskAssessmentSummaryPanelStatus[0].open">
+                <uib-accordion-heading>
+                    Risk Assessment Template Version History <em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': riskAssessmentSummaryPanelStatus[0].open, 'glyphicon-plus-sign': !riskAssessmentSummaryPanelStatus[0].open}"></em>
+                </uib-accordion-heading>
+                <div class="row">
+					<div  class="col-md-3">
+						<button class="btn btn-primary" id="addNewRiskAsmtTemplateButton" ng-click="addNewRiskAsmtTemplate('addNewRiskAsmtTemplate',$event)" ng-disabled="disableAddNewButton">Add New</button>
+					</div>
+                    <div class="col-md-3">
+                        <span><strong>Total No. of Records : {{totalItems}}</strong></span>
+                    </div>
+                    <div  class="col-md-3 text-right">
+                        <label for="noOfRecordsPerPage">No. of records per page</label>
+                    </div>
+                    <div class="col-md-1">
+                        <select id="noOfRecordsPerPage" class="form-control contract-search-width-70" ng-model="noOfRecordsPerPage" ng-init="noOfRecordsPerPage='5'" ng-change="setNoOfRecordsPage(noOfRecordsPerPage)">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                </div>
+                <table id="riskAssessmentTemplateVersionHistory" class="table table-striped" style="table-layout: fixed;">
+                    <thead>
+                        <tr>
+                            <th class="btn-primary table-th-child" ng-click="orderByField='version'; reverseSort = !reverseSort" style="width: 9%">
+                                <span ng-if="orderByField == 'version' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'version' && reverseSort" class="fa fa-caret-down"></span>Version
+                            </th>
+                            <th class="btn-primary" ng-click="orderByField='lastUpdatedBy'; reverseSort = !reverseSort" style="width: 15%">
+                                <span ng-if="orderByField == 'lastUpdatedBy' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'lastUpdatedBy' && reverseSort" class="fa fa-caret-down"></span>Last Updated By
+                            </th>
+                            <th class="btn-primary table-th-child" ng-click="orderByField='lastUpdatedDate'; reverseSort = !reverseSort" style="width: 16%">
+                                <span ng-if="orderByField == 'lastUpdatedDate' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'lastUpdatedDate' && reverseSort" class="fa fa-caret-down"></span>Last Updated Date
+                            </th>
+                            <th class="btn-primary table-th-child" ng-click="orderByField='effectiveDate'; reverseSort = !reverseSort" style="width: 13%">
+                                <span ng-if="orderByField == 'effectiveDate' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'effectiveDate' && reverseSort" class="fa fa-caret-down"></span>Effective Date
+                            </th>
+                            <th class="btn-primary table-th-child" ng-click="orderByField='expirationDate'; reverseSort = !reverseSort" style="width: 15%">
+                                <span ng-if="orderByField == 'expirationDate' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'expirationDate' && reverseSort" class="fa fa-caret-down"></span>Expiration Date
+                            </th>
+                            <th class="btn-primary" ng-click="orderByField='comment'; reverseSort = !reverseSort" style="width: 32%">
+                                <span ng-if="orderByField == 'comment' && !reverseSort" class="fa fa-caret-up"></span>
+                                <span ng-if="orderByField == 'comment' && reverseSort" class="fa fa-caret-down"></span>Comment
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="riskAsmtTplVersion in riskAsmtTplVersions.slice(((vm.currentPage-1)*noOfRec),((vm.currentPage)*noOfRec)) | orderObjectBy:orderByField:reverseSort">
+                            <td class="table-td-alignment-center wordwrap">
+                                <a aria-label="{{riskAsmtTplVersion.version | number:1}} editThisRow" id="link-1" href="" ng-click="initializeExistingTemplate(1)" tabindex="0"> {{riskAsmtTplVersion.version | number:1}}</a>
+                            </td>
+                            <td id="comment-show-data">
+                                {{riskAsmtTplVersion.lastUpdatedBy}}
+                            </td>
+                            <td class="table-td-alignment-center wordwrap">
+                                {{riskAsmtTplVersion.lastUpdatedDate | date:'MM/dd/yyyy HH:mm'}}
+                            </td>
+                            <td class="table-td-alignment-center wordwrap">
+                                {{riskAsmtTplVersion.effectiveDate | date:"MM/dd/yyyy"}}
+                            </td>
+                            <td class="table-td-alignment-center wordwrap">
+                                {{riskAsmtTplVersion.expirationDate | date:"MM/dd/yyyy"}}
+                            </td>
+                            <td id="comment-show-data" tabindex="0">
+                                {{riskAsmtTplVersion.comment}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" colspan="6">
+                                <uib-pagination class="pagination-sm" boundary-links="true" total-items="totalItems" ng-model="vm.currentPage" items-per-page="noOfRecordsPerPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" force-ellipses="true" max-size=$root.maxSize></uib-pagination>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </uib-accordion-group>
+        </uib-accordion>
+    </div>
+    <div id="noRecordsDisplay" style="padding-bottom:5px" class="text-center" ng-if="!isNoRecordsMessageDisabled">
+        <strong class="error-wrapper">No records found.</strong>
+    </div>
+    <div id="errorMessageDisplay" class="text-center" style="padding-bottom:5px" ng-if="errorFromRestService">
+        <strong class="error-wrapper">{{errorMsg}}</strong>
+    </div>
+    <div id="displayRecordSavedMsg" class="text-center" style="padding-bottom:5px" ng-if="displayRecordSavedMsg">
+        <span><strong>Record Saved Successfully.</strong></span>
+    </div>
+    <div id="displayExpirationDateUpdateMsg" class="text-center" style="padding-bottom:5px">
+        <span><strong>{{message}}</strong></span>
+    </div>
+    <form name="addNewRiskAsmtTemplateForm" novalidate class="css-form">
+        <div id="addNewRiskAsmtTemplate" ng-if="true">
+            <!--div>
+                <button type="button" class="btn btn-primary btn-sm" ng-click="expandCollapseAll()">Expand/Collapse All</button>
+            </div>
+            <br/>
+            <div class="btn-primary sub-header-label text-center">
+                <h2 class="sub-header-font"><strong> {{addEditLabel}}</strong></h2>
+            </div-->
+            <div class="row" style="padding-bottom:10px;padding-top:10px" ng-if="false">
+                <div class="col-md-2">
+                    <span class="mandatory">*</span><label for="newVersion">Version</label>
+                    <p class="input-group">
+                        <input class="form-control" type="text" id="newVersion" name="version" ng-model="addEditRiskAsmtTplVersion.version" ng-pattern="/^[0-9.]*$/" required="true" aria-live="assertive" aria-describedby="versionValidation"></input>
+                        <div class="error-wrapper" id="versionValidation" ng-messages="addNewRiskAsmtTemplateForm.version.$error" ng-if="addNewRiskAsmtTemplateForm.version.$invalid">
+                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.version.$error.required"><strong>Version - is a required field.</strong></div>
+                            <div ng-message="pattern" ng-if="addNewRiskAsmtTemplateForm.version.$error.pattern"><strong> Version - must be numeric.</strong></div>
+                        </div>
+                    </p>
+                </div>
+                <div class="col-md-3" ng-controller="dateController">
+                    <span class="mandatory">*</span><label for="newEffectiveDate">Effective Date</label>
+                    <p class="input-group">
+                        <input class="form-control" id="newEffectiveDate" name="effectiveDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="addEditRiskAsmtTplVersion.effectiveDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="effectiveDateOptions" close-text="Close" ng-change="validateEffectiveDate();validateExpirationDate()" required="true" aria-live="assertive" aria-describedby="effectiveDateValidation"/>
+                        <span class="input-group-btn">
+                            <button aria-label="calenderButton" class="btn btn-default" id="newEffectiveDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
+                          </span>
+                        <div class="error-wrapper" id="effectiveDateValidation" ng-messages="addNewRiskAsmtTemplateForm.effectiveDate.$error" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$invalid || isEffectiveDateInvalid">
+                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$error.required">
+                                <strong>Effective Date - is a required field.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$error.date">
+                                <strong>Effective Date - must enter in mm/dd/yyyy format.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="isEffectiveDateInvalid">
+                                <strong>Effective Date - must be greater than or equal to current date.</strong>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="col-md-3" ng-controller="dateController">
+                    <label for="newExpirationDate">Expiration Date</label>
+                    <p class="input-group">
+                        <input class="form-control" id="newExpirationDate" name="expirationDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="addEditRiskAsmtTplVersion.expirationDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="expirationDateOptions" close-text="Close" ng-change="validateExpirationDate()" aria-live="assertive" aria-describedby="expirationDateValidation"/>
+                        <span class="input-group-btn">
+                            <button aria-label="calenderButton" class="btn btn-default" id="newExpirationDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
+                          </span>
+                        <div class="error-wrapper" id="expirationDateValidation" ng-messages="addNewRiskAsmtTemplateForm.expirationDate.$error" ng-if="addNewRiskAsmtTemplateForm.expirationDate.$invalid || isExpirationDateInvalid || isExpirationDateLessThanCurrentDate">
+                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.expirationDate.$error.date">
+                                <strong>Expiration Date - must enter in mm/dd/yyyy format.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="isExpirationDateInvalid">
+                                <strong>Expiration Date - must be greater than Effective Date.</strong>
+                            </div>
+                            <div ng-message="required" ng-if="isExpirationDateLessThanCurrentDate">
+                                <strong>Expiration Date - must be greater than current date.</strong>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="mandatory">*</span><label for="newVersion">Comment</label>
+                    <p class="input-group">
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="addEditRiskAsmtTplVersion.riskAssessmentTplComment" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                    <div class="error-wrapper" id="newCommentValidation" ng-messages="addNewRiskAsmtTemplateForm.comment.$error" ng-if="addNewRiskAsmtTemplateForm.comment.$invalid" role="alert">
+                        <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
+                        </div>
+                        <div ng-message="minlength" ng-if="addNewRiskAsmtTemplateForm.comment.$error.minlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                        <div ng-message="maxlength" ng-if="addNewRiskAsmtTemplateForm.comment.$error.maxlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                    </div>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center" ng-if="false">
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="addNewRiskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
+            </div>
+
+        <div >
+            <uib-accordion close-others="false">
+                <uib-accordion-group id="riskRangeLegendTable" panel-class="panel-primary risk-asmt-tpl-panel-title" is-open="expandCollapseStatus[0].open">
+                    <uib-accordion-heading>
+                        Risk Range<em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': expandCollapseStatus[0].open, 'glyphicon-plus-sign': !expandCollapseStatus[0].open}"></em>
+                    </uib-accordion-heading>
+					<div class="row">
+                        <div class="col-md-4 text-left">
+                            <button class="btn btn-primary" id='addNewRiskRangebt' ng-click="isAddEditDisplayRiskRangeType=true" ng-disabled="disableAdd">Add New Risk Range Type</button>
+                        </div>
+                        </div>
+					<div>
+					</div>
+				<div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="btn-primary" style="width:16%">Risk Range Type</th>
+                                <th colspan="2" class="btn-primary table-th-child">
+                                    Overall Risk Range</th>
+                                <th ng-repeat="riskRangeTypeRange in riskAssessmentObj.riskRangeTypes[0].riskRangeTypeRanges" colspan="2" class="btn-primary table-th-child">
+                                    {{riskRangeTypeRange.level}}</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
+                                <th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Max{{riskRange.riskRangeTypeRangesLabels}}</th>
+                                <th ng-repeat="label in riskAssessmentObj.riskRangeTypes[0].riskRangeTypeRangesLabels track by $index" scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">{{label}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="riskRange in riskAssessmentObj.riskRangeTypes">
+                                <td><a href ng-click="getRiskAsmtRiskFactors(riskAsmtRiskRange.riskRangeTypeId)"> {{riskRange.name}} </a> </td>
+                                <td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[0].min}}</td>
+								<td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[riskRange.riskRangeTypeRanges.length-1].max}}</td>
+                                <td  ng-repeat="value in riskRange.riskRangeTypeRangesValues" class="table-td-alignment-center">{{value}}</td>
+                            </tr>
+                            <tr>
+                                <td>Baseline Risk</td>
+                                <td ng-repeat="value in baseLineRiskRangeTotals track by $index" class="table-td-alignment-center">{{value}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+				</div>
+                    <div id="addEditRiskRangeTypePanel" name="addEditRiskRangePanel" ng-if="isAddEditDisplayRiskRangeType" ng-cloak>
+                        <div class="btn-primary sub-header-label text-center">
+                            <h2 class="sub-header-font"><strong>  {{}} </strong></h2>
+                        </div>
+                        <div class="row contract-contact-div-padding">
+                            <div class="col-md-3 text-right">
+                                <span class="mandatory">*</span>
+                                <label for="firstName">Name</label>
+                            </div>
+                            <div class="col-md-3 contact-div-padding text-left">
+                                <input type="text" class="form-control" name="firstName" id="firstName" ng-model="" ng-maxlength="15" ng-required=contactRequired aria-live="assertive" aria-describedby="nameValidation" />
+                                <div class="error-wrapper" id="firstNameValidation" ng-messages="addNewRiskAsmtTemplateForm.name.$error" ng-if="addNewRiskAsmtTemplateForm.name.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.firstName.$error.required"><strong>Name - is a required field.</strong></div>
+                                    <div ng-message="maxlength" ng-if="addNewRiskAsmtTemplateForm.firstName.$error.maxlength"><strong>Name - must be within 15 characters.</strong></div>
+                                </div>
+                            </div>
+                            <!--div class="col-md-2 text-right">
+                                <span class="mandatory">*</span>
+                                <label for="lastName">Last Name</label>
+                            </div>
+                            <div class="col-md-3 contact-div-padding text-left">
+                                <input type="text" class="form-control" name="lastName" id="lastName" ng-model="contact.lastName" ng-maxlength="20" ng-required=contactRequired aria-live="assertive" aria-describedby="lastNameValidation" />
+                                <div class="error-wrapper" id="lastNameValidation" ng-messages="contractContactForm.lastName.$error" ng-if="contractContactForm.lastName.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="contractContactForm.lastName.$error.required"><strong>Last Name - is a required field.</strong></div>
+                                    <div ng-message="maxlength" ng-if="contractContactForm.lastName.$error.maxlength"><strong>Last Name - must be within 20 characters.</strong></div>
+                                </div>
+                            </div-->
+                        </div>
+				
+                </uib-accordion-group>
+            </uib-accordion>
+        </div>
+            <div>
+                <!--uib-accordion close-others="false">
+                    <uib-accordion-group id="riskFactorTable" panel-class="panel-primary risk-asmt-tpl-panel-title" is-open="expandCollapseStatus[1].open">
+                        <uib-accordion-heading>
+                            Risk Factor<em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': expandCollapseStatus[1].open, 'glyphicon-plus-sign': !expandCollapseStatus[1].open}"></em>
+                        </uib-accordion-heading!-->
+						<div class="row">
+                        <div class="col-md-4 text-left">
+                            <button class="btn btn-primary" id='addNewCategorybt' ng-click="isAddEditDisplayRiskCategory=true" ng-disabled="disableAdd">Add New Risk Factor</button>
+                        </div>
+                        </div>
+						<br/>
+						        <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="btn-primary table-th-child">
+                                    Active</th>
+                                <th rowspan="2" class="btn-primary">
+                                    Risk Factor</th>
+                                <th rowspan="2" class="btn-primary table-th-child">
+                                    Weight Multiplier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="riskFactor in riskAsmtRiskFactorList">
+                                <td class="table-td-alignment-center">
+                                    <input type="checkbox" name="riskFactorStatus" ng-model="riskAssessmentTemplateLegal.riskFactorStatus" aria-label="riskFactorStatus" disabled>
+                                </td>
+                                <td><a href ng-click="getRiskAsmtRiskFactorLevels(riskFactor.riskFactorId)">{{riskFactor.name}}</a></td>
+                                <td class="table-td-alignment-center">{{riskFactor.weight_multiplier}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+					</div>
+					<div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th  class="btn-primary table-th-child">
+                                    Risk Level</th>
+                                <th class="btn-primary table-th-child">
+                                    Level</th>
+                                <th  class="btn-primary table-th-child">
+                                    Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="riskFactorLevel in riskAsmtRiskFactorLevelList">
+                                <td>
+                                </td>
+                                <td>{{riskFactorLevel.level}}</td>
+                                <td class="table-td-alignment-center">{{riskFactorLevel.score}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+					</div>
+
+                <!--/uib-accordion-group>
+            </uib-accordion-->
+        </div>
+
+                    </uib-accordion-group>
+                </uib-accordion>
+			</div>			
+        </div>
+    </form>
+</div>

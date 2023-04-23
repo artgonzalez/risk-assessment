@@ -1,0 +1,54 @@
+.risk-asmt-tpl-panel-title a {
+    display: block;
+}
+
+.risk-asmt-tpl-div-padding {
+    margin-top: 15px
+}
+
+.risk-asmt-tpl-tableheader-inner-row {
+    width: 10%;
+    border: 1px solid white;
+}
+
+.risk-asmt-tpl-table-input-box {
+    width: 30px;
+}
+
+.risk-asmt-tpl-risk-level-score-padding-left {
+    padding-left: 35px;
+}
+
+.risk-asmt-tpl-risk-level-score-7-padding-left {
+    padding-left: 18px;
+}
+
+.risk-asmt-tpl-comment-box-padding {
+    padding-bottom: 10px;
+}
+
+.risk-asmt-tpl-comment-box-width {
+    width: 100%;
+}
+
+#comment-show-data {
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+#comment-show-data:hover {
+    overflow: visible;
+    white-space: normal;
+    width: auto;
+    word-wrap: break-word;
+}
+
+#comment-show-data:focus {
+    overflow: visible;
+    white-space: normal;
+    width: auto;
+    word-wrap: break-word;
+}
