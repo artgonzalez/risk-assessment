@@ -207,46 +207,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $scope.riskRangeTypeIndex = riskRangeIndex;
     };
 	
-    $scope.getRiskAsmtRiskRangeTypes = function(riskAsmtTemplateId) {
-        riskAsmtTemplateFactory.getRiskAsmtRiskRangeTypes(riskAsmtTemplateId).then(function(response) {
-            if (response.success) {
-                $scope.data = response.data;
-                $scope.riskAssessmentObj = $scope.data;
-				
-				var overallRiskRangeMin = 0;
-				var overallRiskRangeMax = 0;
-				
-				for(var i=0; i < $scope.data.length; i++)
-				{	
-					overallRiskRangeMin += $scope.riskAssessmentObj[i].riskRangeTypeValues[0].value;
-					overallRiskRangeMax += $scope.riskAssessmentObj[i].riskRangeTypeValues[$scope.riskAssessmentObj[i].riskRangeTypeValues.length-1].value;
-
-					for(var j=0; j < $scope.riskAssessmentObj[i].riskRangeTypeValues.length; j++)
-					{
-						$scope.baseLineRiskRangeTotals[j+2] += $scope.riskAssessmentObj[i].riskRangeTypeValues[j].value;
-					}
-				}
-				
-				$scope.baseLineRiskRangeTotals[0] = overallRiskRangeMin;
-				$scope.baseLineRiskRangeTotals[1] = overallRiskRangeMax;
-
-                /*$scope.totalItems = $scope.data.length;
-                if ($scope.riskAsmtTplVersions.length > 0) {
-                    var latestTemplateEffectiveDate = $scope.riskAsmtTplVersions[0].effectiveDate;
-                    if (latestTemplateEffectiveDate > new Date()) {
-                        $scope.disableAddNewButton = true;
-                    }
-                }*/
-            } else {
-                $scope.isNoRecordsMessageDisabled = false;
-            }
-        });
-    };
-	
-	//$scope.getRiskAsmtRiskRangeTypes();
-	
     $scope.initializeGrids = function(riskTemplateId) {
-        //$scope.getRiskAsmtRiskRangeTypes(1);
 		//$scope.getRiskAsmtRiskFactors($scope.riskAssessmentObj[0].riskRangeTypeId);
 		//$scope.getRiskAsmtRiskFactorLevels($scope.riskAsmtRiskFactorList[0].riskFactorId);
     };
