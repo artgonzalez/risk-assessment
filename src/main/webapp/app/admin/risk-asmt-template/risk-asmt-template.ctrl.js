@@ -203,33 +203,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $scope.errorFromRestService = false;
     };
 
-    $scope.getRiskAsmtRiskRangeLevels = function() {
-        riskAsmtTemplateFactory.getRiskAsmtRiskRangeLevels().then(function(response) {
-            if (response.success) {
-                $scope.data = response.data;
-                $scope.riskAsmtRiskRangeLevelList = $scope.data;
-				
-				$scope.baseLineRiskRangeTotals[0] = 0;
-				$scope.baseLineRiskRangeTotals[1] = 0;
-				
-				for(var i=0; i < $scope.data.length*2; i++)
-				{	
-					$scope.riskAsmtHeaderRiskRangeList[i] = i;
-					$scope.baseLineRiskRangeTotals[i+2] = 0;
-				}
-                /*$scope.totalItems = $scope.data.length;
-                if ($scope.riskAsmtTplVersions.length > 0) {
-                    var latestTemplateEffectiveDate = $scope.riskAsmtTplVersions[0].effectiveDate;
-                    if (latestTemplateEffectiveDate > new Date()) {
-                        $scope.disableAddNewButton = true;
-                    }
-                }*/
-            } else {
-                $scope.isNoRecordsMessageDisabled = false;
-            }
-        });
-    };
-	
 	$scope.getRiskAsmtRiskFactorLevels = function(riskFactorIndex) {
         $scope.riskFactorIndex = riskFactorIndex;
     };
@@ -277,7 +250,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	//$scope.getRiskAsmtRiskRangeTypes();
 	
     $scope.initializeGrids = function(riskTemplateId) {
-		$scope.getRiskAsmtRiskRangeLevels();
         //$scope.getRiskAsmtRiskRangeTypes(1);
 		//$scope.getRiskAsmtRiskFactors($scope.riskAssessmentObj[0].riskRangeTypeId);
 		//$scope.getRiskAsmtRiskFactorLevels($scope.riskAsmtRiskFactorList[0].riskFactorId);
