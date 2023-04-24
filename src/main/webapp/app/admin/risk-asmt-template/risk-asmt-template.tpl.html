@@ -186,7 +186,7 @@
                     </uib-accordion-heading>
 					<div class="row">
                         <div class="col-md-4 text-left">
-                            <button class="btn btn-primary" id='addNewRiskRangebt' ng-click="isAddEditDisplayRiskRangeType=true" ng-disabled="disableAdd">Add New Risk Range Type</button>
+                            <button class="btn btn-primary" id='addNewRiskRangebt' ng-click="isAddEditDisplayRiskRangeType=true" ng-disabled="disableAdd" ng-if="false">Add New Risk Range Type</button>
                         </div>
                         </div>
 					<div>
@@ -218,7 +218,7 @@
                                 <td>Baseline Risk</td>
 								<td class="table-td-alignment-center">{{riskAssessmentObj.baseLineRiskRanges[0].min}}</td>
 								<td class="table-td-alignment-center">{{riskAssessmentObj.baseLineRiskRanges[riskAssessmentObj.baseLineRiskRanges.length-1].max}}</td>
-                                <td ng-repeat="range in riskAssessmentObj.baseLineRiskRanges track by $index" class="table-td-alignment-center">{{range}}</td>
+                                <td ng-repeat="value in riskAssessmentObj.baseLineRiskRangesValues track by $index" class="table-td-alignment-center">{{value}}</td>
                             </tr>
                         </tbody>
                     </table>
