@@ -199,7 +199,7 @@
                                 <th colspan="2" class="btn-primary table-th-child">
                                     Overall Risk Range</th>
                                 <th ng-repeat="riskRangeTypeRange in riskAssessmentObj.riskRangeTypes[0].riskRangeTypeRanges" colspan="2" class="btn-primary table-th-child">
-                                    {{riskRangeTypeRange.level}}</th>
+                                    {{riskRangeTypeRange.riskLevel.level}}</th>
                             </tr>
                             <tr>
                                 <th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
@@ -208,15 +208,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="riskRange in riskAssessmentObj.riskRangeTypes">
-                                <td><a href ng-click="getRiskAsmtRiskFactors(riskAsmtRiskRange.riskRangeTypeId)"> {{riskRange.name}} </a> </td>
+                            <tr ng-repeat="riskRange in riskAssessmentObj.riskRangeTypes track by $index">
+                                <td><a href ng-click="getRiskAsmtRiskFactors($index)"> {{riskRange.name}} </a> </td>
                                 <td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[0].min}}</td>
 								<td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[riskRange.riskRangeTypeRanges.length-1].max}}</td>
                                 <td  ng-repeat="value in riskRange.riskRangeTypeRangesValues" class="table-td-alignment-center">{{value}}</td>
                             </tr>
                             <tr>
                                 <td>Baseline Risk</td>
-                                <td ng-repeat="value in baseLineRiskRangeTotals track by $index" class="table-td-alignment-center">{{value}}</td>
+								<td class="table-td-alignment-center">{{riskAssessmentObj.baseLineRiskRanges[0].min}}</td>
+								<td class="table-td-alignment-center">{{riskAssessmentObj.baseLineRiskRanges[riskAssessmentObj.baseLineRiskRanges.length-1].max}}</td>
+                                <td ng-repeat="range in riskAssessmentObj.baseLineRiskRanges track by $index" class="table-td-alignment-center">{{range}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -269,8 +271,6 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="btn-primary table-th-child">
-                                    Active</th>
                                 <th rowspan="2" class="btn-primary">
                                     Risk Factor</th>
                                 <th rowspan="2" class="btn-primary table-th-child">
@@ -278,12 +278,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="riskFactor in riskAsmtRiskFactorList">
-                                <td class="table-td-alignment-center">
-                                    <input type="checkbox" name="riskFactorStatus" ng-model="riskAssessmentTemplateLegal.riskFactorStatus" aria-label="riskFactorStatus" disabled>
-                                </td>
-                                <td><a href ng-click="getRiskAsmtRiskFactorLevels(riskFactor.riskFactorId)">{{riskFactor.name}}</a></td>
-                                <td class="table-td-alignment-center">{{riskFactor.weight_multiplier}}</td>
+                            <tr ng-repeat="riskFactor in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors track by $index">
+                                <td><a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{riskFactor.name}}</a></td>
+                                <td class="table-td-alignment-center">{{riskFactor.weightMultiplier}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -301,8 +298,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="riskFactorLevel in riskAsmtRiskFactorLevelList">
-                                <td>
+                            <tr ng-repeat="riskFactorLevel in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors[riskFactorIndex].riskFactorLevels track by $index">
+                                <td>{{riskFactorLevel.riskLevel.level}}
                                 </td>
                                 <td>{{riskFactorLevel.level}}</td>
                                 <td class="table-td-alignment-center">{{riskFactorLevel.score}}</td>

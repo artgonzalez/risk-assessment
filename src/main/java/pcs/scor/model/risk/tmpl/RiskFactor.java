@@ -1,6 +1,6 @@
 package pcs.scor.model.risk.tmpl;
 
-import java.util.Set;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +13,5 @@ public class RiskFactor {
 	private long id;
 	private String name;
 	private int weightMultiplier;
-	private Set<RiskFactorLevel> riskFactorLevels;
+	private List<RiskFactorLevel> riskFactorLevels;
 }

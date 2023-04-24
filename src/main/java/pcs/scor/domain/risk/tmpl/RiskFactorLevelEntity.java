@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,9 +26,10 @@ public class RiskFactorLevelEntity {
 		this.riskFactorLevelId = riskFactorLevelId;
 	}
 	
-	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, String level, int score) 
+	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, RiskLevelEntity riskLevelEntity, String level, int score) 
 	{
 		this.riskFactor = riskFactor;
+		this.riskLevelEntity = riskLevelEntity;
 		this.level = level;
 		this.score = score;
 	}
@@ -37,6 +39,11 @@ public class RiskFactorLevelEntity {
     @SequenceGenerator(name = "seq_gen_risk_factor_level", sequenceName = "seq_risk_factor_level_template", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_factor_level_id")
 	private long riskFactorLevelId;
+
+	@OneToOne
+	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_risk_factor_level_risk_level"))
+	private RiskLevelEntity riskLevelEntity;
+	
 	private String level;
 	private int score;	
 	

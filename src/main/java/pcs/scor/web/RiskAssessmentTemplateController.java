@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pcs.scor.data.risk.repository.RiskAssessmentTemplateRepository;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
-import pcs.scor.service.RiskAsmtTemplateService;
+import pcs.scor.service.RiskAssessmentTemplateService;
 
 @CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
 @RestController
 @RequestMapping("/api")
-public class RiskAsmtTemplateController {
+public class RiskAssessmentTemplateController {
 	final public String riskAsmtTemplateMapping = "risk-asmt-tplts";
 	
 	@Autowired
 	RiskAssessmentTemplateRepository riskAsmtTemplateRepository;
 	
 	@Autowired
-	RiskAsmtTemplateService riskAsmtTemplateService;
+	RiskAssessmentTemplateService riskAssessmentTemplateService;
 	
 	@RequestMapping(method = RequestMethod.GET, value=riskAsmtTemplateMapping)
 	public ResponseEntity<List<RiskAssessmentTemplate>> getAllRiskAssessmentTemplates() {
-		List<RiskAssessmentTemplate> riskAsmtTemplates = riskAsmtTemplateService.getAllRiskAssessmentTemplates();
+		List<RiskAssessmentTemplate> riskAsmtTemplates = riskAssessmentTemplateService.getAllRiskAssessmentTemplates();
 		
 		if (riskAsmtTemplates.isEmpty()){ 
 		   return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,7 +41,7 @@ public class RiskAsmtTemplateController {
 	
 	@RequestMapping(method = RequestMethod.GET, value=riskAsmtTemplateMapping + "/{riskAssessmentTemplateId}")
 	 public ResponseEntity<RiskAssessmentTemplate> getRiskAssessmentTemplateById(@PathVariable("riskAssessmentTemplateId") long id) {
-		RiskAssessmentTemplate template = riskAsmtTemplateService.getRiskAssessmentTemplateById(id);
+		RiskAssessmentTemplate template = riskAssessmentTemplateService.getRiskAssessmentTemplateById(id);
 	        
 	    return new ResponseEntity<>(template, HttpStatus.OK);
 	 }
@@ -49,14 +49,14 @@ public class RiskAsmtTemplateController {
 	@RequestMapping(method = RequestMethod.POST, value=riskAsmtTemplateMapping)
 	public ResponseEntity<RiskAssessmentTemplate> createRiskAssessmentTemplate(@RequestBody RiskAssessmentTemplate template) {
 		
-		RiskAssessmentTemplate new_template = riskAsmtTemplateService.createRiskAssessmentTemplate(template);
+		RiskAssessmentTemplate new_template = riskAssessmentTemplateService.createRiskAssessmentTemplate(template);
 		
 	    return new ResponseEntity<>(new_template, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value=riskAsmtTemplateMapping + "/{id}")
 	public ResponseEntity<RiskAssessmentTemplate> updateRiskAssessmentTemplate(@PathVariable("id") long id, @RequestBody RiskAssessmentTemplate template) {
-		RiskAssessmentTemplate updatedTemplate = riskAsmtTemplateService.updateRiskAssessmentTemplate(template);
+		RiskAssessmentTemplate updatedTemplate = riskAssessmentTemplateService.updateRiskAssessmentTemplate(template);
 			
 	    return new ResponseEntity<>(updatedTemplate, HttpStatus.OK);
 	 }	

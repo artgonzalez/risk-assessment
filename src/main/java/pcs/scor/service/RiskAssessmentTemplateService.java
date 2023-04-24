@@ -15,10 +15,11 @@ import pcs.scor.data.risk.repository.RiskRangeTypeRangeRepository;
 import pcs.scor.data.risk.repository.RiskRangeTypeRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
+import pcs.scor.model.risk.tmpl.RiskFactorLevel;
 import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Service
-public class RiskAsmtTemplateService {
+public class RiskAssessmentTemplateService {
 	@Autowired
 	RiskAssessmentTemplateRepository riskAsmtTemplateRepository;
 	@Autowired
@@ -47,8 +48,13 @@ public class RiskAsmtTemplateService {
 		
 		RiskAssessmentTemplate template = modelMapper.map(templateEntity, RiskAssessmentTemplate.class);
 		
-		template.getRiskRangeTypes().forEach(range -> 
-						range.getRiskRangeTypeRanges().sort(Comparator.comparing(RiskRangeTypeRange::getMin)));
+		template.getRiskRangeTypes().forEach(range -> { 
+						range.getRiskRangeTypeRanges().sort(Comparator.comparing(RiskRangeTypeRange::getMin));
+						range.getRiskFactors().forEach(factor -> 
+						factor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getScore)));
+					});
+		
+		
 		
 		return template;
 	}

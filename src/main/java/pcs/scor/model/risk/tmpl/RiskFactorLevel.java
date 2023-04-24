@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RiskFactorLevel {
 	private long riskFactorLevelId;
+	private RiskLevel riskLevel;
 	private String level;
 	private int score;	
 }

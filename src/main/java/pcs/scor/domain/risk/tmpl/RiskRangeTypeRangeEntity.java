@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,9 +22,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "risk_range_type_range")
 public class RiskRangeTypeRangeEntity {
-	public RiskRangeTypeRangeEntity(RiskRangeTypeEntity riskRangeType, String level, int min, int max) {
+	public RiskRangeTypeRangeEntity(RiskRangeTypeEntity riskRangeType, RiskLevelEntity riskLevelEntity, int min, int max) {
 		this.riskRangeType = riskRangeType;
-		this.level = level;
+		this.riskLevelEntity = riskLevelEntity;
 		this.min = min;
 		this.max = max;
 	}
@@ -35,7 +36,11 @@ public class RiskRangeTypeRangeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_range_risk_range_type"))
 	private RiskRangeTypeEntity riskRangeType;
-	private String level; 
+
+	@OneToOne
+	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_risk_level"))
+	private RiskLevelEntity riskLevelEntity;
+	 
 	private int min;
 	private int max;
 

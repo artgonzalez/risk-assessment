@@ -7,9 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RiskRangeTypeRange {
-	private int riskRangeTypeRangeId;
-	private RiskLevel riskLevel; 
-	private int min;
-	private int max;
+public class RiskLevel {
+	private int riskLevelId;
+	private String level;
 }

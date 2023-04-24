@@ -81,12 +81,55 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 
     $scope.getRiskAsmtTemplates();
 	
-	$scope.createRiskAsmtTemplateCalculatedFields = function(riskAssessmentObj){
-		var riskRanges = riskAssessmentObj.riskRangeTypes;
+	$scope.createRiskAsmtTemplateCalculatedFields = function(riskAssessment){
+		var riskRanges = riskAssessment.riskRangeTypes;
+		
+		riskAssessment.createBaseLineRiskRanges = function (){
+		var baseLineRiskRangesText = [];
+		
+		for(var j=0; j < riskRanges[0].riskRangeTypeRanges.length; j++){
+			baseLineRiskRangesText[j] = {
+												level : "",
+												min : 0,
+												max : 0
+											};
+			
+		}
+		
+		var valuesCount = 0;
+		for(var i=0; i < riskRanges.length; i++){
+			riskAssessment.baseLineRiskRangesValues = [];
+			
+			for(var j=0; j < riskRanges[i].riskRangeTypeRanges.length; j++){
+				baseLineRiskRangesText[j].level = riskRanges[i].riskRangeTypeRanges[j].level;
+				baseLineRiskRangesText[j].min += riskRanges[i].riskRangeTypeRanges[j].min;
+				baseLineRiskRangesText[j].max += riskRanges[i].riskRangeTypeRanges[j].max;
+			}
+			console.log(baseLineRiskRangesText);
+			console.log(riskAssessment.baseLineRiskRangesValues);
+			
+			/*risk ranges produce a gap when summing risk range risk scores example:
+			   Low = 3-6    Medium = 7-10    High = 11-15
+			   Low = 3-7    Medium = 8-12    High = 13-17
+			total:  6-13			15-22          24-32 <-- notice 13 jumps to 15 and 22 to 24
+			this loop adjusts to produce correct result of
+			Low = 6-13    Medium = 14-22    High = 23-32 according to legacy risk Assessment risk calculations
+			*/
+			
+			for(var k=1; k < riskRanges[i].riskRangeTypeRanges.length; k++){
+				baseLineRiskRangesText[k].min = baseLineRiskRangesText[k-1].max + 1;
+			}
+		}
+		
+		riskAssessment.baseLineRiskRanges = baseLineRiskRangesText;
+		
+		};			
+		
 		var valuesCount = 0;		
 		for(var i=0; i < riskRanges.length; i++){
-			riskAssessmentObj.riskRangeTypes[i].riskRangeTypeRangesLabels = [];
-			riskAssessmentObj.riskRangeTypes[i].riskRangeTypeRangesValues = [];
+			
+			riskAssessment.riskRangeTypes[i].riskRangeTypeRangesLabels = [];
+			riskAssessment.riskRangeTypes[i].riskRangeTypeRangesValues = [];
 			
 			for(var j=0; j < riskRanges[i].riskRangeTypeRanges.length; j++){
 				riskRanges[i].riskRangeTypeRangesLabels[valuesCount] = "Min";
@@ -106,10 +149,12 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         riskAsmtTemplateFactory.getRiskAsmtTemplate(riskAsmtId).then(function(response) {
             if (response.success) {
                 $scope.data = response.data;
-				
+				$scope.riskRangeTypeIndex = 0;
+				$scope.riskFactorIndex = 0;
 				$scope.riskAssessmentObj = $scope.data;
 				$scope.createRiskAsmtTemplateCalculatedFields($scope.riskAssessmentObj);
-                console.log(response.data);
+				$scope.riskAssessmentObj.createBaseLineRiskRanges();
+                console.log($scope.riskAssessmentObj);
 				$scope.addEditRiskAsmtTplVersion = $scope.data;
                 $scope.addEditRiskAsmtTplVersion.version = parseFloat($scope.addEditRiskAsmtTplVersion.version).toFixed(1);
                 $scope.isNewTemplate = false;
@@ -178,27 +223,12 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         });
     };
 	
-	$scope.getRiskAsmtRiskFactorLevels = function(riskFactorId) {
-        riskAsmtTemplateFactory.getRiskAsmtRiskFactorLevels(riskFactorId).then(function(response) {
-            if (response.success) {
-                $scope.data = response.data;
-                $scope.riskAsmtRiskFactorLevelList = $scope.data;
-            } else {
-                $scope.isNoRecordsMessageDisabled = false;
-            }
-        });
+	$scope.getRiskAsmtRiskFactorLevels = function(riskFactorIndex) {
+        $scope.riskFactorIndex = riskFactorIndex;
     };
 	
-    $scope.getRiskAsmtRiskFactors = function(riskRangeTypeId) {
-        riskAsmtTemplateFactory.getRiskAsmtRiskFactors(riskRangeTypeId).then(function(response) {
-            if (response.success) {
-                $scope.data = response.data;
-                $scope.riskAsmtRiskFactorList = $scope.data;
-				
-            } else {
-                $scope.isNoRecordsMessageDisabled = false;
-            }
-        });
+    $scope.getRiskAsmtRiskFactors = function(riskRangeIndex) {
+        $scope.riskRangeTypeIndex = riskRangeIndex;
     };
 	
     $scope.getRiskAsmtRiskRangeTypes = function(riskAsmtTemplateId) {
@@ -828,17 +858,17 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             msg = 'There are unsaved changes in the form. Do you want to discard?';
             dialogMessageFactory.getConfirmation(msg).then(function() {
                 $scope.resetForm();
-                $scope.isAllPanelsExpanded = false;
-                for (var i = 0; i < 3; i++) {
-                    $scope.expandCollapseStatus[i].open = $scope.isAllPanelsExpanded;
-                }
+                //$scope.isAllPanelsExpanded = false;
+                //for (var i = 0; i < 3; i++) {
+                  //  $scope.expandCollapseStatus[i].open = $scope.isAllPanelsExpanded;
+                //}
                 $scope.getRiskAsmtTemplate(riskAsmtId);
             }, function() {});
         } else {
-            $scope.isAllPanelsExpanded = false;
+            /*$scope.isAllPanelsExpanded = false;
             for (var i = 0; i < 3; i++) {
                 $scope.expandCollapseStatus[i].open = $scope.isAllPanelsExpanded;
-            }
+            }*/
             $scope.getRiskAsmtTemplate(riskAsmtId);
         }
     };
