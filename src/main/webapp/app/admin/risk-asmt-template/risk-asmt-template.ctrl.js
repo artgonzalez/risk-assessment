@@ -28,12 +28,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     $scope.invalidContractHighMin = false;
     $scope.contractMediumMinLessThanContractLowMin = false;
     $scope.contractHighMaxLessThanContractHighMin = false;
-	$scope.riskAsmtRiskRangeLevelList = [];
-	$scope.riskAsmtHeaderRiskRangeList = [];
 	$scope.baseLineRiskRangeTotals = [];
 	$scope.riskAssessmentObj = [];
-	$scope.riskAsmtRiskFactorList = [];
-	$scope.riskAsmtRiskFactorLevelList = [];
     var msg;
 
     $scope.riskAssessmentSummaryPanelStatus = [{
