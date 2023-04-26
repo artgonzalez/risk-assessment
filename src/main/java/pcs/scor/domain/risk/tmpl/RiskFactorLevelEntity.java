@@ -29,20 +29,20 @@ public class RiskFactorLevelEntity {
 	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, RiskLevelEntity riskLevelEntity, String level, int score) 
 	{
 		this.riskFactor = riskFactor;
-		this.riskLevelEntity = riskLevelEntity;
+		this.riskLevel = riskLevelEntity;
 		this.level = level;
 		this.score = score;
 	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_factor_level")
-    @SequenceGenerator(name = "seq_gen_risk_factor_level", sequenceName = "seq_risk_factor_level_template", initialValue = 100, allocationSize = 1)
+    @SequenceGenerator(name = "seq_gen_risk_factor_level", sequenceName = "seq_risk_factor_level", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_factor_level_id")
 	private long riskFactorLevelId;
 
 	@OneToOne
 	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_risk_factor_level_risk_level"))
-	private RiskLevelEntity riskLevelEntity;
+	private RiskLevelEntity riskLevel;
 	
 	private String level;
 	private int score;	

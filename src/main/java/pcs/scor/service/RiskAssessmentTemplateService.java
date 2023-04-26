@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import pcs.scor.data.risk.repository.RiskAssessmentTemplateRepository;
 import pcs.scor.data.risk.repository.RiskFactorRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
+import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
+import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
 import pcs.scor.model.risk.tmpl.RiskFactor;
 import pcs.scor.model.risk.tmpl.RiskFactorLevel;
@@ -61,11 +65,39 @@ public class RiskAssessmentTemplateService {
 		return modelMapper.map(new_template, RiskAssessmentTemplate.class);
 	}
 	
+	@Transactional
 	public RiskAssessmentTemplate updateRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
 		RiskAssessmentTemplateEntity updateTemplateEntity = modelMapper.map(riskAssessmentTemplate, RiskAssessmentTemplateEntity.class);
-		
-	    RiskAssessmentTemplateEntity updatedTemplateEntity = riskAsmtTemplateRepository.save(updateTemplateEntity);
+		prepareTemplateEntity(updateTemplateEntity);
+	    
+		RiskAssessmentTemplateEntity savedTemplateEntity = riskAsmtTemplateRepository.save(updateTemplateEntity);
 	    		
-		return modelMapper.map(updatedTemplateEntity, RiskAssessmentTemplate.class);
+		return modelMapper.map(savedTemplateEntity, RiskAssessmentTemplate.class);
+	}
+	
+	@Transactional
+	public RiskFactor createRiskFactor(RiskFactor riskFactor) {
+		
+		RiskFactorEntity riskFactorEntity = modelMapper.map(riskFactor, RiskFactorEntity.class);
+		riskFactorEntity.getRiskFactorLevels().forEach(level -> level.setRiskFactor(riskFactorEntity));
+		
+		RiskFactorEntity newRiskFactorEntity = riskFactorRepository.save(riskFactorEntity);
+		
+		RiskFactor newRiskFactor = modelMapper.map(newRiskFactorEntity, RiskFactor.class);
+		
+		return newRiskFactor;
+	}
+	
+	private void prepareTemplateEntity(RiskAssessmentTemplateEntity templateEntity) {
+		for(RiskRangeTypeEntity riskRangeType: templateEntity.getRiskRangeTypes()) {
+			riskRangeType.setRiskAssessmentTemplate(templateEntity);
+			
+			for(RiskFactorEntity riskFactorEntity: riskRangeType.getRiskFactors()) {
+				riskFactorEntity.setRiskRangeType(riskRangeType);
+				riskFactorEntity.getRiskFactorLevels().forEach(level -> level.setRiskFactor(riskFactorEntity));
+			}
+			
+			riskRangeType.getRiskRangeTypeRanges().forEach(rangeType -> rangeType.setRiskRangeType(riskRangeType));
+		}
 	}
 }

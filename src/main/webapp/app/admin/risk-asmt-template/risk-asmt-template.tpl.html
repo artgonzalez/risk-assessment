@@ -101,7 +101,7 @@
         <span><strong>{{message}}</strong></span>
     </div>
     <form name="riskAsmtTemplateForm" novalidate class="css-form">
-        <div id="addNewRiskAsmtTemplate" ng-if="true">
+        <div id="addNewRiskAsmtTemplate"  ng-if="isAddEditRiskAsmtTemplate">
             <!--div>
                 <button type="button" class="btn btn-primary btn-sm" ng-click="expandCollapseAll()">Expand/Collapse All</button>
             </div>
@@ -109,7 +109,7 @@
             <div class="btn-primary sub-header-label text-center">
                 <h2 class="sub-header-font"><strong> {{addEditLabel}}</strong></h2>
             </div-->
-            <div class="row" style="padding-bottom:10px;padding-top:10px" ng-if="false">
+            <div class="row" style="padding-bottom:10px;padding-top:10px" ng-if="isAddEditRiskAsmtTemplate">
                 <div class="col-md-2">
                     <span class="mandatory">*</span><label for="newVersion">Version</label>
                     <p class="input-group">
@@ -265,6 +265,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+								<th class="btn-primary">No.</th>
                                 <th rowspan="2" class="btn-primary">
                                     Risk Factor</th>
                                 <th rowspan="2" class="btn-primary table-th-child">
@@ -273,6 +274,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="riskFactor in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors track by $index">
+								<td><a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{$index+1}}</a></td>
                                 <td><a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{riskFactor.name}}</a></td>
                                 <td class="table-td-alignment-center">{{riskFactor.weightMultiplier}}</td>
                             </tr>
@@ -281,10 +283,9 @@
 					</div>
 						<div class="row">
                         <div class="col-md-4 text-left">
-                            <button class="btn btn-primary" id='addNewCategorybt' ng-click="prepareAddRiskFactor(riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors); isAddEditDisplayRiskFactor=true" ng-disabled="disableAdd">Add New Risk Factor</button>
+                            <button class="btn btn-primary" id='addNewCategorybt' ng-click="prepareAddRiskFactor(riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors)" ng-disabled="disableAdd">Add New Risk Factor</button>
                         </div>
                         </div>
-
 					<div id="addEditRiskFactorPanel" name="addEditRiskRangePanel" ng-if="isAddEditDisplayRiskFactor" ng-cloak>
                         <div class="btn-primary sub-header-label text-center">
                             <h2 class="sub-header-font"><strong>  Add Risk Factor </strong></h2>
@@ -333,6 +334,7 @@
 									<div class="error-wrapper" id="riskLevelDescValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelDesc' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$invalid" role="alert">
 										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.required"><strong>Level - is a required field.</strong></div>
 									</div>
+									</div>
 									</td>
 									<td class="table-td-alignment-center">
 									<input type="number" value="{{riskFactorLevel.score}}" class="form-control" name="riskLevelScore{{$index}}" id="riskLevelScore{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].score" ng-maxlength="20" aria-live="assertive" aria-describedby="riskLevelScoreValidation{{$index}}" />
@@ -377,8 +379,8 @@
 			</div>			
         </div>
 		<div class="text-center">
-                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid"  ng-if="isAddEditRiskAsmtTemplate">Save</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)"  ng-if="isAddEditRiskAsmtTemplate">Cancel</button>&nbsp;&nbsp;&nbsp;
          </div>
     </form>
 </div>

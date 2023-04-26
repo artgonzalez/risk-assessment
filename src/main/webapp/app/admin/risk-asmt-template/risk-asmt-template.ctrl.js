@@ -32,6 +32,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	$scope.riskAssessmentObj = [];
 	$scope.newRiskFactor = {};
 	$scope.required = true;
+	$scope.isAddEditDisplayRiskFactor = false;
+	$scope.isAddEditRiskAsmtTemplate = false;
     var msg;
 
     $scope.riskAssessmentSummaryPanelStatus = [{
@@ -207,6 +209,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     };
 
 	$scope.prepareAddRiskFactor = function(riskFactors){
+		$scope.isAddEditDisplayRiskFactor = true;
 		$scope.newRiskFactor = {
 								id: 0,
 								name: "",
@@ -356,9 +359,10 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                     }
                 });
             } else {*/
-			riskAsmtTemplateFactory.addRiskFactor($scope.riskAssessmentObj.id, $scope.newRiskFactor).then(function(response) {
-				console.log(response);
+			//riskAsmtTemplateFactory.addRiskFactor($scope.riskAssessmentObj.id, $scope.newRiskFactor).then(function(response) {
+				//console.log(response);
                 riskAsmtTemplateFactory.updateRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
+				//riskAsmtTemplateFactory.addRiskFactor($scope.riskAssessmentObj.id, $scope.newRiskFactor).then(function(response) {
                     if (response.success) {
                         $scope.data = response.data;
                         $scope.message = $scope.data.message;
@@ -378,13 +382,13 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayEditCurrentRiskAsmtTplPanel = false;
                         $scope.displayRecordSavedMsg = false;
                         $scope.riskAsmtTemplateForm.$setPristine();
-                        $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
+                        //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
                         $location.hash('errorMessageDisplay');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();
                     }
                 });
-			});
+			
             //}
             $scope.isNewTemplate = false;
             $scope.isFutureTemplate = false;
@@ -436,6 +440,10 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 				console.log('else');
                 $scope.riskAsmtTemplateForm.$setPristine();
 				$scope.newRiskFactor = {}
+				if(!$scope.isAddEditDisplayRiskFactor){
+					$scope.isAddEditRiskAsmtTemplate = false;
+				}
+				
 				$scope.isAddEditDisplayRiskFactor = false;
                 $scope.displayEditCurrentRiskAsmtTplPanel = false;
                 $scope.isCurrentTemplate = false;
@@ -606,7 +614,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     };
 
     $scope.validateExpirationDate = function() {
-        var expirationDate = $scope.addEditRiskAsmtTplVersion.expirationDate;
+       /* var expirationDate = $scope.addEditRiskAsmtTplVersion.expirationDate;
         var effectiveDate = $scope.addEditRiskAsmtTplVersion.effectiveDate;
         var currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
@@ -647,7 +655,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             if (!angular.isUndefined($scope.riskAsmtTemplateForm.expirationDate)) {
                 $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, true);
             }
-        }
+        }*/
     };
 
     $scope.initializeAddNewTemplate = function() {
@@ -732,6 +740,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     };
 
     $scope.initializeExistingTemplate = function(riskAsmtId) {
+		$scope.isAddEditRiskAsmtTemplate = true;
         if (($scope.riskAsmtTemplateForm.$dirty /*|| $scope.editCurrentRiskAsmtTemplateForm.$dirty*/) && !$scope.formNotChanged()) {
             msg = 'There are unsaved changes in the form. Do you want to discard?';
             dialogMessageFactory.getConfirmation(msg).then(function() {

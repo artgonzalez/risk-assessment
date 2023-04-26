@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RiskFactor {
 	private long id;
+	private long riskRangeTypeId;
 	private String name;
 	private int weightMultiplier;
 	private List<RiskFactorLevel> riskFactorLevels;

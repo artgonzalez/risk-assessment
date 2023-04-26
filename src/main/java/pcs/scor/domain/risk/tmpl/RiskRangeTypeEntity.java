@@ -2,6 +2,7 @@ package pcs.scor.domain.risk.tmpl;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -47,6 +48,6 @@ public class RiskRangeTypeEntity {
 	@OneToMany(mappedBy="riskRangeType")
 	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges;
 
-	@OneToMany(mappedBy = "riskRangeType")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "riskRangeType")
 	private Set<RiskFactorEntity> riskFactors;
 }

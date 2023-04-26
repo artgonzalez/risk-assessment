@@ -1,7 +1,9 @@
 package pcs.scor.domain.risk.tmpl;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,8 +45,8 @@ public class RiskFactorEntity {
 	private String name;
 	private int weightMultiplier;
 	
-	@OneToMany(mappedBy="riskFactor")
-	private Set<RiskFactorLevelEntity> riskFactorLevels;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="riskFactor")
+	private Set<RiskFactorLevelEntity> riskFactorLevels = new HashSet<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_factor_risk_range_type"))
