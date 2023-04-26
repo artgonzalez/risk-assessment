@@ -30,6 +30,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     $scope.contractHighMaxLessThanContractHighMin = false;
 	$scope.baseLineRiskRangeTotals = [];
 	$scope.riskAssessmentObj = [];
+	$scope.newRiskFactor = {};
+	$scope.required = true;
     var msg;
 
     $scope.riskAssessmentSummaryPanelStatus = [{
@@ -122,10 +124,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 				riskAssessment.baseLineRiskRangesValues[valuesCount++] = baseLineRiskRangesText[j].max;
 			}
 			
-			console.log(riskAssessment.baselineRiskRangesValues);
-			
 			riskAssessment.baseLineRiskRanges = baseLineRiskRangesText;
-		
 		}			
 		
 		var valuesCount = 0;		
@@ -145,7 +144,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			valuesCount = 0;
 		}
 	};
-
+	
     $scope.getRiskAsmtTemplate = function(riskAsmtId) {
         $scope.displayRecordSavedMsg = false;
         $scope.message = '';
@@ -206,6 +205,20 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     $scope.getRiskAsmtRiskFactors = function(riskRangeIndex) {
         $scope.riskRangeTypeIndex = riskRangeIndex;
     };
+
+	$scope.prepareAddRiskFactor = function(riskFactors){
+		$scope.newRiskFactor = {
+								id: 0,
+								name: "",
+								riskFactorLevels: [],
+								riskRangeTypeId: 0,
+								weightMultiplier: 0,
+			
+								};
+								
+		console.log($scope.newRiskFactor);
+		$scope.newRiskFactorIndex = riskFactors.length;
+	};
 	
     $scope.initializeGrids = function(riskTemplateId) {
 		//$scope.getRiskAsmtRiskFactors($scope.riskAssessmentObj[0].riskRangeTypeId);
@@ -219,7 +232,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $anchorScroll();
         $scope.isNewTemplate = true;
         if ($scope.isNewTemplate || $scope.isFutureTemplate) {
-            if ($scope.addNewRiskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
+            if ($scope.riskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
                     $scope.addEditRiskAsmtTplVersion = {};
@@ -280,7 +293,14 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     $scope.saveRiskAssessmentTemplate = function(riskAsmtTemplate) {
         $scope.isAtleastOneLegalRiskFactorEntered = false;
         $scope.isAtleastOneContractRiskFactorEntered = false;
-
+		var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
+		$scope.newRiskFactor.id = 0;
+		$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].id;
+		
+		$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
+		console.log($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors);
+		
+		/*
         for (var index = 0; index < $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals.length; index++) {
             if ($scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals[index].riskFactorStatus === true) {
                 $scope.isAtleastOneLegalRiskFactorEntered = true;
@@ -318,7 +338,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.getRiskAsmtTemplates();
                         $scope.isNoRecordsMessageDisabled = true;
                         $scope.displayRecordSavedMsg = true;
-                        $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                        $scope.riskAsmtTemplateForm.$setPristine();
                         $location.hash('displayRecordSavedMsg');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();
@@ -329,20 +349,22 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayOnlyRiskAsmtTemplate = false;
                         $scope.displayEditCurrentRiskAsmtTplPanel = false;
                         $scope.displayRecordSavedMsg = false;
-                        $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                        $scope.riskAsmtTemplateForm.$setPristine();
                         $location.hash('errorMessageDisplay');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();
                     }
                 });
-            } else {
+            } else {*/
+			riskAsmtTemplateFactory.addRiskFactor($scope.riskAssessmentObj.id, $scope.newRiskFactor).then(function(response) {
+				console.log(response);
                 riskAsmtTemplateFactory.updateRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
                     if (response.success) {
                         $scope.data = response.data;
                         $scope.message = $scope.data.message;
                         $scope.displayRecordSavedMsg = true;
                         $scope.getRiskAsmtTemplates();
-                        $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                        $scope.riskAsmtTemplateForm.$setPristine();
                         $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
 
                         $location.hash('displayRecordSavedMsg');
@@ -355,18 +377,19 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayOnlyRiskAsmtTemplate = false;
                         $scope.displayEditCurrentRiskAsmtTplPanel = false;
                         $scope.displayRecordSavedMsg = false;
-                        $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                        $scope.riskAsmtTemplateForm.$setPristine();
                         $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
                         $location.hash('errorMessageDisplay');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();
                     }
                 });
-            }
+			});
+            //}
             $scope.isNewTemplate = false;
             $scope.isFutureTemplate = false;
             $scope.isCurrentTemplate = false;
-        }
+        //}
     };
 
     $scope.cancelRiskAssessmentTemplate = function() {
@@ -377,7 +400,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $location.hash('');
         $anchorScroll();
         if ($scope.isNewTemplate || $scope.isFutureTemplate) {
-            if ($scope.addNewRiskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
+            if ($scope.riskAsmtTemplateForm.$dirty /*&& !$scope.formNotChanged()*/) {
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
                     for (var index = 0; index < 5; index++) {
@@ -387,14 +410,14 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope["contractRiskLevelScore4TextRequired_" + index] = false;
                     }
                     $scope.addEditRiskAsmtTplVersion = {};
-                    $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                    $scope.riskAsmtTemplateForm.$setPristine();
                     $scope.displayAddNewRiskAsmtTplPanel = false;
                     $scope.isNewTemplate = false;
                     $scope.isFutureTemplate = false;
                 }, function() {});
             } else {
                 $scope.addEditRiskAsmtTplVersion = {};
-                $scope.addNewRiskAsmtTemplateForm.$setPristine();
+                $scope.riskAsmtTemplateForm.$setPristine();
                 $scope.displayAddNewRiskAsmtTplPanel = false;
                 $scope.isNewTemplate = false;
                 $scope.isFutureTemplate = false;
@@ -410,7 +433,10 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                     $scope.displayEditCurrentRiskAsmtTplPanel = true;
                 });
             } else {
-                $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
+				console.log('else');
+                $scope.riskAsmtTemplateForm.$setPristine();
+				$scope.newRiskFactor = {}
+				$scope.isAddEditDisplayRiskFactor = false;
                 $scope.displayEditCurrentRiskAsmtTplPanel = false;
                 $scope.isCurrentTemplate = false;
             }
@@ -427,19 +453,19 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         var legalLowMin = $scope.addEditRiskAsmtTplVersion.legalLowMin;
 
         if (!angular.isUndefined(legalHighMin) && $scope.legalHighMaxLessThanLegalHighMin === false) {
-            $scope.addNewRiskAsmtTemplateForm.legalHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalHighMin.$errors, true);
+            $scope.riskAsmtTemplateForm.legalHighMin.$setValidity($scope.riskAsmtTemplateForm.legalHighMin.$errors, true);
         }
 
         if (!angular.isUndefined(legalMediumMin)) {
-            $scope.addNewRiskAsmtTemplateForm.legalMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalMediumMin.$errors, true);
+            $scope.riskAsmtTemplateForm.legalMediumMin.$setValidity($scope.riskAsmtTemplateForm.legalMediumMin.$errors, true);
 
             if (Number(legalMediumMin) < (Number(legalLowMin) + 2)) {
                 $scope.legalMediumMinLessThanLegalLowMin = true;
-                $scope.addNewRiskAsmtTemplateForm.legalMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalMediumMin.$errors, false);
+                $scope.riskAsmtTemplateForm.legalMediumMin.$setValidity($scope.riskAsmtTemplateForm.legalMediumMin.$errors, false);
             }
             if (!angular.isUndefined(legalHighMin) && Number(legalMediumMin) > (Number(legalHighMin) - 2)) {
                 $scope.invalidLegalMediumMin = true;
-                $scope.addNewRiskAsmtTemplateForm.legalMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalMediumMin.$errors, false);
+                $scope.riskAsmtTemplateForm.legalMediumMin.$setValidity($scope.riskAsmtTemplateForm.legalMediumMin.$errors, false);
             }
         }
     };
@@ -454,19 +480,19 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         var legalHighMax = $scope.addEditRiskAsmtTplVersion.legalHighMax;
 
         if (!angular.isUndefined(legalMediumMin) && $scope.legalMediumMinLessThanLegalLowMin === false) {
-            $scope.addNewRiskAsmtTemplateForm.legalMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalMediumMin.$errors, true);
+            $scope.riskAsmtTemplateForm.legalMediumMin.$setValidity($scope.riskAsmtTemplateForm.legalMediumMin.$errors, true);
         }
 
         if (!angular.isUndefined(legalHighMin)) {
-            $scope.addNewRiskAsmtTemplateForm.legalHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalHighMin.$errors, true);
+            $scope.riskAsmtTemplateForm.legalHighMin.$setValidity($scope.riskAsmtTemplateForm.legalHighMin.$errors, true);
 
             if (Number(legalHighMax) <= Number(legalHighMin)) {
                 $scope.legalHighMaxLessThanLegalHighMin = true;
-                $scope.addNewRiskAsmtTemplateForm.legalHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalHighMin.$errors, false);
+                $scope.riskAsmtTemplateForm.legalHighMin.$setValidity($scope.riskAsmtTemplateForm.legalHighMin.$errors, false);
             }
             if (!angular.isUndefined(legalMediumMin) && Number(legalMediumMin) > (Number(legalHighMin) - 2)) {
                 $scope.invalidLegalHighMin = true;
-                $scope.addNewRiskAsmtTemplateForm.legalHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.legalHighMin.$errors, false);
+                $scope.riskAsmtTemplateForm.legalHighMin.$setValidity($scope.riskAsmtTemplateForm.legalHighMin.$errors, false);
             }
         }
     };
@@ -481,19 +507,19 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         var contractLowMin = $scope.addEditRiskAsmtTplVersion.contractLowMin;
 
         if (!angular.isUndefined(contractHighMin) && $scope.contractHighMaxLessThanContractHighMin === false) {
-            $scope.addNewRiskAsmtTemplateForm.contractHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractHighMin.$errors, true);
+            $scope.riskAsmtTemplateForm.contractHighMin.$setValidity($scope.riskAsmtTemplateForm.contractHighMin.$errors, true);
         }
 
         if (!angular.isUndefined(contractMediumMin)) {
-            $scope.addNewRiskAsmtTemplateForm.contractMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractMediumMin.$errors, true);
+            $scope.riskAsmtTemplateForm.contractMediumMin.$setValidity($scope.riskAsmtTemplateForm.contractMediumMin.$errors, true);
 
             if (Number(contractMediumMin) < (Number(contractLowMin) + 2)) {
                 $scope.contractMediumMinLessThanContractLowMin = true;
-                $scope.addNewRiskAsmtTemplateForm.contractMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractMediumMin.$errors, false);
+                $scope.riskAsmtTemplateForm.contractMediumMin.$setValidity($scope.riskAsmtTemplateForm.contractMediumMin.$errors, false);
             }
             if (!angular.isUndefined(contractHighMin) && Number(contractMediumMin) > (Number(contractHighMin) - 2)) {
                 $scope.invalidContractMediumMin = true;
-                $scope.addNewRiskAsmtTemplateForm.contractMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractMediumMin.$errors, false);
+                $scope.riskAsmtTemplateForm.contractMediumMin.$setValidity($scope.riskAsmtTemplateForm.contractMediumMin.$errors, false);
             }
         }
     };
@@ -508,19 +534,19 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         var contractHighMax = $scope.addEditRiskAsmtTplVersion.contractHighMax;
 
         if (!angular.isUndefined(contractMediumMin) && $scope.contractMediumMinLessThanContractLowMin === false) {
-            $scope.addNewRiskAsmtTemplateForm.contractMediumMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractMediumMin.$errors, true);
+            $scope.riskAsmtTemplateForm.contractMediumMin.$setValidity($scope.riskAsmtTemplateForm.contractMediumMin.$errors, true);
         }
 
         if (!angular.isUndefined(contractHighMin)) {
-            $scope.addNewRiskAsmtTemplateForm.contractHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractHighMin.$errors, true);
+            $scope.riskAsmtTemplateForm.contractHighMin.$setValidity($scope.riskAsmtTemplateForm.contractHighMin.$errors, true);
 
             if (Number(contractHighMax) <= Number(contractHighMin)) {
                 $scope.contractHighMaxLessThanContractHighMin = true;
-                $scope.addNewRiskAsmtTemplateForm.contractHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractHighMin.$errors, false);
+                $scope.riskAsmtTemplateForm.contractHighMin.$setValidity($scope.riskAsmtTemplateForm.contractHighMin.$errors, false);
             }
             if (!angular.isUndefined(contractMediumMin) && Number(contractMediumMin) > (Number(contractHighMin) - 2)) {
                 $scope.invalidContractHighMin = true;
-                $scope.addNewRiskAsmtTemplateForm.contractHighMin.$setValidity($scope.addNewRiskAsmtTemplateForm.contractHighMin.$errors, false);
+                $scope.riskAsmtTemplateForm.contractHighMin.$setValidity($scope.riskAsmtTemplateForm.contractHighMin.$errors, false);
             }
         }
     };
@@ -572,10 +598,10 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         currentDate.setHours(0, 0, 0, 0);
         if (!(angular.isUndefined(effectiveDate)) && (effectiveDate < currentDate)) {
             $scope.isEffectiveDateInvalid = true;
-            $scope.addNewRiskAsmtTemplateForm.effectiveDate.$setValidity($scope.addNewRiskAsmtTemplateForm.effectiveDate.$errors, false);
+            $scope.riskAsmtTemplateForm.effectiveDate.$setValidity($scope.riskAsmtTemplateForm.effectiveDate.$errors, false);
         } else {
             $scope.isEffectiveDateInvalid = false;
-            $scope.addNewRiskAsmtTemplateForm.effectiveDate.$setValidity($scope.addNewRiskAsmtTemplateForm.effectiveDate.$errors, true);
+            $scope.riskAsmtTemplateForm.effectiveDate.$setValidity($scope.riskAsmtTemplateForm.effectiveDate.$errors, true);
         }
     };
 
@@ -588,14 +614,14 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             if ($scope.isNewTemplate || $scope.isFutureTemplate) {
                 if (expirationDate <= currentDate) {
                     $scope.isExpirationDateLessThanCurrentDate = true;
-                    $scope.addNewRiskAsmtTemplateForm.expirationDate.$setValidity($scope.addNewRiskAsmtTemplateForm.expirationDate.$errors, false);
+                    $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, false);
                 } else if (!angular.isUndefined(effectiveDate) && expirationDate <= effectiveDate) {
                     $scope.isExpirationDateInvalid = true;
-                    $scope.addNewRiskAsmtTemplateForm.expirationDate.$setValidity($scope.addNewRiskAsmtTemplateForm.expirationDate.$errors, false);
+                    $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, false);
                 } else {
                     $scope.isExpirationDateInvalid = false;
                     $scope.isExpirationDateLessThanCurrentDate = false;
-                    $scope.addNewRiskAsmtTemplateForm.expirationDate.$setValidity($scope.addNewRiskAsmtTemplateForm.expirationDate.$errors, true);
+                    $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, true);
                 }
             } else {
                 if (expirationDate <= currentDate) {
@@ -618,8 +644,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                 $scope.editCurrentRiskAsmtTemplateForm.expirationDate.$setValidity($scope.editCurrentRiskAsmtTemplateForm.expirationDate.$errors, true);
             }
             $scope.isExpirationDateInvalid = false;
-            if (!angular.isUndefined($scope.addNewRiskAsmtTemplateForm.expirationDate)) {
-                $scope.addNewRiskAsmtTemplateForm.expirationDate.$setValidity($scope.addNewRiskAsmtTemplateForm.expirationDate.$errors, true);
+            if (!angular.isUndefined($scope.riskAsmtTemplateForm.expirationDate)) {
+                $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, true);
             }
         }
     };
@@ -686,8 +712,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 
     $scope.resetForm = function() {
         $scope.isExpirationDateInvalid = false;
-        if (!angular.isUndefined($scope.addNewRiskAsmtTemplateForm.expirationDate)) {
-            $scope.addNewRiskAsmtTemplateForm.expirationDate.$setValidity($scope.addNewRiskAsmtTemplateForm.expirationDate.$errors, true);
+        if (!angular.isUndefined($scope.riskAsmtTemplateForm.expirationDate)) {
+            $scope.riskAsmtTemplateForm.expirationDate.$setValidity($scope.riskAsmtTemplateForm.expirationDate.$errors, true);
         }
         /*$scope.isCurrentExpirationDateInvalid = false;
         if (!angular.isUndefined($scope.editCurrentRiskAsmtTemplateForm.expirationDate)) {
@@ -698,15 +724,15 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $scope.isExpirationDateLessThanCurrentDate = false;
         if ($scope.isEffectiveDateInvalid) {
             $scope.isEffectiveDateInvalid = false;
-            $scope.addNewRiskAsmtTemplateForm.effectiveDate.$setValidity($scope.addNewRiskAsmtTemplateForm.effectiveDate.$errors, true);
+            $scope.riskAsmtTemplateForm.effectiveDate.$setValidity($scope.riskAsmtTemplateForm.effectiveDate.$errors, true);
         }
 
-        $scope.addNewRiskAsmtTemplateForm.$setPristine();
+        $scope.riskAsmtTemplateForm.$setPristine();
         //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
     };
 
     $scope.initializeExistingTemplate = function(riskAsmtId) {
-        if (($scope.addNewRiskAsmtTemplateForm.$dirty /*|| $scope.editCurrentRiskAsmtTemplateForm.$dirty*/) && !$scope.formNotChanged()) {
+        if (($scope.riskAsmtTemplateForm.$dirty /*|| $scope.editCurrentRiskAsmtTemplateForm.$dirty*/) && !$scope.formNotChanged()) {
             msg = 'There are unsaved changes in the form. Do you want to discard?';
             dialogMessageFactory.getConfirmation(msg).then(function() {
                 $scope.resetForm();
@@ -742,7 +768,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             var destination = toState.name;
             event.preventDefault();
             var msg = 'There are unsaved changes in the form. Do you want to discard?';
-            if ($scope.addNewRiskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
+            if ($scope.riskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
                 dialogMessageFactory.getConfirmation(msg).then(function() {
                     routeChangeOff();
                     $state.go(destination);
@@ -757,10 +783,10 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         });
 
     $scope.formNotChanged = function() {
-        if (!angular.isUndefined($scope.oldAddEditRiskAsmtTylVersion)) {
+        /*if (!angular.isUndefined($scope.oldAddEditRiskAsmtTylVersion)) {
             return formUtilFactory.trueEqual($scope.oldAddEditRiskAsmtTylVersion, $scope.addEditRiskAsmtTplVersion) &&
                 formUtilFactory.checkEqualityForList($scope.oldAddEditRiskAsmtTylVersion.riskAssessmentTemplateContracts, JSON.parse(angular.toJson($scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateContracts))) &&
                 formUtilFactory.checkEqualityForList($scope.oldAddEditRiskAsmtTylVersion.riskAssessmentTemplateLegals, JSON.parse(angular.toJson($scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals)));
-        }
+        }*/
     };
 });

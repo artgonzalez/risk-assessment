@@ -100,7 +100,7 @@
     <div id="displayExpirationDateUpdateMsg" class="text-center" style="padding-bottom:5px">
         <span><strong>{{message}}</strong></span>
     </div>
-    <form name="addNewRiskAsmtTemplateForm" novalidate class="css-form">
+    <form name="riskAsmtTemplateForm" novalidate class="css-form">
         <div id="addNewRiskAsmtTemplate" ng-if="true">
             <!--div>
                 <button type="button" class="btn btn-primary btn-sm" ng-click="expandCollapseAll()">Expand/Collapse All</button>
@@ -114,9 +114,9 @@
                     <span class="mandatory">*</span><label for="newVersion">Version</label>
                     <p class="input-group">
                         <input class="form-control" type="text" id="newVersion" name="version" ng-model="addEditRiskAsmtTplVersion.version" ng-pattern="/^[0-9.]*$/" required="true" aria-live="assertive" aria-describedby="versionValidation"></input>
-                        <div class="error-wrapper" id="versionValidation" ng-messages="addNewRiskAsmtTemplateForm.version.$error" ng-if="addNewRiskAsmtTemplateForm.version.$invalid">
-                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.version.$error.required"><strong>Version - is a required field.</strong></div>
-                            <div ng-message="pattern" ng-if="addNewRiskAsmtTemplateForm.version.$error.pattern"><strong> Version - must be numeric.</strong></div>
+                        <div class="error-wrapper" id="versionValidation" ng-messages="riskAsmtTemplateForm.version.$error" ng-if="riskAsmtTemplateForm.version.$invalid">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.version.$error.required"><strong>Version - is a required field.</strong></div>
+                            <div ng-message="pattern" ng-if="riskAsmtTemplateForm.version.$error.pattern"><strong> Version - must be numeric.</strong></div>
                         </div>
                     </p>
                 </div>
@@ -127,11 +127,11 @@
                         <span class="input-group-btn">
                             <button aria-label="calenderButton" class="btn btn-default" id="newEffectiveDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
                           </span>
-                        <div class="error-wrapper" id="effectiveDateValidation" ng-messages="addNewRiskAsmtTemplateForm.effectiveDate.$error" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$invalid || isEffectiveDateInvalid">
-                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$error.required">
+                        <div class="error-wrapper" id="effectiveDateValidation" ng-messages="riskAsmtTemplateForm.effectiveDate.$error" ng-if="riskAsmtTemplateForm.effectiveDate.$invalid || isEffectiveDateInvalid">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveDate.$error.required">
                                 <strong>Effective Date - is a required field.</strong>
                             </div>
-                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.effectiveDate.$error.date">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveDate.$error.date">
                                 <strong>Effective Date - must enter in mm/dd/yyyy format.</strong>
                             </div>
                             <div ng-message="required" ng-if="isEffectiveDateInvalid">
@@ -147,8 +147,8 @@
                         <span class="input-group-btn">
                             <button aria-label="calenderButton" class="btn btn-default" id="newExpirationDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
                           </span>
-                        <div class="error-wrapper" id="expirationDateValidation" ng-messages="addNewRiskAsmtTemplateForm.expirationDate.$error" ng-if="addNewRiskAsmtTemplateForm.expirationDate.$invalid || isExpirationDateInvalid || isExpirationDateLessThanCurrentDate">
-                            <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.expirationDate.$error.date">
+                        <div class="error-wrapper" id="expirationDateValidation" ng-messages="riskAsmtTemplateForm.expirationDate.$error" ng-if="riskAsmtTemplateForm.expirationDate.$invalid || isExpirationDateInvalid || isExpirationDateLessThanCurrentDate">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.expirationDate.$error.date">
                                 <strong>Expiration Date - must enter in mm/dd/yyyy format.</strong>
                             </div>
                             <div ng-message="required" ng-if="isExpirationDateInvalid">
@@ -164,17 +164,17 @@
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
                         <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="addEditRiskAsmtTplVersion.riskAssessmentTplComment" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
-                    <div class="error-wrapper" id="newCommentValidation" ng-messages="addNewRiskAsmtTemplateForm.comment.$error" ng-if="addNewRiskAsmtTemplateForm.comment.$invalid" role="alert">
-                        <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
+                    <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
+                        <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>
-                        <div ng-message="minlength" ng-if="addNewRiskAsmtTemplateForm.comment.$error.minlength"><strong> Comment - must be 1-250 characters.</strong></div>
-                        <div ng-message="maxlength" ng-if="addNewRiskAsmtTemplateForm.comment.$error.maxlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                        <div ng-message="minlength" ng-if="riskAsmtTemplateForm.comment.$error.minlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                        <div ng-message="maxlength" ng-if="riskAsmtTemplateForm.comment.$error.maxlength"><strong> Comment - must be 1-250 characters.</strong></div>
                     </div>
                     </p>
                 </div>
             </div>
             <div class="text-center" ng-if="false">
-                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="addNewRiskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
             </div>
 
@@ -234,9 +234,9 @@
                             </div>
                             <div class="col-md-3 contact-div-padding text-left">
                                 <input type="text" class="form-control" name="firstName" id="firstName" ng-model="" ng-maxlength="15" ng-required=contactRequired aria-live="assertive" aria-describedby="nameValidation" />
-                                <div class="error-wrapper" id="firstNameValidation" ng-messages="addNewRiskAsmtTemplateForm.name.$error" ng-if="addNewRiskAsmtTemplateForm.name.$invalid" role="alert">
-                                    <div ng-message="required" ng-if="addNewRiskAsmtTemplateForm.firstName.$error.required"><strong>Name - is a required field.</strong></div>
-                                    <div ng-message="maxlength" ng-if="addNewRiskAsmtTemplateForm.firstName.$error.maxlength"><strong>Name - must be within 15 characters.</strong></div>
+                                <div class="error-wrapper" id="firstNameValidation" ng-messages="riskAsmtTemplateForm.name.$error" ng-if="riskAsmtTemplateForm.name.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="riskAsmtTemplateForm.firstName.$error.required"><strong>Name - is a required field.</strong></div>
+                                    <div ng-message="maxlength" ng-if="riskAsmtTemplateForm.firstName.$error.maxlength"><strong>Name - must be within 15 characters.</strong></div>
                                 </div>
                             </div>
                             <!--div class="col-md-2 text-right">
@@ -261,12 +261,6 @@
                         <uib-accordion-heading>
                             Risk Factor<em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': expandCollapseStatus[1].open, 'glyphicon-plus-sign': !expandCollapseStatus[1].open}"></em>
                         </uib-accordion-heading!-->
-						<div class="row">
-                        <div class="col-md-4 text-left">
-                            <button class="btn btn-primary" id='addNewCategorybt' ng-click="isAddEditDisplayRiskCategory=true" ng-disabled="disableAdd">Add New Risk Factor</button>
-                        </div>
-                        </div>
-						<br/>
 						        <div>
                     <table class="table table-striped">
                         <thead>
@@ -285,7 +279,73 @@
                         </tbody>
                     </table>
 					</div>
-					<div>
+						<div class="row">
+                        <div class="col-md-4 text-left">
+                            <button class="btn btn-primary" id='addNewCategorybt' ng-click="prepareAddRiskFactor(riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors); isAddEditDisplayRiskFactor=true" ng-disabled="disableAdd">Add New Risk Factor</button>
+                        </div>
+                        </div>
+
+					<div id="addEditRiskFactorPanel" name="addEditRiskRangePanel" ng-if="isAddEditDisplayRiskFactor" ng-cloak>
+                        <div class="btn-primary sub-header-label text-center">
+                            <h2 class="sub-header-font"><strong>  Add Risk Factor </strong></h2>
+                        </div>
+                        <div class="row contract-contact-div-padding">
+                            <div class="col-md-3 text-right">
+                                <span class="mandatory">*</span>
+                                <label for="riskFactorName">Name</label>
+                            </div>
+                            <div class="col-md-3 contact-div-padding text-left">
+                                <input type="text" class="form-control" name="riskFactorName" id="riskFactorName" ng-model="newRiskFactor.name" ng-maxlength="15"aria-live="assertive" aria-describedby="riskFactorNameValidation" ng-required=required />
+                                <div class="error-wrapper" id="riskFactorNameValidation" ng-messages="riskAsmtTemplateForm.riskFactorName.$error" ng-if="riskAsmtTemplateForm.riskFactorName.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="riskAsmtTemplateForm.riskFactorName.$error.required"><strong>Name - is a required field.</strong></div>
+                                    <div ng-message="maxlength" ng-if="riskAsmtTemplateForm.riskFactorName.$error.maxlength"><strong>Name - must be within 15 characters.</strong></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-right">
+                                <span class="mandatory">*</span>
+                                <label for="weightMultiplier">Weight Multiplier</label>
+                            </div>
+                            <div class="col-md-3 contact-div-padding text-left">
+                                <input type="text" class="form-control" name="weightMultiplier" id="weightMultiplier" ng-model="newRiskFactor.weightMultiplier" ng-maxlength="20" ng-required=required aria-live="assertive" aria-describedby="weightMultiplierValidation" />
+                                <div class="error-wrapper" id="weightMultiplierValidation" ng-messages="riskAsmtTemplateForm.weightMultiplier.$error" ng-if="riskAsmtTemplateForm.weightMultiplier.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="riskAsmtTemplateForm.weightMultiplier.$error.required"><strong>Weight Multiplier - is a required field.</strong></div>
+                                </div>
+                            </div>
+							<table class="table table-striped">
+							<thead>
+								<tr>
+									<th  class="btn-primary table-th-child">
+										Risk Level</th>
+									<th class="btn-primary table-th-child">
+										Level</th>
+									<th  class="btn-primary table-th-child">
+										Score</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="riskFactorLevel in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors[riskFactorIndex].riskFactorLevels track by $index">
+									<td>{{newRiskFactor.riskFactorLevels[$index].riskLevel = riskFactorLevel.riskLevel; riskFactorLevel.riskLevel.level}}
+									</td>
+									<td>
+									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].level" ng-maxlength="20" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
+									<div class="col-md-3 contact-div-padding text-left">
+									
+									<div class="error-wrapper" id="riskLevelDescValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelDesc' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$invalid" role="alert">
+										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.required"><strong>Level - is a required field.</strong></div>
+									</div>
+									</td>
+									<td class="table-td-alignment-center">
+									<input type="number" value="{{riskFactorLevel.score}}" class="form-control" name="riskLevelScore{{$index}}" id="riskLevelScore{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].score" ng-maxlength="20" aria-live="assertive" aria-describedby="riskLevelScoreValidation{{$index}}" />
+									<!--div class="error-wrapper" id="riskLevelScoreValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelScore' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelScore' + $index].$invalid" role="alert">
+										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelScore' + $index].$error.required"><strong>Score - is a required field.</strong></div>
+									</div-->
+									</td>
+								</tr>
+							</tbody>
+							</table>
+					</div>
+                        </div>
+					<div ng-if="!isAddEditDisplayRiskFactor">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -316,5 +376,9 @@
                 </uib-accordion>
 			</div>			
         </div>
+		<div class="text-center">
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
+         </div>
     </form>
 </div>
