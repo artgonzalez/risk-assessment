@@ -15,7 +15,9 @@ import pcs.scor.data.risk.repository.RiskRangeTypeRangeRepository;
 import pcs.scor.data.risk.repository.RiskRangeTypeRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
+import pcs.scor.model.risk.tmpl.RiskFactor;
 import pcs.scor.model.risk.tmpl.RiskFactorLevel;
+import pcs.scor.model.risk.tmpl.RiskRangeType;
 import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Service
@@ -48,7 +50,9 @@ public class RiskAssessmentTemplateService {
 		
 		RiskAssessmentTemplate template = modelMapper.map(templateEntity, RiskAssessmentTemplate.class);
 		
-		template.getRiskRangeTypes().forEach(range -> { 
+		template.getRiskRangeTypes().sort(Comparator.comparing(RiskRangeType::getId));
+		template.getRiskRangeTypes().forEach(range -> {
+						range.getRiskFactors().sort(Comparator.comparing(RiskFactor::getId));
 						range.getRiskRangeTypeRanges().sort(Comparator.comparing(RiskRangeTypeRange::getMin));
 						range.getRiskFactors().forEach(factor -> 
 						factor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getScore)));
@@ -68,7 +72,7 @@ public class RiskAssessmentTemplateService {
 	
 	public RiskAssessmentTemplate updateRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
 		RiskAssessmentTemplateEntity updateTemplateEntity = modelMapper.map(riskAssessmentTemplate, RiskAssessmentTemplateEntity.class);
-	    
+		
 	    RiskAssessmentTemplateEntity updatedTemplateEntity = riskAsmtTemplateRepository.save(updateTemplateEntity);
 	    		
 		return modelMapper.map(updatedTemplateEntity, RiskAssessmentTemplate.class);

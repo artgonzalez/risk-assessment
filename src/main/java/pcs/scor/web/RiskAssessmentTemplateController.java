@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pcs.scor.data.risk.repository.RiskAssessmentTemplateRepository;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
 import pcs.scor.service.RiskAssessmentTemplateService;
 
@@ -21,9 +20,6 @@ import pcs.scor.service.RiskAssessmentTemplateService;
 @RequestMapping("/api")
 public class RiskAssessmentTemplateController {
 	final public String riskAsmtTemplateMapping = "risk-asmt-tplts";
-	
-	@Autowired
-	RiskAssessmentTemplateRepository riskAsmtTemplateRepository;
 	
 	@Autowired
 	RiskAssessmentTemplateService riskAssessmentTemplateService;
@@ -59,5 +55,5 @@ public class RiskAssessmentTemplateController {
 		RiskAssessmentTemplate updatedTemplate = riskAssessmentTemplateService.updateRiskAssessmentTemplate(template);
 			
 	    return new ResponseEntity<>(updatedTemplate, HttpStatus.OK);
-	 }	
+	 }
 }
