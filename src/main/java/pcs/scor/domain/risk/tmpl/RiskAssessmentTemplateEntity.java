@@ -23,10 +23,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "risk_assessment_template")
 public class RiskAssessmentTemplateEntity {
-	public RiskAssessmentTemplateEntity(String version, Date start_date, Date end_date, String comment) {
+	public RiskAssessmentTemplateEntity(String version, Date startDate, Date endDate, String comment) {
 		this.version = version;
-		this.effective_start_date = start_date;
-		this.effective_end_date = end_date;
+		this.effectiveStartDate = startDate;
+		this.effectiveEndDate = endDate;
 		this.comment = comment;
 	}
 	@Id
@@ -39,7 +39,7 @@ public class RiskAssessmentTemplateEntity {
 	private Set<RiskRangeTypeEntity> riskRangeTypes;
 	
 	private String version;
-	private Date effective_start_date;
-	private Date effective_end_date;
+	private Date effectiveStartDate;
+	private Date effectiveEndDate;
 	private String comment;
 }

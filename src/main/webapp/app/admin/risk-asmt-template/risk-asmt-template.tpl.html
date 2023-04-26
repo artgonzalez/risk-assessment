@@ -123,18 +123,18 @@
                 <div class="col-md-3" ng-controller="dateController">
                     <span class="mandatory">*</span><label for="newEffectiveDate">Effective Date</label>
                     <p class="input-group">
-                        <input class="form-control" id="newEffectiveDate" name="effectiveDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="addEditRiskAsmtTplVersion.effectiveDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="effectiveDateOptions" close-text="Close" ng-change="validateEffectiveDate();validateExpirationDate()" required="true" aria-live="assertive" aria-describedby="effectiveDateValidation"/>
+                        <input class="form-control" id="newEffectiveDate" name="effectiveDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="riskAssessmentObj.effectiveStartDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="effectiveDateOptions" close-text="Close" ng-change="validateEffectiveDate();validateExpirationDate()" required="true" aria-live="assertive" aria-describedby="effectiveStartDateValidation"/>
                         <span class="input-group-btn">
                             <button aria-label="calenderButton" class="btn btn-default" id="newEffectiveDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
                           </span>
-                        <div class="error-wrapper" id="effectiveDateValidation" ng-messages="riskAsmtTemplateForm.effectiveDate.$error" ng-if="riskAsmtTemplateForm.effectiveDate.$invalid || isEffectiveDateInvalid">
-                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveDate.$error.required">
+                        <div class="error-wrapper" id="effectiveStartDateValidation" ng-messages="riskAsmtTemplateForm.effectiveStartDate.$error" ng-if="riskAsmtTemplateForm.effectiveStartDate.$invalid || isEffectiveStartDateInvalid">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveStartDate.$error.required">
                                 <strong>Effective Date - is a required field.</strong>
                             </div>
-                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveDate.$error.date">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveStartDate.$error.date">
                                 <strong>Effective Date - must enter in mm/dd/yyyy format.</strong>
                             </div>
-                            <div ng-message="required" ng-if="isEffectiveDateInvalid">
+                            <div ng-message="required" ng-if="isEffectiveStartDateInvalid">
                                 <strong>Effective Date - must be greater than or equal to current date.</strong>
                             </div>
                         </div>
@@ -143,12 +143,12 @@
                 <div class="col-md-3" ng-controller="dateController">
                     <label for="newExpirationDate">Expiration Date</label>
                     <p class="input-group">
-                        <input class="form-control" id="newExpirationDate" name="expirationDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="addEditRiskAsmtTplVersion.expirationDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="expirationDateOptions" close-text="Close" ng-change="validateExpirationDate()" aria-live="assertive" aria-describedby="expirationDateValidation"/>
+                        <input class="form-control" id="newExpirationDate" name="expirationDate" type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="riskAssessmentObj.effectiveEndDate" alt-input-formats="altInputFormats" is-open="popup2.opened" datepicker-options="expirationDateOptions" close-text="Close" ng-change="validateExpirationDate()" aria-live="assertive" aria-describedby="expirationDateValidation"/>
                         <span class="input-group-btn">
                             <button aria-label="calenderButton" class="btn btn-default" id="newExpirationDate" type="button" ng-click="open2()" ><em class="glyphicon glyphicon-calendar"></em></button>
                           </span>
-                        <div class="error-wrapper" id="expirationDateValidation" ng-messages="riskAsmtTemplateForm.expirationDate.$error" ng-if="riskAsmtTemplateForm.expirationDate.$invalid || isExpirationDateInvalid || isExpirationDateLessThanCurrentDate">
-                            <div ng-message="required" ng-if="riskAsmtTemplateForm.expirationDate.$error.date">
+                        <div class="error-wrapper" id="expirationDateValidation" ng-messages="riskAsmtTemplateForm.effectiveEndDate.$error" ng-if="riskAsmtTemplateForm.effectiveEndDate.$invalid || isExpirationDateInvalid || isExpirationDateLessThanCurrentDate">
+                            <div ng-message="required" ng-if="riskAsmtTemplateForm.effectiveEndDate.$error.date">
                                 <strong>Expiration Date - must enter in mm/dd/yyyy format.</strong>
                             </div>
                             <div ng-message="required" ng-if="isExpirationDateInvalid">
@@ -163,7 +163,7 @@
                 <div class="col-md-4">
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
-                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="addEditRiskAsmtTplVersion.riskAssessmentTplComment" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comment" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
                     <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
                         <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>

@@ -16,7 +16,7 @@ public class RiskAssessmentTemplate{
 	private long id;
 	private List<RiskRangeType> riskRangeTypes = new ArrayList<RiskRangeType>();
 	private String version;
-	private Date effective_start_date;
-	private Date effective_end_date;
+	private Date effectiveStartDate;
+	private Date effectiveEndDate;
 	private String comment;
 }
