@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pcs.scor.data.risk.repository.RiskAssessmentTemplateRepository;
-import pcs.scor.data.risk.repository.RiskFactorLevelRepository;
 import pcs.scor.data.risk.repository.RiskFactorRepository;
-import pcs.scor.data.risk.repository.RiskRangeTypeRangeRepository;
-import pcs.scor.data.risk.repository.RiskRangeTypeRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
 import pcs.scor.model.risk.tmpl.RiskFactor;
@@ -25,13 +22,7 @@ public class RiskAssessmentTemplateService {
 	@Autowired
 	RiskAssessmentTemplateRepository riskAsmtTemplateRepository;
 	@Autowired
-	RiskRangeTypeRepository riskRangeTypeRepository;
-	@Autowired
-	RiskRangeTypeRangeRepository riskRangeTypeRangeRepository;
-	@Autowired
 	RiskFactorRepository riskFactorRepository;
-	@Autowired
-	RiskFactorLevelRepository riskFactorLevelRepository;
 	@Autowired
     private ModelMapper modelMapper;
 	
