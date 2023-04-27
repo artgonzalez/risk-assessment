@@ -147,6 +147,52 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 		}
 	};
 	
+	$scope.calculateRiskRangeTypeRanges = function(riskRangeType){
+		var lowMin = 0, lowMax = 0;
+		var medMin = 0, medMax = 0;
+		var highMin = 0, highMax = 0;
+		
+		for(var i=0; i < riskRangeType.riskFactors.length; i++){
+			var riskFactor = riskRangeType.riskFactors[i];
+			lowMin += riskFactor.weightMultiplier * $scope.getRiskFactorLevelsLowScore(riskFactor.riskFactorLevels);
+			highMax += riskFactor.weightMultiplier * $scope.getRiskFactorLevelsHighScore(riskFactor.riskFactorLevels);
+		}
+		
+		var rangePerMaxValues = Math.floor(highMax / 4);
+		console.log(lowMin);
+		console.log(lowMin + rangePerMaxValues);
+		console.log(lowMin + rangePerMaxValues + 1);
+		console.log(lowMin + rangePerMaxValues + rangePerMaxValues);
+		console.log(lowMin + rangePerMaxValues + rangePerMaxValues + 1);
+		console.log(highMax);
+		
+		
+	};
+	
+	$scope.getRiskFactorLevelsLowScore = function(riskFactorLevels){
+		var minScore = 1000;
+		
+		for(var i=0; i < riskFactorLevels.length; i++){
+			if(riskFactorLevels[i].score < minScore){
+				minScore = riskFactorLevels[i].score;
+			}
+		}
+		
+		return minScore;
+	};
+	
+	$scope.getRiskFactorLevelsHighScore = function(riskFactorLevels){
+		var maxScore = -1000;
+		
+		for(var i=0; i < riskFactorLevels.length; i++){
+			if(riskFactorLevels[i].score > maxScore){
+				maxScore = riskFactorLevels[i].score;
+			}
+		}
+		
+		return maxScore;
+	};
+	
     $scope.getRiskAsmtTemplate = function(riskAsmtId) {
         $scope.displayRecordSavedMsg = false;
         $scope.message = '';
@@ -296,13 +342,15 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     $scope.saveRiskAssessmentTemplate = function(riskAsmtTemplate) {
         $scope.isAtleastOneLegalRiskFactorEntered = false;
         $scope.isAtleastOneContractRiskFactorEntered = false;
-		var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
-		$scope.newRiskFactor.id = 0;
-		$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].id;
 		
-		$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
-		console.log($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors);
-		
+		if($scope.isAddEditDisplayRiskFactor){
+			var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
+			$scope.newRiskFactor.id = 0;
+			$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].id;
+			
+			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
+			console.log($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors);
+		}
 		/*
         for (var index = 0; index < $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals.length; index++) {
             if ($scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals[index].riskFactorStatus === true) {
@@ -369,7 +417,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayRecordSavedMsg = true;
                         $scope.getRiskAsmtTemplates();
                         $scope.riskAsmtTemplateForm.$setPristine();
-                        $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
+                        //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
 
                         $location.hash('displayRecordSavedMsg');
                         $anchorScroll();
