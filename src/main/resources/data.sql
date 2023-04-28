@@ -2,7 +2,8 @@ insert into risk_level(risk_level_id, level) values(seq_risk_level.nextval,'Low'
 insert into risk_level(risk_level_id, level) values(seq_risk_level.nextval,'Medium');
 insert into risk_level(risk_level_id, level) values(seq_risk_level.nextval,'High');
 
-insert into risk_assessment_template(risk_assessment_template_id, version) values(seq_risk_assessment_template.nextval, 'Testing');
+insert into risk_assessment_template(risk_assessment_template_id, comment, effective_start_date, effective_end_date,version) 
+                              values(seq_risk_assessment_template.nextval,'Testing', '2022-12-31' ,'2023-12-31' , '1.0');
 
 insert into risk_range_type(risk_range_type_id, name, risk_assessment_template_id) values(seq_risk_range_type.nextval, 'Tier 1', 1);
 
