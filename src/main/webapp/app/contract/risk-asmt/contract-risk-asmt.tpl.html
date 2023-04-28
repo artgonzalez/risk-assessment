@@ -197,7 +197,7 @@
 							</td>
 							<td ng-if="isEditRiskAssessment" >{{riskFactor.riskFactorLevel.level}}</td>
 							<td ng-if="isAddRiskAssessment" >
-							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">{{riskFactor.riskFactorId}}
+							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
 							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="riskFactor.score=riskFactorLevel.score; getRiskRangeTotalScore(riskRangeIndex, riskRangeType.riskFactors);setAssessedFactorProperties(riskRangeIndex, $parent.$index, riskRangeType, riskFactor, riskFactorLevel);" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactorId}}" value="{{riskFactorLevel.riskFactorLevelId}}" required>
 									 <label for="html">{{riskFactorLevel.level}}</label>
 							    </div>
