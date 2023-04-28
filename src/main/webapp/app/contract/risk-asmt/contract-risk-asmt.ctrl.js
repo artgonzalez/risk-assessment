@@ -355,7 +355,10 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			
 			for(var i=0; i < riskRange.riskRangeTypeRanges.length; i++){
 				var riskRangeTypeRange = riskRange.riskRangeTypeRanges[i];
+				console.log(riskRangeScore);
+				console.log(riskRangeTypeRange);
 				if(riskRangeScore >= riskRangeTypeRange.min && riskRangeScore <= riskRangeTypeRange.max){
+					
 					riskLevel = riskRangeTypeRange.riskLevel.level;
 					break;
 				}

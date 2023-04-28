@@ -6,9 +6,9 @@ insert into risk_assessment_template(risk_assessment_template_id, version) value
 
 insert into risk_range_type(risk_range_type_id, name, risk_assessment_template_id) values(seq_risk_range_type.nextval, 'Tier 1', 1);
 
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 3, 7, 1, 1);
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 8, 12, 2, 1);
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 13, 17, 3, 1);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 3, 7, 1, 1);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 8, 12, 2, 1);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 13, 17, 3, 1);
 
 insert into risk_factor(risk_factor_id, name, weight_multiplier, risk_range_type_id) values(seq_risk_factor.nextval, 'Number of Active Contracts with HHS', 1, 1);
 
@@ -30,9 +30,9 @@ insert into risk_factor_level(risk_factor_level_id, level, score, risk_factor_id
 
 insert into risk_range_type(risk_range_type_id, name, risk_assessment_template_id) values(seq_risk_range_type.nextval, 'Tier 2', 1);
 
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 3, 7, 1, 2);
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 8, 12, 2, 2);
-insert into risk_range_type_range(risk_range_type_range_id, max, min, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 13, 17, 3, 2);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 3, 6, 1, 2);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 7, 10, 2, 2);
+insert into risk_range_type_range(risk_range_type_range_id, min, max, risk_level_id, risk_range_type_id)values(seq_risk_range_type_range.nextval, 11, 15, 3, 2);
 
 insert into risk_factor(risk_factor_id, name, weight_multiplier, risk_range_type_id) values(seq_risk_factor.nextval, 'Contractual Relationship', 1, 2);
 
