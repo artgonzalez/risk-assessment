@@ -158,7 +158,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			highMax += riskFactor.weightMultiplier * $scope.getRiskFactorLevelsHighScore(riskFactor.riskFactorLevels);
 		}
 		
-		var rangePerMaxValues = Math.round(highMax / 4);
+		var rangePerMaxValues = (highMax / 4) < 4) ? Math.floor(highMax / 4) : Math.round(highMax / 4);
 		console.log(lowMin);
 		console.log(lowMin + rangePerMaxValues);
 		console.log(lowMin + rangePerMaxValues + 1);
@@ -167,18 +167,18 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 		console.log(highMax);
 		
 		riskRangeType.riskRangeTypeRanges[0].min = lowMin;
-		riskRangeType.riskRangeTypeRanges[0].max = lowMin + rangePerMaxValues;
-		riskRangeType.riskRangeTypeRanges[1].min = lowMin + rangePerMaxValues + 1;
-		riskRangeType.riskRangeTypeRanges[1].max = lowMin + rangePerMaxValues + rangePerMaxValues;
-		riskRangeType.riskRangeTypeRanges[2].min = lowMin + rangePerMaxValues + rangePerMaxValues + 1;
-		riskRangeType.riskRangeTypeRanges[2].max = highMax;
+		riskRangeType.riskRangeTypeRanges[0].max = riskRangeType.riskRangeTypeRanges[0].min + rangePerMaxValues;
+		riskRangeType.riskRangeTypeRanges[1].min = riskRangeType.riskRangeTypeRanges[0].max + 1;
+		riskRangeType.riskRangeTypeRanges[1].max = riskRangeType.riskRangeTypeRanges[1].min + rangePerMaxValues;
+		riskRangeType.riskRangeTypeRanges[2].min = riskRangeType.riskRangeTypeRanges[1].max + 1;
+		riskRangeType.riskRangeTypeRanges[2].max = riskRangeType.riskRangeTypeRanges[2].min + rangePerMaxValues;
 		
-		riskRangeType.riskRangeTypeRangesValues[0] = lowMin;
-		riskRangeType.riskRangeTypeRangesValues[1] = lowMin + rangePerMaxValues;
-		riskRangeType.riskRangeTypeRangesValues[2] = lowMin + rangePerMaxValues + 1;
-		riskRangeType.riskRangeTypeRangesValues[3] = lowMin + rangePerMaxValues + rangePerMaxValues;
-		riskRangeType.riskRangeTypeRangesValues[4] = lowMin + rangePerMaxValues + rangePerMaxValues + 1;
 		riskRangeType.riskRangeTypeRangesValues[5] = highMax;
+		riskRangeType.riskRangeTypeRangesValues[4] = riskRangeType.riskRangeTypeRangesValues[5] - rangePerMaxValues;
+		riskRangeType.riskRangeTypeRangesValues[3] = riskRangeType.riskRangeTypeRangesValues[4] - 1;
+		riskRangeType.riskRangeTypeRangesValues[2] = riskRangeType.riskRangeTypeRangesValues[3] - rangePerMaxValues;
+		riskRangeType.riskRangeTypeRangesValues[1] = riskRangeType.riskRangeTypeRangesValues[2] - 1;
+		riskRangeType.riskRangeTypeRangesValues[0] = lowMin;
 		
 		$scope.riskAssessmentObj.createBaseLineRiskRanges();
 		
