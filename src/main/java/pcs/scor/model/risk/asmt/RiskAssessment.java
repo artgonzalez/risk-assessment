@@ -1,5 +1,6 @@
 package pcs.scor.model.risk.asmt;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,5 +19,5 @@ public class RiskAssessment {
 	private String fiscalYear;
 	private String primaryRiskAssessor;
 	private String riskAssessmentTemplateVersion;
-	private List<AssessedRiskRange> riskRangeTypes; 
+	private List<AssessedRiskRange> riskRangeTypes = new ArrayList<AssessedRiskRange>(); 
 }

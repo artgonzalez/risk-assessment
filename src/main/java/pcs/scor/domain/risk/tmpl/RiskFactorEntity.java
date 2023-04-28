@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -28,7 +27,7 @@ import lombok.Setter;
 @Table(name = "risk_factor")
 public class RiskFactorEntity {
 	public RiskFactorEntity(long riskFactorId) {
-		id = riskFactorId;
+		this.riskFactorId = riskFactorId;
 	}
 	
 	public RiskFactorEntity(RiskRangeTypeEntity riskRangeType, String name, int weightMultiplier)	{
@@ -40,8 +39,7 @@ public class RiskFactorEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_factor")
     @SequenceGenerator(name = "seq_gen_risk_factor", sequenceName = "seq_risk_factor", initialValue = 100, allocationSize = 1)
-	@Column(name="risk_factor_id")
-	private long id;
+	private long riskFactorId;
 	private String name;
 	private int weightMultiplier;
 	

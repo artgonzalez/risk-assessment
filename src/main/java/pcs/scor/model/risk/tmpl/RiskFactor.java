@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RiskFactor {
-	private long id;
+	private long riskFactorId;
 	private long riskRangeTypeId;
 	private String name;
 	private int weightMultiplier;

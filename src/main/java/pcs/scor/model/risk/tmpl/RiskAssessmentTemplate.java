@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RiskAssessmentTemplate{
 	
-	private long id;
+	private long riskAssessmentTemplateId;
 	private List<RiskRangeType> riskRangeTypes = new ArrayList<RiskRangeType>();
 	private String version;
 	private Date effectiveStartDate;

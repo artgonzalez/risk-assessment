@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pcs.scor.data.risk.repository.RiskAssessmentTemplateRepository;
-import pcs.scor.data.risk.repository.RiskFactorRepository;
+//import pcs.scor.data.risk.repository.RiskFactorRepository;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
 import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
@@ -25,8 +25,6 @@ import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 public class RiskAssessmentTemplateService {
 	@Autowired
 	RiskAssessmentTemplateRepository riskAsmtTemplateRepository;
-	@Autowired
-	RiskFactorRepository riskFactorRepository;
 	@Autowired
     private ModelMapper modelMapper;
 	
@@ -45,9 +43,9 @@ public class RiskAssessmentTemplateService {
 		
 		RiskAssessmentTemplate template = modelMapper.map(templateEntity, RiskAssessmentTemplate.class);
 		
-		template.getRiskRangeTypes().sort(Comparator.comparing(RiskRangeType::getId));
+		template.getRiskRangeTypes().sort(Comparator.comparing(RiskRangeType::getRiskRangeTypeId));
 		template.getRiskRangeTypes().forEach(range -> {
-						range.getRiskFactors().sort(Comparator.comparing(RiskFactor::getId));
+						range.getRiskFactors().sort(Comparator.comparing(RiskFactor::getRiskFactorId));
 						range.getRiskRangeTypeRanges().sort(Comparator.comparing(RiskRangeTypeRange::getMin));
 						range.getRiskFactors().forEach(factor -> 
 						factor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getScore)));
@@ -75,7 +73,7 @@ public class RiskAssessmentTemplateService {
 		return modelMapper.map(savedTemplateEntity, RiskAssessmentTemplate.class);
 	}
 	
-	@Transactional
+	/*@Transactional
 	public RiskFactor createRiskFactor(RiskFactor riskFactor) {
 		
 		RiskFactorEntity riskFactorEntity = modelMapper.map(riskFactor, RiskFactorEntity.class);
@@ -86,7 +84,7 @@ public class RiskAssessmentTemplateService {
 		RiskFactor newRiskFactor = modelMapper.map(newRiskFactorEntity, RiskFactor.class);
 		
 		return newRiskFactor;
-	}
+	}*/
 	
 	private void prepareTemplateEntity(RiskAssessmentTemplateEntity templateEntity) {
 		for(RiskRangeTypeEntity riskRangeType: templateEntity.getRiskRangeTypes()) {

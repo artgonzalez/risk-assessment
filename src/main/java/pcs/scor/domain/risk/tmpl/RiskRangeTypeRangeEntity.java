@@ -30,8 +30,8 @@ public class RiskRangeTypeRangeEntity {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_range_type")
-    @SequenceGenerator(name = "seq_gen_risk_range_type", sequenceName = "seq_risk_range_type", initialValue = 100, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_range_type_range")
+    @SequenceGenerator(name = "seq_gen_risk_range_type_range", sequenceName = "seq_risk_range_type_range", initialValue = 100, allocationSize = 1)
 	private int riskRangeTypeRangeId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_range_risk_range_type"))

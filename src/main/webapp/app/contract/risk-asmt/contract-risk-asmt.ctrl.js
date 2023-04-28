@@ -57,12 +57,12 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
     //$scope.checkContractStatus();
 	$scope.initializeRiskAssessmentModel = function(riskAssessmentTemplate){
 		
-		$scope.riskAssessmentObj.riskAssessmentTemplateId = riskAssessmentTemplate.id;
+		$scope.riskAssessmentObj.riskAssessmentTemplateId = riskAssessmentTemplate.riskAssessmentTemplateId;
 		for(var i=0; i < riskAssessmentTemplate.riskRangeTypes.length; i++){
 			for(var j=0; j < riskAssessmentTemplate.riskRangeTypes[i].riskFactors.length; j++){
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskAssessmentId = 0;
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskRangeTypeId = riskAssessmentTemplate.riskRangeTypes[i].id;
-				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskFactorId = riskAssessmentTemplate.riskRangeTypes[i].riskFactors[j].id;
+				//$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskAssessmentId = 0;
+				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskRangeTypeId = riskAssessmentTemplate.riskRangeTypes[i].riskRangeTypeId;
+				$scope.riskAssessmentObj.riskRangeTypes[i].riskFactors[j].riskFactorId = riskAssessmentTemplate.riskRangeTypes[i].riskFactors[j].riskFactorId;
 			}
 		}
 		
@@ -71,7 +71,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 	}
 	
 	$scope.createRiskAssessmentModelCalculatedFields = function(riskAssessment){
-		
+		console.log(riskAssessment);
 		var riskRangeTypes = riskAssessment.riskRangeTypes;
 		
 		riskAssessment.createBaseLineRiskRanges = function (){
@@ -271,6 +271,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
             if (response.success) {
 				$scope.addEditRiskAmtLabel = "Add Risk Assessment";
                 $scope.riskAssessmentObj = response.data;
+				console.log($scope.riskAssessmentObj);
 				
 				$scope.initializeRiskAssessmentModel($scope.riskAssessmentObj);
 				$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
@@ -348,17 +349,19 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 	$scope.getRiskRangeRiskLevel = function(riskRangeIndex, riskRange){
 		
 		if(riskRange.riskRangeTypeRanges != undefined){
-		
+			
 			var riskLevel = "";
 			var riskRangeScore = $scope.riskRangeTypeTotalScore[riskRangeIndex];
 			
 			for(var i=0; i < riskRange.riskRangeTypeRanges.length; i++){
 				var riskRangeTypeRange = riskRange.riskRangeTypeRanges[i];
 				if(riskRangeScore >= riskRangeTypeRange.min && riskRangeScore <= riskRangeTypeRange.max){
-					riskLevel = riskRangeTypeRange.level;
+					riskLevel = riskRangeTypeRange.riskLevel.level;
 					break;
 				}
 			}
+			
+			
 			
 			$scope.riskRangeTypeRiskLevel[riskRangeIndex] = riskLevel;
 		}
@@ -506,7 +509,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		
         dialogMessageFactory.showProgressBar();
         if ($scope.isAddRiskAssessment) {
-			
+			console.log(riskAssessment);
             riskAssessmentFactory.createRiskAssessment(riskAssessment).then(function(response) {
                 if (response.success) {
 					$scope.addEditRiskAmtLabel = "";
@@ -534,7 +537,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
                 }
             });
         } else {
-			
+			console.log(riskAssessment);
             riskAssessmentFactory.updateRiskAssessment(riskAssessment.riskAssessmentId, riskAssessment).then(function(response) {
                 if (response.success) {
 					$scope.addEditRiskAmtLabel = "";

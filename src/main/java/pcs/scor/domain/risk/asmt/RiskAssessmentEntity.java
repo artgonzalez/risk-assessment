@@ -1,7 +1,8 @@
 package pcs.scor.domain.risk.asmt;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,10 +33,12 @@ public class RiskAssessmentEntity {
 		this.riskAssessmentId = riskAssessmentId;
 	}
 	
-	public RiskAssessmentEntity(int riskAssessmentId, int contractId, Date date, String string) {
+	public RiskAssessmentEntity(long riskAssessmentId, long contractId, Date riskAssessmentDate, String primaryRiskAssessor, String fiscalYear) {
+		this.riskAssessmentId = riskAssessmentId;
 		this.contractId = contractId;
-		this.primaryRiskAssessor = string;
-		this.riskAssessmentDate = date;
+		this.riskAssessmentDate = riskAssessmentDate;
+		this.primaryRiskAssessor = primaryRiskAssessor;
+		this.fiscalYear = fiscalYear;
 	}
 
 	@Id
@@ -55,6 +58,6 @@ public class RiskAssessmentEntity {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name= "risk_assessment_id")
-	private List<AssessedRiskFactorEntity> assessedRiskFactors;
+	private Set<AssessedRiskRangeTypeEntity> riskRangeTypes = new HashSet<>();
 
 }

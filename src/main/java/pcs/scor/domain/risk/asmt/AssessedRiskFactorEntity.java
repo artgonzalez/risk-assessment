@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorLevelEntity;
-import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
 
 @Getter
 @Setter
@@ -27,27 +26,24 @@ import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
 //@IdClass(AssessedRiskFactorEntityId.class)
 public class AssessedRiskFactorEntity{
 	
-	public AssessedRiskFactorEntity(RiskAssessmentEntity riskAssessment, RiskRangeTypeEntity riskRangeType,RiskFactorEntity riskFactor,
-			RiskFactorLevelEntity riskFactorLevel) {
-		this.riskAssessment = riskAssessment;
-		this.riskRangeType = riskRangeType;
+	public AssessedRiskFactorEntity(AssessedRiskRangeTypeEntity assessedRiskRangeType,RiskFactorEntity riskFactor,
+			RiskFactorLevelEntity riskFactorLevel, int score, int weightMultiplier) {
+		this.assessedRiskRangeType = assessedRiskRangeType;
 		this.riskFactor = riskFactor;
 		this.riskFactorLevel = riskFactorLevel;
+		this.score = score;
+		this.weightMultiplier = weightMultiplier;
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__gen_assessed_risk_factor")
-    @SequenceGenerator(name = "seq__gen_assessed_risk_factor", sequenceName = "seq_asssessed_risk_factor", initialValue = 100, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_assessed_risk_factor")
+    @SequenceGenerator(name = "seq_gen_assessed_risk_factor", sequenceName = "seq_asssessed_risk_factor", initialValue = 100, allocationSize = 1)
 	@Column(name="assessed_risk_factor_id")
 	private long assessedRiskFactorId;
 	
 	@ManyToOne
-	@JoinColumn(name = "risk_assessment_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_assessment"))
-	private RiskAssessmentEntity riskAssessment;
-	
-	@OneToOne
-	@JoinColumn(name = "risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_range_type"))
-	private RiskRangeTypeEntity riskRangeType;
+	@JoinColumn(name="risk_range_type_assessed_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_range_type_assessed"))
+	private AssessedRiskRangeTypeEntity assessedRiskRangeType;
 	
 	@OneToOne
 	@JoinColumn(name = "risk_factor_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_factor"))
@@ -58,4 +54,5 @@ public class AssessedRiskFactorEntity{
 	private RiskFactorLevelEntity riskFactorLevel;
 	
 	private int score; 
+	private int weightMultiplier;
 }

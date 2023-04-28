@@ -11,7 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RiskRangeType {
-	private long id;
+	public RiskRangeType(long riskRangeTypeId) {
+		this.riskRangeTypeId = riskRangeTypeId;
+	}
+	
+	private long riskRangeTypeId;
 	private String name;
 	private List<RiskFactor> riskFactors;
 	private List<RiskRangeTypeRange> riskRangeTypeRanges;

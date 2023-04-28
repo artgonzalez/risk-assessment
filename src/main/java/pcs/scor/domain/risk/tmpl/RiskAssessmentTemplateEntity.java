@@ -1,6 +1,7 @@
 package pcs.scor.domain.risk.tmpl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,20 +24,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "risk_assessment_template")
 public class RiskAssessmentTemplateEntity {
-	public RiskAssessmentTemplateEntity(String version, Date startDate, Date endDate, String comment) {
-		this.version = version;
-		this.effectiveStartDate = startDate;
-		this.effectiveEndDate = endDate;
-		this.comment = comment;
+	public RiskAssessmentTemplateEntity(long riskAssessmentTemplateId) {
+		this.riskAssessmentTemplateId = riskAssessmentTemplateId;
 	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment_template")
     @SequenceGenerator(name = "seq_gen_risk_assessment_template", sequenceName = "seq_risk_assessment_template", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_assessment_template_id")
-	private long id;
+	private long riskAssessmentTemplateId;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="riskAssessmentTemplate")
-	private Set<RiskRangeTypeEntity> riskRangeTypes;
+	private Set<RiskRangeTypeEntity> riskRangeTypes = new HashSet<>();
 	
 	private String version;
 	private Date effectiveStartDate;

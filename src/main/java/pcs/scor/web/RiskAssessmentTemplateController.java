@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pcs.scor.model.risk.tmpl.RiskAssessmentTemplate;
-import pcs.scor.model.risk.tmpl.RiskFactor;
 import pcs.scor.service.RiskAssessmentTemplateService;
 
 @CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
@@ -57,12 +56,4 @@ public class RiskAssessmentTemplateController {
 			
 	    return new ResponseEntity<>(updatedTemplate, HttpStatus.OK);
 	 }
-	
-	@RequestMapping(method = RequestMethod.POST, value=riskAsmtTemplateMapping + "/{riskAssessmentTemplateId}/risk-range-types/risk-factors")
-	public ResponseEntity<RiskFactor> createRiskFactor(@PathVariable("riskAssessmentTemplateId") long id, @RequestBody RiskFactor riskFactor) {
-		
-		RiskFactor newRiskFactor = riskAssessmentTemplateService.createRiskFactor(riskFactor);
-		
-	    return new ResponseEntity<>(newRiskFactor, HttpStatus.CREATED);
-	}
 }

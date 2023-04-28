@@ -1,9 +1,9 @@
 package pcs.scor.domain.risk.tmpl;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "risk_range_type")
 public class RiskRangeTypeEntity {
 	public RiskRangeTypeEntity(long riskRangeTypeId) {
-		this.id = riskRangeTypeId;
+		this.riskRangeTypeId = riskRangeTypeId;
 	}
 	
 	public RiskRangeTypeEntity(RiskAssessmentTemplateEntity riskAssessmentTemplate, String name) {
@@ -37,8 +37,7 @@ public class RiskRangeTypeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_range_type")
     @SequenceGenerator(name = "seq_gen_risk_range_type", sequenceName = "seq_risk_range_type", initialValue = 100, allocationSize = 1)
-	@Column(name = "risk_range_type_id")
-	private long id;
+	private long riskRangeTypeId;
 	private String name;
 	
 	@ManyToOne
@@ -46,8 +45,8 @@ public class RiskRangeTypeEntity {
 	RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
 	@OneToMany(mappedBy="riskRangeType")
-	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges;
+	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "riskRangeType")
-	private Set<RiskFactorEntity> riskFactors;
+	private Set<RiskFactorEntity> riskFactors = new HashSet<>();
 }

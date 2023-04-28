@@ -184,7 +184,7 @@
 						<tr ng-repeat="riskFactor in riskRangeType.riskFactors">
 							<td>
 							<a ng-show="isEditRiskAssessment" aria-label="{{riskAssessment.riskAssessmentId}} editThisRow" id="link-1" href="" ng-click="showEdit=!showEdit">{{$index+1}}</a>
-							{{(isAddRiskAssessment) ? $index+1 : riskFactor.iddd}}
+							{{(isAddRiskAssessment) ? $index+1 : riskFactor.idd}}
 							</td>
 							<td>
 								{{riskFactor.name}}
@@ -197,12 +197,12 @@
 							</td>
 							<td ng-if="isEditRiskAssessment" >{{riskFactor.riskFactorLevel.level}}</td>
 							<td ng-if="isAddRiskAssessment" >
-							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
-							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="riskFactor.score=riskFactorLevel.score; getRiskRangeTotalScore(riskRangeIndex, riskRangeType.riskFactors);setAssessedFactorProperties(riskRangeIndex, $parent.$index, riskRangeType, riskFactor, riskFactorLevel);" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.id}}" value="{{riskFactorLevel.riskFactorLevelId}}" required>
+							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">{{riskFactor.riskFactorId}}
+							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="riskFactor.score=riskFactorLevel.score; getRiskRangeTotalScore(riskRangeIndex, riskRangeType.riskFactors);setAssessedFactorProperties(riskRangeIndex, $parent.$index, riskRangeType, riskFactor, riskFactorLevel);" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactorId}}" value="{{riskFactorLevel.riskFactorLevelId}}" required>
 									 <label for="html">{{riskFactorLevel.level}}</label>
 							    </div>
-								<div class="error-wrapper" id="riskFactorLevelValidation" ng-messages="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.id].$error" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.id].$invalid">
-										<div ng-message="required" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.id].$error.required">
+								<div class="error-wrapper" id="riskFactorLevelValidation" ng-messages="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$error" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$invalid">
+										<div ng-message="required" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$error.required">
 											<strong>Risk Factor Level - is a required field.</strong>
 										</div>
 								</div>
