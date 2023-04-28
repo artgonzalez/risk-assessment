@@ -25,6 +25,7 @@ import pcs.scor.domain.risk.tmpl.RiskRangeTypeRangeEntity;
 import pcs.scor.model.risk.asmt.AssessedRiskFactor;
 import pcs.scor.model.risk.asmt.AssessedRiskRange;
 import pcs.scor.model.risk.asmt.RiskAssessment;
+import pcs.scor.model.risk.tmpl.RiskFactorLevel;
 import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Service
@@ -108,6 +109,7 @@ public class RiskAssessmentService {
 				assessedFactor.setName(factor.getRiskFactor().getName());
 				assessedFactor.setScore(factor.getRiskFactorLevel().getScore());
 				assessedFactor.setWeightMultiplier(factor.getWeightMultiplier());
+				assessedFactor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getRiskFactorLevelId));
 				assessedRiskRange.getRiskFactors().add(assessedFactor);
 			}
 			
