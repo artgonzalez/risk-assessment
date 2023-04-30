@@ -163,7 +163,7 @@
                 <div class="col-md-4">
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
-                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comment" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
                     <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
                         <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>
@@ -276,8 +276,8 @@
                             <tr ng-repeat="riskFactor in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors track by $index">
 								<td><a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{$index+1}}</a></td>
                                 <td>
-									<a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{riskFactor.name}}</a>
-									<input type="text" class="form-control" name="riskFactorName{{$index}}" id="riskFactorName{{$index}}" ng-model="riskFactor.name" ng-maxlength="50" ng-required=required aria-live="assertive" aria-describedby="riskFactorNameValidation{{$index}}" />
+									<a href ng-click="getRiskAsmtRiskFactorLevels($index)">{{riskFactor.factorDesc}}</a>
+									<input type="text" class="form-control" name="riskFactorName{{$index}}" id="riskFactorName{{$index}}" ng-model="riskFactor.factorDesc" ng-maxlength="50" ng-required=required aria-live="assertive" aria-describedby="riskFactorNameValidation{{$index}}" />
 									<div class="col-md-3 contact-div-padding text-left">
 									<div class="error-wrapper" id="riskFactorNameValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskFactorName' + $index].$error" ng-if="riskAsmtTemplateForm['riskFactorName' + $index].$invalid" role="alert">
 										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskFactorName' + $index].$error.required"><strong>Risk Factor - is a required field.</strong></div>
@@ -310,7 +310,7 @@
                                 <label for="riskFactorName">Name</label>
                             </div>
                             <div class="col-md-3 contact-div-padding text-left">
-                                <input type="text" class="form-control" name="riskFactorName" id="riskFactorName" ng-model="newRiskFactor.name" ng-maxlength="15"aria-live="assertive" aria-describedby="riskFactorNameValidation" ng-required=required />
+                                <input type="text" class="form-control" name="riskFactorName" id="riskFactorName" ng-model="newRiskFactor.factorDesc" ng-maxlength="15"aria-live="assertive" aria-describedby="riskFactorNameValidation" ng-required=required />
                                 <div class="error-wrapper" id="riskFactorNameValidation" ng-messages="riskAsmtTemplateForm.riskFactorName.$error" ng-if="riskAsmtTemplateForm.riskFactorName.$invalid" role="alert">
                                     <div ng-message="required" ng-if="riskAsmtTemplateForm.riskFactorName.$error.required"><strong>Name - is a required field.</strong></div>
                                     <div ng-message="maxlength" ng-if="riskAsmtTemplateForm.riskFactorName.$error.maxlength"><strong>Name - must be within 15 characters.</strong></div>

@@ -41,7 +41,7 @@ public class RiskRangeTypeEntity {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_risk_assessment_template"))
+	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_rsk_asmt_tplt"))
 	RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
 	@OneToMany(mappedBy="riskRangeType")

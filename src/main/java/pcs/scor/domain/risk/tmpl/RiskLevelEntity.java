@@ -21,17 +21,17 @@ public class RiskLevelEntity {
 		this.riskLevelId = risklevelId;
 	}
 	
-	public RiskLevelEntity(String level) {
-		this.level = level;
+	public RiskLevelEntity(String levelDesc) {
+		this.levelDesc = levelDesc;
 	}
 	
-	public RiskLevelEntity(int risklevelId, String level) {
+	public RiskLevelEntity(int risklevelId, String levelDesc) {
 		this.riskLevelId = risklevelId;
-		this.level = level;
+		this.levelDesc = levelDesc;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_level")
     @SequenceGenerator(name = "seq_gen_risk_level", sequenceName = "seq_risk_level", initialValue = 100, allocationSize = 1)
 	private int riskLevelId;
-	private String level;
+	private String levelDesc;
 }

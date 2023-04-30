@@ -42,15 +42,15 @@ public class AssessedRiskFactorEntity{
 	private long assessedRiskFactorId;
 	
 	@ManyToOne
-	@JoinColumn(name="risk_range_type_assessed_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_range_type_assessed"))
+	@JoinColumn(name="risk_range_type_assessed_id", foreignKey=@ForeignKey(name = "FK_rsk_fctr_ad_rsk_rg_type_ad"))
 	private AssessedRiskRangeTypeEntity assessedRiskRangeType;
 	
 	@OneToOne
-	@JoinColumn(name = "risk_factor_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_factor"))
+	@JoinColumn(name = "risk_factor_id", foreignKey=@ForeignKey(name = "FK_rsk_fctr_ad_risk_factor"))
 	private RiskFactorEntity riskFactor;	
 
 	@OneToOne
-	@JoinColumn(name="risk_factor_level_id", foreignKey=@ForeignKey(name = "FK_risk_factor_assessed_risk_factor_level"))
+	@JoinColumn(name="risk_factor_level_id", foreignKey=@ForeignKey(name = "FK_rsk_fctr_ad_rsk_fctr_lvl"))
 	private RiskFactorLevelEntity riskFactorLevel;
 	
 	private int score; 

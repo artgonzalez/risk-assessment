@@ -106,7 +106,7 @@ public class RiskAssessmentService {
 			for(AssessedRiskFactorEntity factor: riskRange.getAssessedRiskFactors()) {
 				AssessedRiskFactor assessedFactor = modelMapper.map(factor, AssessedRiskFactor.class);
 				assessedFactor.setRiskFactorLevelId(factor.getRiskFactorLevel().getRiskFactorLevelId());
-				assessedFactor.setName(factor.getRiskFactor().getName());
+				assessedFactor.setName(factor.getRiskFactor().getFactorDesc());
 				assessedFactor.setScore(factor.getRiskFactorLevel().getScore());
 				assessedFactor.setWeightMultiplier(factor.getWeightMultiplier());
 				assessedFactor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getRiskFactorLevelId));

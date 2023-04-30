@@ -26,11 +26,11 @@ public class RiskFactorLevelEntity {
 		this.riskFactorLevelId = riskFactorLevelId;
 	}
 	
-	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, RiskLevelEntity riskLevelEntity, String level, int score) 
+	public RiskFactorLevelEntity(RiskFactorEntity riskFactor, RiskLevelEntity riskLevelEntity, String levelName, int score) 
 	{
 		this.riskFactor = riskFactor;
 		this.riskLevel = riskLevelEntity;
-		this.level = level;
+		this.levelName = levelName;
 		this.score = score;
 	}
 	
@@ -41,13 +41,13 @@ public class RiskFactorLevelEntity {
 	private long riskFactorLevelId;
 
 	@OneToOne
-	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_risk_factor_level_risk_level"))
+	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_rsk_fctr_lvl_rsk_lvl"))
 	private RiskLevelEntity riskLevel;
 	
-	private String level;
+	private String levelName;
 	private int score;	
 	
 	@ManyToOne
-	@JoinColumn(name="risk_factor_id", foreignKey=@ForeignKey(name = "FK_risk_factor_level_risk_factor"))
+	@JoinColumn(name="risk_factor_id", foreignKey=@ForeignKey(name = "FK_rsk_fctr_lvl_rsk_fctr"))
 	RiskFactorEntity riskFactor;
 }

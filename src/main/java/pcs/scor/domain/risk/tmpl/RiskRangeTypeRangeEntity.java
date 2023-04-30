@@ -34,11 +34,11 @@ public class RiskRangeTypeRangeEntity {
     @SequenceGenerator(name = "seq_gen_risk_range_type_range", sequenceName = "seq_risk_range_type_range", initialValue = 100, allocationSize = 1)
 	private int riskRangeTypeRangeId;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_range_risk_range_type"))
+	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_rg_rsk_rg_typ"))
 	private RiskRangeTypeEntity riskRangeType;
 
 	@OneToOne
-	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_risk_level"))
+	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_rsk_level"))
 	private RiskLevelEntity riskLevelEntity;
 	 
 	private int min;

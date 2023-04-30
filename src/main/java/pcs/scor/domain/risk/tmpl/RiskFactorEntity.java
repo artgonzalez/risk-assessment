@@ -30,9 +30,9 @@ public class RiskFactorEntity {
 		this.riskFactorId = riskFactorId;
 	}
 	
-	public RiskFactorEntity(RiskRangeTypeEntity riskRangeType, String name, int weightMultiplier)	{
+	public RiskFactorEntity(RiskRangeTypeEntity riskRangeType, String factorDesc, int weightMultiplier)	{
 		this.riskRangeType = riskRangeType;
-		this.name = name;
+		this.factorDesc = factorDesc;
 		this.weightMultiplier = weightMultiplier;
 	}	
 	
@@ -40,7 +40,7 @@ public class RiskFactorEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_factor")
     @SequenceGenerator(name = "seq_gen_risk_factor", sequenceName = "seq_risk_factor", initialValue = 100, allocationSize = 1)
 	private long riskFactorId;
-	private String name;
+	private String factorDesc;
 	private int weightMultiplier;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="riskFactor")

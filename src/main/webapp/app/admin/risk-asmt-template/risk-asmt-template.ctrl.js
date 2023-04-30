@@ -157,14 +157,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			lowMin += riskFactor.weightMultiplier * $scope.getRiskFactorLevelsLowScore(riskFactor.riskFactorLevels);
 			highMax += riskFactor.weightMultiplier * $scope.getRiskFactorLevelsHighScore(riskFactor.riskFactorLevels);
 		}
-		
-		var rangePerMaxValues = (highMax / 4) < 4) ? Math.floor(highMax / 4) : Math.round(highMax / 4);
-		console.log(lowMin);
-		console.log(lowMin + rangePerMaxValues);
-		console.log(lowMin + rangePerMaxValues + 1);
-		console.log(lowMin + rangePerMaxValues + rangePerMaxValues);
-		console.log(lowMin + rangePerMaxValues + rangePerMaxValues + 1);
-		console.log(highMax);
+		var hiLowDif = highMax-lowMin;
+		var rangePerMaxValues = ((hiLowDif / 3) < 4) ? Math.floor(hiLowDif / 3) : Math.round(hiLowDif / 3);
 		
 		riskRangeType.riskRangeTypeRanges[0].min = lowMin;
 		riskRangeType.riskRangeTypeRanges[0].max = riskRangeType.riskRangeTypeRanges[0].min + rangePerMaxValues;
@@ -179,6 +173,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 		riskRangeType.riskRangeTypeRangesValues[2] = riskRangeType.riskRangeTypeRangesValues[3] - rangePerMaxValues;
 		riskRangeType.riskRangeTypeRangesValues[1] = riskRangeType.riskRangeTypeRangesValues[2] - 1;
 		riskRangeType.riskRangeTypeRangesValues[0] = lowMin;
+		
+		
 		
 		$scope.riskAssessmentObj.createBaseLineRiskRanges();
 		

@@ -41,11 +41,11 @@ public class AssessedRiskRangeTypeEntity {
 	private long assessedRiskRangeTypeId;
 	
 	@ManyToOne
-	@JoinColumn(name = "risk_assessment_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_assessed_risk_assessment"))
+	@JoinColumn(name = "risk_assessment_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_ad_rsk_asmt"))
 	private RiskAssessmentEntity riskAssessment;
 	
 	@OneToOne
-	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_risk_range_type_assessed_risk_range_type"))
+	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_ad_rsk_rg_typ"))
 	private RiskRangeTypeEntity riskRangeTypeEntity;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="assessedRiskRangeType")

@@ -26,7 +26,7 @@ import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "risk_assessment")
+@Table(name = "risk_assessment_2")
 public class RiskAssessmentEntity {
 	
 	public RiskAssessmentEntity(long riskAssessmentId) {
@@ -42,13 +42,13 @@ public class RiskAssessmentEntity {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment")
-    @SequenceGenerator(name = "seq_gen_risk_assessment", sequenceName = "seq_risk_assessment", initialValue = 100, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment_2")
+    @SequenceGenerator(name = "seq_gen_risk_assessment_2", sequenceName = "seq_risk_assessment_2", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_assessment_id")
 	private long riskAssessmentId;
 	
 	@OneToOne
-	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_risk_assessment_risk_assessment_template"))
+	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_risk_asmt_risk_asmt_tpl"))
 	private RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
 	private long contractId;

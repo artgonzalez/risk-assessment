@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "risk_assessment_template")
+@Table(name = "risk_asmt_template_2")
 public class RiskAssessmentTemplateEntity {
 	public RiskAssessmentTemplateEntity(long riskAssessmentTemplateId) {
 		this.riskAssessmentTemplateId = riskAssessmentTemplateId;
@@ -30,7 +30,7 @@ public class RiskAssessmentTemplateEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen_risk_assessment_template")
-    @SequenceGenerator(name = "seq_gen_risk_assessment_template", sequenceName = "seq_risk_assessment_template", initialValue = 100, allocationSize = 1)
+    @SequenceGenerator(name = "seq_gen_risk_assessment_template", sequenceName = "seq_risk_asmt_template", initialValue = 100, allocationSize = 1)
 	@Column(name = "risk_assessment_template_id")
 	private long riskAssessmentTemplateId;
 	
@@ -40,5 +40,5 @@ public class RiskAssessmentTemplateEntity {
 	private String version;
 	private Date effectiveStartDate;
 	private Date effectiveEndDate;
-	private String comment;
+	private String comments;
 }

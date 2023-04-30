@@ -18,5 +18,5 @@ public class RiskAssessmentTemplate{
 	private String version;
 	private Date effectiveStartDate;
 	private Date effectiveEndDate;
-	private String comment;
+	private String comments;
 }

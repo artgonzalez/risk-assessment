@@ -12,7 +12,7 @@ import lombok.Setter;
 public class RiskFactor {
 	private long riskFactorId;
 	private long riskRangeTypeId;
-	private String name;
+	private String factorDesc;
 	private int weightMultiplier;
 	private List<RiskFactorLevel> riskFactorLevels;
 }
