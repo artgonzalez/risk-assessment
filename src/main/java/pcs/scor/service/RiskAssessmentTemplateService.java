@@ -73,19 +73,6 @@ public class RiskAssessmentTemplateService {
 		return modelMapper.map(savedTemplateEntity, RiskAssessmentTemplate.class);
 	}
 	
-	/*@Transactional
-	public RiskFactor createRiskFactor(RiskFactor riskFactor) {
-		
-		RiskFactorEntity riskFactorEntity = modelMapper.map(riskFactor, RiskFactorEntity.class);
-		riskFactorEntity.getRiskFactorLevels().forEach(level -> level.setRiskFactor(riskFactorEntity));
-		
-		RiskFactorEntity newRiskFactorEntity = riskFactorRepository.save(riskFactorEntity);
-		
-		RiskFactor newRiskFactor = modelMapper.map(newRiskFactorEntity, RiskFactor.class);
-		
-		return newRiskFactor;
-	}*/
-	
 	private void prepareTemplateEntity(RiskAssessmentTemplateEntity templateEntity) {
 		for(RiskRangeTypeEntity riskRangeType: templateEntity.getRiskRangeTypes()) {
 			riskRangeType.setRiskAssessmentTemplate(templateEntity);
