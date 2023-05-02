@@ -24,7 +24,7 @@ import lombok.Setter;
 public class RiskRangeTypeRangeEntity {
 	public RiskRangeTypeRangeEntity(RiskRangeTypeEntity riskRangeType, RiskLevelEntity riskLevelEntity, int min, int max) {
 		this.riskRangeType = riskRangeType;
-		this.riskLevelEntity = riskLevelEntity;
+		this.riskLevel = riskLevelEntity;
 		this.min = min;
 		this.max = max;
 	}
@@ -39,7 +39,7 @@ public class RiskRangeTypeRangeEntity {
 
 	@OneToOne
 	@JoinColumn(name = "risk_level_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_rsk_level"))
-	private RiskLevelEntity riskLevelEntity;
+	private RiskLevelEntity riskLevel;
 	 
 	private int min;
 	private int max;

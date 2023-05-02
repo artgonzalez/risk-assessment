@@ -364,6 +364,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskRangeTypeId;
 			
 			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
+			$scope.calculateRiskRangeTypeRanges($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex]);
 			console.log($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors);
 		}
 		/*
