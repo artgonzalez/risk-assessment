@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RiskLevel {
 	private int riskLevelId;
-	private String level;
+	private String levelDesc;
 }

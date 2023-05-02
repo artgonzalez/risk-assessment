@@ -10,7 +10,7 @@
                 </uib-accordion-heading>
                 <div class="row">
 					<div  class="col-md-3">
-						<button class="btn btn-primary" id="addNewRiskAsmtTemplateButton" ng-click="addNewRiskAsmtTemplate('addNewRiskAsmtTemplate',$event)" ng-disabled="disableAddNewButton">Add New</button>
+						<button class="btn btn-primary" id="addNewRiskAsmtTemplateButton" ng-click="addNewRiskAsmtTemplate('addNewRiskAsmtTemplate',$event)" ng-disabled="disableAddNewButton">Add New Template</button>
 					</div>
                     <div class="col-md-3">
                         <span><strong>Total No. of Records : {{totalItems}}</strong></span>
@@ -209,10 +209,17 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="riskRange in riskAssessmentObj.riskRangeTypes track by $index">
-                                <td><a href ng-click="getRiskAsmtRiskFactors($index)"> {{riskRange.name}} </a> </td>
+							
+                                <td><a href ng-click="getRiskAsmtRiskFactors($index)"> {{riskRange.name}}</a> </td>
                                 <td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[0].min}}</td>
 								<td class="table-td-alignment-center">{{riskRange.riskRangeTypeRanges[riskRange.riskRangeTypeRanges.length-1].max}}</td>
-                                <td  ng-repeat="value in riskRange.riskRangeTypeRangesValues" class="table-td-alignment-center">{{value}}</td>
+                                <!--td  ng-repeat="value in riskRange.riskRangeTypeRangesValues" class="table-td-alignment-center">{{value}}</td-->
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[0].min"/>{{riskRange.riskRangeTypeRanges[0].min}}</td>
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[0].max"/>{{riskRange.riskRangeTypeRanges[0].max}}</td>
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[1].min"/>{{riskRange.riskRangeTypeRanges[1].min}}</td>
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[1].max"/>{{riskRange.riskRangeTypeRanges[1].max}}</td>
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[2].min"/>{{riskRange.riskRangeTypeRanges[2].min}}</td>
+								<td class="table-td-alignment-center"><input type="hidden" ng-model="riskRange.riskRangeTypeRanges[2].max"/>{{riskRange.riskRangeTypeRanges[2].max}}</td>
                             </tr>
                             <tr>
                                 <td>Baseline Risk</td>
@@ -375,10 +382,10 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="riskFactorLevel in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors[riskFactorIndex].riskFactorLevels track by $index">
-                                <td>{{riskFactorLevel.riskLevel.level}}
+                                <td>{{riskFactorLevel.riskLevel.levelDesc}}
                                 </td>
                                 <td>{{riskFactorLevel.level}}
-									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="riskFactorLevel.level" ng-maxlength="50" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
+									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="riskFactorLevel.levelName" ng-maxlength="50" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
 									<div class="col-md-3 contact-div-padding text-left">
 									<div class="error-wrapper" id="riskLevelDescValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelDesc' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$invalid" role="alert">
 										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.required"><strong>Level - is a required field.</strong></div>
