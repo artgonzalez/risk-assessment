@@ -262,11 +262,11 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	$scope.prepareAddRiskFactor = function(riskFactors){
 		$scope.isAddEditDisplayRiskFactor = true;
 		$scope.newRiskFactor = {
-								id: 0,
+								riskFactorId: 0,
 								name: "",
 								riskFactorLevels: [],
 								riskRangeTypeId: 0,
-								weightMultiplier: 0,
+								//weightMultiplier: 1,
 			
 								};
 								
@@ -360,7 +360,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 		
 		if($scope.isAddEditDisplayRiskFactor){
 			var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
-			$scope.newRiskFactor.id = 0;
+			$scope.newRiskFactor.riskFactorId = 0;
 			$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskRangeTypeId;
 			
 			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
@@ -433,7 +433,8 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.getRiskAsmtTemplates();
                         $scope.riskAsmtTemplateForm.$setPristine();
                         //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
-
+						$scope.isAddEditDisplayRiskFactor = false;
+						$scope.newRiskFactor = {};
                         $location.hash('displayRecordSavedMsg');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();

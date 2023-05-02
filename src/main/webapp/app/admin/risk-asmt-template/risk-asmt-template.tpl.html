@@ -328,9 +328,9 @@
                                 <label for="weightMultiplier">Weight Multiplier</label>
                             </div>
                             <div class="col-md-3 contact-div-padding text-left">
-                                <input type="text" class="form-control" name="weightMultiplier" id="weightMultiplier" ng-model="newRiskFactor.weightMultiplier" ng-maxlength="20" ng-required=required aria-live="assertive" aria-describedby="weightMultiplierValidation" />
-                                <div class="error-wrapper" id="weightMultiplierValidation" ng-messages="riskAsmtTemplateForm.weightMultiplier.$error" ng-if="riskAsmtTemplateForm.weightMultiplier.$invalid" role="alert">
-                                    <div ng-message="required" ng-if="riskAsmtTemplateForm.weightMultiplier.$error.required"><strong>Weight Multiplier - is a required field.</strong></div>
+                                <input type="number" class="form-control" name="newWeightMultiplier" id="newWeightMultiplier" ng-model="newRiskFactor.weightMultiplier" ng-required=required aria-live="assertive" aria-describedby="newWeightMultiplierValidation" />
+                                <div class="error-wrapper" id="newWeightMultiplierValidation" ng-messages="riskAsmtTemplateForm.newWeightMultiplier.$error" ng-if="riskAsmtTemplateForm.newWeightMultiplier.$invalid" role="alert">
+                                    <div ng-message="required" ng-if="riskAsmtTemplateForm.newWeightMultiplier.$error.required"><strong>Weight Multiplier - is a required field.</strong></div>
                                 </div>
                             </div>
 							<table class="table table-striped">
@@ -346,10 +346,10 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="riskFactorLevel in riskAssessmentObj.riskRangeTypes[riskRangeTypeIndex].riskFactors[riskFactorIndex].riskFactorLevels track by $index">
-									<td>{{newRiskFactor.riskFactorLevels[$index].riskLevel = riskFactorLevel.riskLevel; riskFactorLevel.riskLevel.level}}
+									<td>{{newRiskFactor.riskFactorLevels[$index].riskLevel = riskFactorLevel.riskLevel; riskFactorLevel.riskLevel.levelDesc}}
 									</td>
 									<td>
-									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].level" ng-maxlength="20" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
+									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].levelName" ng-maxlength="20" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
 									<div class="col-md-3 contact-div-padding text-left">
 									
 									<div class="error-wrapper" id="riskLevelDescValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelDesc' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$invalid" role="alert">
@@ -357,8 +357,8 @@
 									</div>
 									</div>
 									</td>
-									<td class="table-td-alignment-center">
-									<input type="number" value="{{riskFactorLevel.score}}" class="form-control" name="riskLevelScore{{$index}}" id="riskLevelScore{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].score" ng-maxlength="20" aria-live="assertive" aria-describedby="riskLevelScoreValidation{{$index}}" />
+									<td class="table-td-alignment-center">{{riskFactorLevel.score}}
+									<input type="hidden" ng-init="newRiskFactor.riskFactorLevels[$index].score=riskFactorLevel.score" class="form-control" name="newRiskLevelScore{{$index}}" id="newRiskLevelScore{{$index}}" ng-model="newRiskFactor.riskFactorLevels[$index].score" aria-live="assertive" aria-describedby="newRiskLevelScoreValidation{{$index}}" />
 									<!--div class="error-wrapper" id="riskLevelScoreValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelScore' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelScore' + $index].$invalid" role="alert">
 										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelScore' + $index].$error.required"><strong>Score - is a required field.</strong></div>
 									</div-->
