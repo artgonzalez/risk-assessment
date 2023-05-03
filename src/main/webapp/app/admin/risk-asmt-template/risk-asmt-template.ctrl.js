@@ -36,6 +36,9 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	$scope.isAddEditRiskAsmtTemplate = false;
 	$scope.isAddRiskAsmtTemplate = false;
 	$scope.displayRiskAsmtTemplate = false;
+	$scope.riskRangeTypeIndex = 0;
+	$scope.riskFactorIndex = 0;
+	
     var msg;
 
     $scope.riskAssessmentSummaryPanelStatus = [{
@@ -213,8 +216,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         riskAsmtTemplateFactory.getRiskAsmtTemplate(riskAsmtId).then(function(response) {
             if (response.success) {
                 $scope.data = response.data;
-				$scope.riskRangeTypeIndex = 0;
-				$scope.riskFactorIndex = 0;
 				$scope.riskAssessmentObj = $scope.data;
 				$scope.createRiskAsmtTemplateCalculatedFields($scope.riskAssessmentObj);
 				$scope.riskAssessmentObj.createBaseLineRiskRanges();
@@ -717,11 +718,88 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     };
 	
 	$scope.initializeNewRiskAsmtTemplate = function(){
-		$scope.riskAssessmentObj.comments = "";
-		$scope.riskAssessmentObj.effectiveDate = "";
-		$scope.riskAssessmentObj.expirationDate = "";
-		$scope.riskAssessmentObj.lastUpdatedBy = "";
-		$scope.riskAssessmentObj.riskAssessmentTemplateId = 0;
-		$scope.riskAssessmentObj.version = "";
+		
+		
+		riskAsmtTemplateFactory.getRiskAsmtTemplate(1).then(function(response) {
+			
+			if (response.success) {
+				$scope.riskAssessmentObj = response.data;
+				$scope.riskAssessmentObj.comments = "";
+				$scope.riskAssessmentObj.effectiveDate = "";
+				$scope.riskAssessmentObj.expirationDate = "";
+				$scope.riskAssessmentObj.lastUpdatedBy = "";
+				$scope.riskAssessmentObj.riskAssessmentTemplateId = 0;
+				$scope.riskAssessmentObj.version = "";
+				var rfls0 = $scope.riskAssessmentObj.riskRangeTypes[0].riskFactors[0].riskFactorLevels;
+				$scope.riskAssessmentObj.riskRangeTypes[0].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[0].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[0].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[0].riskFactors[0] =
+																			{
+																			riskFactorId: 0,
+																			name: "",
+																			riskFactorLevels: rfls0,
+																			riskRangeTypeId: 0,
+																			//weightMultiplier: 1,
+														
+																			};
+				var rfls1 = $scope.riskAssessmentObj.riskRangeTypes[0].riskFactors[0].riskFactorLevels;
+				$scope.riskAssessmentObj.riskRangeTypes[1].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[1].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[1].riskFactors.pop();
+				$scope.riskAssessmentObj.riskRangeTypes[1].riskFactors[0] =
+																			{
+																			riskFactorId: 0,
+																			name: "",
+																			riskFactorLevels: rfls1,
+																			riskRangeTypeId: 0,
+																			//weightMultiplier: 1,
+														
+																			};
+				
+				for(var i=0; i < $scope.riskAssessmentObj.riskRangeTypes.length; i++){
+					var riskRangeTypeRanges = $scope.riskAssessmentObj.riskRangeTypes[i].riskRangeTypeRanges;
+					for(var j=0; j < riskRangeTypeRanges.length; j++){
+						riskRangeTypeRanges[j].min = 0;
+						riskRangeTypeRanges[j].max = 0;
+					}
+					
+					var riskRangeType = $scope.riskAssessmentObj.riskRangeTypes[i];
+					
+					for(var j=0; j < riskRangeType.riskFactors.length; j++){
+						for(var k=0; k < riskRangeType.riskFactors[j].riskFactorLevels.length; k++){
+							riskRangeType.riskFactors[j].riskFactorLevels[k].levelName = "";
+						}
+					}
+					
+					
+				}
+				
+				$scope.riskAssessmentObj.baseLineRiskRanges = [];
+				$scope.riskAssessmentObj.baseLineRiskRangesLabels = [];
+				$scope.riskAssessmentObj.baseLineRiskRangesValues = [0,0,0,0,0,0];
+				
+				for(var i=0; i < 6; i++){
+					$scope.riskAssessmentObj.baseLineRiskRanges[i] = {
+													level : "",
+													min : 0,
+													max : 0
+												};
+					$scope.riskAssessmentObj.baseLineRiskRanges[i].min = 0;
+					$scope.riskAssessmentObj.baseLineRiskRanges[i].max = 0;
+					$scope.riskAssessmentObj.baseLineRiskRangesLabels[i] = (i % 2 == 0) ? "Min" : "Max";
+				}
+				
+				$scope.createRiskAsmtTemplateCalculatedFields($scope.riskAssessmentObj);
+				$scope.isAddRiskAsmtTemplate = true;
+				console.log($scope.riskAssessmentObj);
+			}
+			else
+			{
+				
+			}
+		});
+		
+		
 	};
 });
