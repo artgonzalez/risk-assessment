@@ -56,8 +56,10 @@ public class RiskAssessmentTemplateService {
 		return template;
 	}
 	
+	@Transactional
 	public RiskAssessmentTemplate createRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
 		RiskAssessmentTemplateEntity template = modelMapper.map(riskAssessmentTemplate, RiskAssessmentTemplateEntity.class);
+		prepareTemplateEntity(template);
 		RiskAssessmentTemplateEntity new_template = riskAsmtTemplateRepository.save(template);
 		
 		return modelMapper.map(new_template, RiskAssessmentTemplate.class);

@@ -67,13 +67,13 @@
                                 {{riskAsmtTplVersion.lastUpdatedDate | date:'MM/dd/yyyy HH:mm'}}
                             </td>
                             <td class="table-td-alignment-center wordwrap">
-                                {{riskAsmtTplVersion.effectiveDate | date:"MM/dd/yyyy"}}
+                                {{riskAsmtTplVersion.effectiveStartDate | date:"MM/dd/yyyy"}}
                             </td>
                             <td class="table-td-alignment-center wordwrap">
-                                {{riskAsmtTplVersion.expirationDate | date:"MM/dd/yyyy"}}
+                                {{riskAsmtTplVersion.effectiveEndDate | date:"MM/dd/yyyy"}}
                             </td>
                             <td id="comment-show-data" tabindex="0">
-                                {{riskAsmtTplVersion.comment}}
+                                {{riskAsmtTplVersion.comments}}
                             </td>
                         </tr>
                     </tbody>
@@ -113,7 +113,7 @@
                 <div class="col-md-2">
                     <span class="mandatory">*</span><label for="newVersion">Version</label>
                     <p class="input-group">
-                        <input class="form-control" type="text" id="newVersion" name="version" ng-model="addEditRiskAsmtTplVersion.version" ng-pattern="/^[0-9.]*$/" required="true" aria-live="assertive" aria-describedby="versionValidation"></input>
+                        <input class="form-control" type="text" id="newVersion" name="version" ng-model="riskAssessmentObj.version" ng-pattern="/^[0-9.]*$/" required="true" aria-live="assertive" aria-describedby="versionValidation"></input>
                         <div class="error-wrapper" id="versionValidation" ng-messages="riskAsmtTemplateForm.version.$error" ng-if="riskAsmtTemplateForm.version.$invalid">
                             <div ng-message="required" ng-if="riskAsmtTemplateForm.version.$error.required"><strong>Version - is a required field.</strong></div>
                             <div ng-message="pattern" ng-if="riskAsmtTemplateForm.version.$error.pattern"><strong> Version - must be numeric.</strong></div>
@@ -204,7 +204,13 @@
                             <tr>
                                 <th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
                                 <th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Max{{riskRange.riskRangeTypeRangesLabels}}</th>
-                                <th ng-repeat="label in riskAssessmentObj.baseLineRiskRangesLabels track by $index" scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">{{label}}</th>
+                                <!--th ng-repeat="label in riskAssessmentObj.baseLineRiskRangesLabels track by $index" scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">{{label}}</th-->
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Max</th>
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Max</th>
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Min</th>
+								<th scope="col" class="btn-primary risk-asmt-tpl-tableheader-inner-row table-th-child">Max</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -416,8 +422,8 @@
 			</div>			
         </div>
 		<div class="text-center">
-                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid"  ng-if="isAddEditRiskAsmtTemplate">Save</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)"  ng-if="isAddEditRiskAsmtTemplate">Cancel</button>&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(riskAssessmentObj)" ng-disabled="riskAsmtTemplateForm.$invalid"  ng-if="isAddEditRiskAsmtTemplate || isAddRiskAsmtTemplate">Save</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)"  ng-if="isAddEditRiskAsmtTemplate || isAddRiskAsmtTemplate">Cancel</button>&nbsp;&nbsp;&nbsp;
          </div>
     </form>
 </div>
