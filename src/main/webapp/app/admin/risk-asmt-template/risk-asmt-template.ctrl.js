@@ -746,21 +746,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 					
 				}
 				
-				/*$scope.riskAssessmentObj.baseLineRiskRanges = [];
-				$scope.riskAssessmentObj.baseLineRiskRangesLabels = [];
-				$scope.riskAssessmentObj.baseLineRiskRangesValues = [0,0,0,0,0,0];
-				
-				for(var i=0; i < 6; i++){
-					$scope.riskAssessmentObj.baseLineRiskRanges[i] = {
-													level : "",
-													min : 0,
-													max : 0
-												};
-					$scope.riskAssessmentObj.baseLineRiskRanges[i].min = 0;
-					$scope.riskAssessmentObj.baseLineRiskRanges[i].max = 0;
-					$scope.riskAssessmentObj.baseLineRiskRangesLabels[i] = (i % 2 == 0) ? "Min" : "Max";
-				}*/
-				
 				$scope.createRiskAsmtTemplateCalculatedFields($scope.riskAssessmentObj);
 				$scope.riskAssessmentObj.createBaseLineRiskRanges();
 				$scope.isAddRiskAsmtTemplate = true;
