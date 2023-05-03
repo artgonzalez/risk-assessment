@@ -188,7 +188,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 		}
 		
 		$scope.riskAssessmentObj.createBaseLineRiskRanges();
-		
 	};
 	
 	$scope.getRiskFactorLevelsLowScore = function(riskFactorLevels){
@@ -273,9 +272,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 								name: "",
 								riskFactorLevels: [],
 								riskRangeTypeId: 0,
-								//weightMultiplier: 1,
-			
-								};
+							   };
 								
 		$scope.newRiskFactorIndex = riskFactors.length;
 	};
@@ -306,15 +303,11 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                     $scope.initializeNewRiskAsmtTemplate();
 					$scope.isAddRiskAsmtTemplate = true;
                     $scope.resetForm();
-                    //$scope.isFutureTemplate = false;
-                    //$scope.initializeAddNewTemplate();
                 }, function() {});
             } else {
                 $scope.initializeNewRiskAsmtTemplate();
                 $scope.resetForm();
 				$scope.isAddRiskAsmtTemplate = true;
-                //$scope.initializeAddNewTemplate();
-                //$scope.isFutureTemplate = false;
             }
         } else {
             if ($scope.isCurrentTemplate && $scope.editCurrentRiskAsmtTemplateForm.$dirty) {
@@ -323,7 +316,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                     $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
                     $scope.displayEditCurrentRiskAsmtTplPanel = false;
                     $scope.isCurrentTemplate = false;
-                    $scope.initializeAddNewTemplate();
                 }, function() {
                     $scope.displayEditCurrentRiskAsmtTplPanel = true;
                 });
@@ -331,8 +323,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                 $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
                 $scope.displayEditCurrentRiskAsmtTplPanel = false;
                 $scope.isCurrentTemplate = false;
-                $scope.initializeAddNewTemplate();
-            }
+			}
         }
     };
 
@@ -406,7 +397,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayRecordSavedMsg = true;
                         $scope.getRiskAsmtTemplates();
                         $scope.riskAsmtTemplateForm.$setPristine();
-                        //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
 						$scope.isAddEditDisplayRiskFactor = false;
 						$scope.newRiskFactor = {};
                         $location.hash('displayRecordSavedMsg');
@@ -420,7 +410,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                         $scope.displayEditCurrentRiskAsmtTplPanel = false;
                         $scope.displayRecordSavedMsg = false;
                         $scope.riskAsmtTemplateForm.$setPristine();
-                        //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
                         $location.hash('errorMessageDisplay');
                         $anchorScroll();
                         dialogMessageFactory.hideProgressBar();
@@ -543,66 +532,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         }*/
     };
 
-    $scope.initializeAddNewTemplate = function() {
-        $scope.addEditLabel = 'Add Risk Assessment Template';
-        $scope.isNewTemplate = true;
-        $scope.isAllPanelsExpanded = false;
-        for (var i = 0; i < 3; i++) {
-            $scope.expandCollapseStatus[i].open = $scope.isAllPanelsExpanded;
-        }
-        var latestVersionNumber;
-        if ($scope.riskAsmtTplVersions !== undefined && $scope.riskAsmtTplVersions.length > 0) {
-            latestVersionNumber = parseFloat($scope.riskAsmtTplVersions[0].version) + parseFloat(0.1);
-        } else {
-            latestVersionNumber = 1.0;
-        }
-        $scope.addEditRiskAsmtTplVersion = {
-            "version": parseFloat(latestVersionNumber).toFixed(1),
-            "legalRiskRangeType": "Legal Entity Risk Range",
-            "contractRiskRangeType": "Contract Risk Range",
-            "baselineRiskRangeType": "Baseline Risk Range"
-        };
-        $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals = [];
-        $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateContracts = [];
-        for (var index = 0; index < 5; index++) {
-            $scope.riskAssessmentTemplateLegal = {
-                "lowScoreLabel2": "Score 1",
-                "mediumScoreLabel2": "Score 3",
-                "highScoreLabel2": "Score 5",
-                "highScoreLabel4": "Score 7",
-                "riskLevelScore1": 1,
-                "riskLevelScore1Status": true,
-                "riskLevelScore2": 3,
-                "riskLevelScore2Status": true,
-                "riskLevelScore3": 5,
-                "riskLevelScore3Status": true,
-                "riskLevelScore4": 7,
-                "riskLevelScore4Status": false
-            };
-            $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateLegals.push($scope.riskAssessmentTemplateLegal);
-            $scope.riskAssessmentTemplateContract = {
-                "lowScoreLabel2": "Score 1",
-                "mediumScoreLabel2": "Score 3",
-                "highScoreLabel2": "Score 5",
-                "highScoreLabel4": "Score 7",
-                "riskLevelScore1": 1,
-                "riskLevelScore1Status": true,
-                "riskLevelScore2": 3,
-                "riskLevelScore2Status": true,
-                "riskLevelScore3": 5,
-                "riskLevelScore3Status": true,
-                "riskLevelScore4": 7,
-                "riskLevelScore4Status": false
-            };
-            $scope.addEditRiskAsmtTplVersion.riskAssessmentTemplateContracts.push($scope.riskAssessmentTemplateContract);
-        }
-        $scope.isNewTemplate = true;
-        $scope.displayAddNewRiskAsmtTplPanel = true;
-        $scope.displayOnlyRiskAsmtTemplate = false;
-        $scope.displayEditCurrentRiskAsmtTplPanel = false;
-        $scope.errorFromRestService = false;
-    };
-
     $scope.resetForm = function() {
         $scope.isExpirationDateInvalid = false;
         if (!angular.isUndefined($scope.riskAsmtTemplateForm.expirationDate)) {
@@ -686,7 +615,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	
 	$scope.initializeNewRiskAsmtTemplate = function(){
 		
-		
 		riskAsmtTemplateFactory.getRiskAsmtTemplate(1).then(function(response) {
 			
 			if (response.success) {
@@ -707,8 +635,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 																			name: "",
 																			riskFactorLevels: rfls0,
 																			riskRangeTypeId: 0,
-																			//weightMultiplier: 1,
-														
 																			};
 				var rfls1 = $scope.riskAssessmentObj.riskRangeTypes[1].riskFactors[0].riskFactorLevels;
 				$scope.riskAssessmentObj.riskRangeTypes[1].riskFactors.pop();
@@ -720,8 +646,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 																			name: "",
 																			riskFactorLevels: rfls1,
 																			riskRangeTypeId: 0,
-																			//weightMultiplier: 1,
-														
 																			};
 				
 				for(var i=0; i < $scope.riskAssessmentObj.riskRangeTypes.length; i++){
@@ -742,8 +666,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 							riskRangeType.riskFactors[j].riskFactorLevels[k].levelName = "";
 						}
 					}
-					
-					
 				}
 				
 				$scope.createRiskAsmtTemplateCalculatedFields($scope.riskAssessmentObj);
@@ -755,7 +677,5 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 				
 			}
 		});
-		
-		
 	};
 });
