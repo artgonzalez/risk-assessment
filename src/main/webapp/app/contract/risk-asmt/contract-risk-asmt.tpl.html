@@ -187,19 +187,19 @@
 							{{(isAddRiskAssessment) ? $index+1 : riskFactor.idd}}
 							</td>
 							<td>
-								{{riskFactor.name}}
+								{{riskFactor.factorDesc}}
 							     <div ng-show="showEdit"></br>
 								 <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
 							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="editRiskRangeTotalScore(riskRangeIndex, riskFactor, riskFactorLevel)" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactorId}}" value="{{riskFactorLevel.riskFactorLevelId}}">
-									 <label for="html">{{riskFactorLevel.level}}</label></br>
+									 <label for="html">{{riskFactorLevel.levelName}}</label></br>
 							    </div>
 								 </div>
 							</td>
-							<td ng-if="isEditRiskAssessment" >{{riskFactor.riskFactorLevel.level}}</td>
+							<td ng-if="isEditRiskAssessment" >{{riskFactor.riskFactorLevel.levelName}}</td>
 							<td ng-if="isAddRiskAssessment" >
 							    <div ng-repeat="riskFactorLevel in riskFactor.riskFactorLevels">
 							         <input ng-model="riskAssessmentObj.riskRangeTypes[riskRangeIndex].riskFactors[$parent.$index].riskFactorLevelId" ng-click="riskFactor.score=riskFactorLevel.score; getRiskRangeTotalScore(riskRangeIndex, riskRangeType.riskFactors);setAssessedFactorProperties(riskRangeIndex, $parent.$index, riskRangeType, riskFactor, riskFactorLevel);" type="radio" id="one" name="riskRangeTypeLevel{{riskFactor.riskFactorId}}" value="{{riskFactorLevel.riskFactorLevelId}}" required>
-									 <label for="html">{{riskFactorLevel.level}}</label>
+									 <label for="html">{{riskFactorLevel.levelName}}</label>
 							    </div>
 								<div class="error-wrapper" id="riskFactorLevelValidation" ng-messages="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$error" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$invalid">
 										<div ng-message="required" ng-if="contractRiskAsmtForm['riskRangeTypeLevel' + riskFactor.riskFactorId].$error.required">

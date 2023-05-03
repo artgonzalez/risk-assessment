@@ -89,7 +89,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			for(var i=0; i < riskRangeTypes.length; i++){
 				
 				for(var j=0; j < riskRangeTypes[i].riskRangeTypeRanges.length; j++){
-					baseLineRiskRangesText[j].level = riskRangeTypes[i].riskRangeTypeRanges[j].riskLevel.level;
+					baseLineRiskRangesText[j].level = riskRangeTypes[i].riskRangeTypeRanges[j].riskLevel.levelDesc;
 					baseLineRiskRangesText[j].min += riskRangeTypes[i].riskRangeTypeRanges[j].min;
 					baseLineRiskRangesText[j].max += riskRangeTypes[i].riskRangeTypeRanges[j].max;
 					
@@ -199,9 +199,9 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				riskAssessment.riskRangeTypes[i].riskRangesText = 
 					function(ranges){
 						var rangesText = "";
-						
+						console.log(ranges);
 						for(var idx=0; idx < ranges.length; idx++){
-							rangesText += ranges[idx].riskLevel.level + ' = ' + ranges[idx].min + '-' + ranges[idx].max + '  ';
+							rangesText += ranges[idx].riskLevel.levelDesc + ' = ' + ranges[idx].min + '-' + ranges[idx].max + '  ';
 						}
 						
 						return rangesText;
@@ -355,11 +355,10 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 			
 			for(var i=0; i < riskRange.riskRangeTypeRanges.length; i++){
 				var riskRangeTypeRange = riskRange.riskRangeTypeRanges[i];
-				console.log(riskRangeScore);
-				console.log(riskRangeTypeRange);
+				
 				if(riskRangeScore >= riskRangeTypeRange.min && riskRangeScore <= riskRangeTypeRange.max){
-					
-					riskLevel = riskRangeTypeRange.riskLevel.level;
+						
+					riskLevel = riskRangeTypeRange.riskLevel.levelDesc;
 					break;
 				}
 			}
