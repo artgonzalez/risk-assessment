@@ -44,7 +44,7 @@ public class RiskRangeTypeEntity {
 	@JoinColumn(name="risk_assessment_template_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_rsk_asmt_tplt"))
 	RiskAssessmentTemplateEntity riskAssessmentTemplate;
 	
-	@OneToMany(mappedBy="riskRangeType")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="riskRangeType")
 	private Set<RiskRangeTypeRangeEntity> riskRangeTypeRanges = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "riskRangeType")

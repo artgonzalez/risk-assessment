@@ -35,6 +35,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	$scope.isAddEditDisplayRiskFactor = false;
 	$scope.isAddEditRiskAsmtTemplate = false;
 	$scope.isAddRiskAsmtTemplate = false;
+	$scope.displayRiskAsmtTemplate = false;
     var msg;
 
     $scope.riskAssessmentSummaryPanelStatus = [{
