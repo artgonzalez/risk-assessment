@@ -38,6 +38,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 	$scope.displayRiskAsmtTemplate = false;
 	$scope.riskRangeTypeIndex = 0;
 	$scope.riskFactorIndex = 0;
+	$scope.disableAddRiskFactorButton = false;
 	
     var msg;
 
@@ -275,6 +276,12 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 							   };
 								
 		$scope.newRiskFactorIndex = riskFactors.length;
+			
+		$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskRangeTypeId;
+			
+		$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
+		$scope.calculateRiskRangeTypeRanges($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex]);
+		$scope.disableAddRiskFactorButton = true;
 	};
 	
     $scope.initializeGrids = function(riskTemplateId) {
@@ -355,14 +362,14 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $scope.isAtleastOneLegalRiskFactorEntered = false;
         $scope.isAtleastOneContractRiskFactorEntered = false;
 		
-		if($scope.isAddEditDisplayRiskFactor){
+		/*if($scope.isAddEditDisplayRiskFactor){
 			var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
 			$scope.newRiskFactor.riskFactorId = 0;
 			$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskRangeTypeId;
 			
 			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
 			$scope.calculateRiskRangeTypeRanges($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex]);
-		}
+		}*/
 		dialogMessageFactory.showProgressBar();
 		if ($scope.isAddRiskAsmtTemplate) {
 			riskAsmtTemplateFactory.addRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
@@ -463,8 +470,11 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             } else {
                 $scope.riskAsmtTemplateForm.$setPristine();
 				$scope.newRiskFactor = {}
-				if(!$scope.isAddEditDisplayRiskFactor){
+				
+				if($scope.isAddEditRiskAsmtTemplate){
 					$scope.isAddEditRiskAsmtTemplate = false;
+					$scope.disableAddRiskFactorButton = false;
+					$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.pop();
 				}
 				$scope.isAddEditDisplayRiskFactor = false;
                 $scope.displayEditCurrentRiskAsmtTplPanel = false;
