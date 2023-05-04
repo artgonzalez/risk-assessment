@@ -109,9 +109,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		};
 		
 		riskAssessment.baseLineRiskRangesText = function (){
-			//if(riskAssessment.baseLineRiskRanges == undefined){
-				//riskAssessment.createBaseLineRiskRanges();
-			//}
 			
 			var riskRangesText = "";
 			var riskRanges = riskAssessment.baseLineRiskRanges;
@@ -124,9 +121,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		};
 		
 		riskAssessment.baseLineRiskRangeText = function(){
-			//if(riskAssessment.baseLineRiskRanges == undefined){
-				//riskAssessment.createBaseLineRiskRanges();
-			//}
 			
 			var riskRanges = riskAssessment.baseLineRiskRanges;
 				
@@ -155,9 +149,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				
 		riskAssessment.baseLineRiskLevel = 
 			function(){
-				//if(riskAssessment.baseLineRiskRanges == undefined){
-					//riskAssessment.createBaseLineRiskRanges();
-				//}
 				
 				var riskLevel = "";
 				var riskScore = riskAssessment.baseLineRiskLevelScore();
@@ -310,10 +301,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		var sum = 0;
 		
 		var localRiskFactors = riskFactors;
-		
-		/*if(riskFactors == undefined){
-			localRiskFactors = riskFactors.riskFactors;
-		}*/
 		
 		for(var i=0; i < localRiskFactors.length; i++){
 			if(localRiskFactors[i].riskFactorLevel == undefined){
@@ -586,9 +573,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
             }
         }
     };
-
-
-
 
     $scope.calculateOtherRiskScore = function() {
         $scope.itemOtherRiskScore = 0;
