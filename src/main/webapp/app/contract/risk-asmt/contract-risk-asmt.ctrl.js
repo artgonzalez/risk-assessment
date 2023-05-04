@@ -250,20 +250,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
     };
 
     //$scope.getLookupValues();
-	$scope.getRiskAssessmentTemplate = function(riskAssessmentTemplateId) {
-        riskAssessmentFactory.getRiskAssessmentTemplate(riskAssessmentTemplateId).then(function(response) {
-            if (response.success) {
-                //$scope.data = response.data;
-                $scope.riskRangeTypeList = response.data;
-				
-				for(var i=0; i < response.data.length; i++){
-					$scope.riskRangeTypeTotalScore.push(0);
-				}
-				
-            }
-        });
-    };
-	
     $scope.InitializeNewRiskAssessment = function(scrollLocation) {
         $scope.contractRiskAsmtForm.$setPristine();
         $scope.riskAssessmentDateGreaterThanToday = false;
