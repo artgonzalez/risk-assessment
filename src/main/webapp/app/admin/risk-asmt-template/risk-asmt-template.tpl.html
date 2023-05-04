@@ -163,7 +163,7 @@
                 <div class="col-md-4">
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
-                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="1" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="1" ng-maxlength="250" cols="32" rows="3" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
                     <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
                         <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>
