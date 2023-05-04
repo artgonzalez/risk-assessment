@@ -2,6 +2,7 @@ package pcs.scor.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +72,7 @@ public class RiskAssessmentService {
 		riskAssessmentEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId()));
 		prepareForSave(riskAssessment, riskAssessmentEntity);
 		
+		riskAssessmentEntity.setCreatedDate(new Date());
 		RiskAssessmentEntity newRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessmentEntity);
 		
 		RiskAssessment newRiskAssessment = modelMapper.map(newRiskAssessmentEntity, RiskAssessment.class);
@@ -85,7 +87,8 @@ public class RiskAssessmentService {
 														riskAssessment.getRiskAssessmentDate(),
 														riskAssessment.getPrimaryRiskAssessor(),
 														riskAssessment.getFiscalYear());
-		
+		riskAssessmentEntity.setUpdatedDate(new Date());
+
 		riskAssessmentEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId())); 
 		prepareForSave(riskAssessment, riskAssessmentEntity);
 		
@@ -105,6 +108,10 @@ public class RiskAssessmentService {
 		riskAssessment.setRiskAssessmentId(riskAssessmentEntity.getRiskAssessmentId());
 		riskAssessment.setRiskAssessmentTemplateId(riskAssessmentEntity.getRiskAssessmentTemplate().getRiskAssessmentTemplateId());
 		riskAssessment.setRiskAssessmentTemplateVersion(riskAssessmentEntity.getRiskAssessmentTemplate().getVersion());
+		riskAssessment.setCreatedBy(riskAssessmentEntity.getCreatedBy());
+		riskAssessment.setCreatedDate(riskAssessmentEntity.getCreatedDate());
+		riskAssessment.setUpdatedBy(riskAssessmentEntity.getUpdatedBy());
+		riskAssessment.setUpdatedDate(riskAssessmentEntity.getUpdatedDate());
 		
 		for(AssessedRiskRangeTypeEntity riskRange: riskAssessmentEntity.getRiskRangeTypes()) {
 			AssessedRiskRange assessedRiskRange = new AssessedRiskRange(riskRange.getAssessedRiskRangeTypeId(),

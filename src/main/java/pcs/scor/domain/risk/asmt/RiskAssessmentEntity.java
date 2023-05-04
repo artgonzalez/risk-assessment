@@ -55,6 +55,10 @@ public class RiskAssessmentEntity {
 	private Date riskAssessmentDate;
 	private String fiscalYear;
 	private String primaryRiskAssessor;
+	private String createdBy;
+	private Date createdDate;
+	private String updatedBy;
+	private Date updatedDate;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name= "risk_assessment_id")

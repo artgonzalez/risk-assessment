@@ -525,6 +525,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 						$scope.isEditRiskAssessment = true;
 						$scope.baseLineRiskLevelScore = 0;
 						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
+						$scope.riskAssessmentObj.createBaseLineRiskRanges();
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
                     $scope.getContractRiskAssessments($scope.vm.currentPage, $scope.noOfRecordsPerPage);

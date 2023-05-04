@@ -19,5 +19,10 @@ public class RiskAssessment {
 	private String fiscalYear;
 	private String primaryRiskAssessor;
 	private String riskAssessmentTemplateVersion;
+	private String createdBy;
+	private Date createdDate;
+	private String updatedBy;
+	private Date updatedDate;
+
 	private List<AssessedRiskRange> riskRangeTypes = new ArrayList<AssessedRiskRange>(); 
 }
