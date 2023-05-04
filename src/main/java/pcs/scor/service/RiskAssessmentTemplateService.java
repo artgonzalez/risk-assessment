@@ -2,6 +2,7 @@ package pcs.scor.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -60,6 +61,8 @@ public class RiskAssessmentTemplateService {
 	public RiskAssessmentTemplate createRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
 		RiskAssessmentTemplateEntity template = modelMapper.map(riskAssessmentTemplate, RiskAssessmentTemplateEntity.class);
 		prepareTemplateEntity(template);
+		template.setCreatedDate(new Date());
+		
 		RiskAssessmentTemplateEntity new_template = riskAsmtTemplateRepository.save(template);
 		
 		return modelMapper.map(new_template, RiskAssessmentTemplate.class);
@@ -69,8 +72,9 @@ public class RiskAssessmentTemplateService {
 	public RiskAssessmentTemplate updateRiskAssessmentTemplate(RiskAssessmentTemplate riskAssessmentTemplate) {
 		RiskAssessmentTemplateEntity updateTemplateEntity = modelMapper.map(riskAssessmentTemplate, RiskAssessmentTemplateEntity.class);
 		prepareTemplateEntity(updateTemplateEntity);
-	    
-		RiskAssessmentTemplateEntity savedTemplateEntity = riskAsmtTemplateRepository.save(updateTemplateEntity);
+	    updateTemplateEntity.setUpdatedDate(new Date());
+		
+	    RiskAssessmentTemplateEntity savedTemplateEntity = riskAsmtTemplateRepository.save(updateTemplateEntity);
 	    		
 		return modelMapper.map(savedTemplateEntity, RiskAssessmentTemplate.class);
 	}

@@ -41,4 +41,8 @@ public class RiskAssessmentTemplateEntity {
 	private Date effectiveStartDate;
 	private Date effectiveEndDate;
 	private String comments;
+	private String createdBy;
+	private Date createdDate;
+	private String updatedBy;
+	private Date updatedDate;
 }

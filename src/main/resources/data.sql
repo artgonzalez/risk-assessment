@@ -2,11 +2,13 @@ insert into risk_level(risk_level_id, level_desc) values(seq_risk_level.nextval,
 insert into risk_level(risk_level_id, level_desc) values(seq_risk_level.nextval,'Medium');
 insert into risk_level(risk_level_id, level_desc) values(seq_risk_level.nextval,'High');
 
-insert into risk_asmt_template_2(risk_assessment_template_id, comments, effective_start_date, effective_end_date,version) 
+insert into risk_asmt_template_2(risk_assessment_template_id, comments, effective_start_date, effective_end_date,version,
+								created_by, created_date, updated_by, updated_date) 
                               values(seq_risk_asmt_template.nextval,'Testing', 
                               TO_TIMESTAMP('2022-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF') ,
                               TO_TIMESTAMP('2023-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF') , 
-                              '1.0');
+                              '1.0', '00000107183', TO_TIMESTAMP('2021-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF'),
+                              '00000107183' ,TO_TIMESTAMP('2022-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF'));
 
 insert into risk_range_type(risk_range_type_id, name, risk_assessment_template_id) values(seq_risk_range_type.nextval, 'Tier 1', 1);
 
