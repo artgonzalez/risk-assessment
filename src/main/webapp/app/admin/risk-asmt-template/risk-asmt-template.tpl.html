@@ -163,12 +163,12 @@
                 <div class="col-md-4">
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
-                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="1" ng-maxlength="250" cols="32" rows="3" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="3" ng-maxlength="250" cols="32" rows="3" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
                     <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
                         <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>
-                        <div ng-message="minlength" ng-if="riskAsmtTemplateForm.comment.$error.minlength"><strong> Comment - must be 1-250 characters.</strong></div>
-                        <div ng-message="maxlength" ng-if="riskAsmtTemplateForm.comment.$error.maxlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                        <div ng-message="minlength" ng-show="riskAsmtTemplateForm.comment.$error.minlength"><strong> Comment - must be 1-250 characters.</strong></div>
+                        <div ng-message="maxlength" ng-show="riskAsmtTemplateForm.comment.$error.maxlength"><strong> Comment - must be 1-250 characters.</strong></div>
                     </div>
                     </p>
                 </div>
