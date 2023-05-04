@@ -643,6 +643,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
     };
 
     $scope.setNoOfRecordsPage = function(noOfRecordsPerPage) {
+		$scope.noOfRecordsPerPage = noOfRecordsPerPage;
         $scope.vm.currentPage = 1;
         $scope.noOfRec = noOfRecordsPerPage;
         $scope.getContractRiskAssessments($scope.vm.currentPage, $scope.noOfRecordsPerPage);
