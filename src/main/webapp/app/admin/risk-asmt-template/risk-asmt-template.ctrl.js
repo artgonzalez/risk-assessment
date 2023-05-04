@@ -363,64 +363,63 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
 			$scope.calculateRiskRangeTypeRanges($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex]);
 		}
-            dialogMessageFactory.showProgressBar();
-            if ($scope.isAddRiskAsmtTemplate) {
-                riskAsmtTemplateFactory.addRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
-                    if (response.success) {
-                        $scope.data = response.data;
-                        $scope.message = $scope.data.message;
-                        $scope.getRiskAsmtTemplates();
-                        $scope.isNoRecordsMessageDisabled = true;
-                        $scope.displayRecordSavedMsg = true;
-                        $scope.riskAsmtTemplateForm.$setPristine();
-                        $location.hash('displayRecordSavedMsg');
-                        $anchorScroll();
-                        dialogMessageFactory.hideProgressBar();
-                    } else {
-                        $scope.errorMsg = response.error.error.description;
-                        $scope.errorFromRestService = true;
-                        $scope.displayAddNewRiskAsmtTplPanel = false;
-                        $scope.displayOnlyRiskAsmtTemplate = false;
-                        $scope.displayEditCurrentRiskAsmtTplPanel = false;
-                        $scope.displayRecordSavedMsg = false;
-                        $scope.riskAsmtTemplateForm.$setPristine();
-                        $location.hash('errorMessageDisplay');
-                        $anchorScroll();
-                        dialogMessageFactory.hideProgressBar();
-                    }
-                });
-            } else {
-                riskAsmtTemplateFactory.updateRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
-                    if (response.success) {
-                        $scope.data = response.data;
-                        $scope.message = $scope.data.message;
-                        $scope.displayRecordSavedMsg = true;
-                        $scope.getRiskAsmtTemplates();
-                        $scope.riskAsmtTemplateForm.$setPristine();
-						$scope.isAddEditDisplayRiskFactor = false;
-						$scope.newRiskFactor = {};
-                        $location.hash('displayRecordSavedMsg');
-                        $anchorScroll();
-                        dialogMessageFactory.hideProgressBar();
-                    } else {
-                        $scope.errorMsg = response.error.error.description;
-                        $scope.errorFromRestService = true;
-                        $scope.displayAddNewRiskAsmtTplPanel = false;
-                        $scope.displayOnlyRiskAsmtTemplate = false;
-                        $scope.displayEditCurrentRiskAsmtTplPanel = false;
-                        $scope.displayRecordSavedMsg = false;
-                        $scope.riskAsmtTemplateForm.$setPristine();
-                        $location.hash('errorMessageDisplay');
-                        $anchorScroll();
-                        dialogMessageFactory.hideProgressBar();
-                    }
-                });
+		dialogMessageFactory.showProgressBar();
+		if ($scope.isAddRiskAsmtTemplate) {
+			riskAsmtTemplateFactory.addRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
+				if (response.success) {
+					$scope.data = response.data;
+					$scope.message = $scope.data.message;
+					$scope.getRiskAsmtTemplates();
+					$scope.isNoRecordsMessageDisabled = true;
+					$scope.displayRecordSavedMsg = true;
+					$scope.riskAsmtTemplateForm.$setPristine();
+					$location.hash('displayRecordSavedMsg');
+					$anchorScroll();
+					dialogMessageFactory.hideProgressBar();
+				} else {
+					$scope.errorMsg = response.error.error.description;
+					$scope.errorFromRestService = true;
+					$scope.displayAddNewRiskAsmtTplPanel = false;
+					$scope.displayOnlyRiskAsmtTemplate = false;
+					$scope.displayEditCurrentRiskAsmtTplPanel = false;
+					$scope.displayRecordSavedMsg = false;
+					$scope.riskAsmtTemplateForm.$setPristine();
+					$location.hash('errorMessageDisplay');
+					$anchorScroll();
+					dialogMessageFactory.hideProgressBar();
+				}
+			});
+		} else {
+			riskAsmtTemplateFactory.updateRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
+				if (response.success) {
+					$scope.data = response.data;
+					$scope.message = $scope.data.message;
+					$scope.displayRecordSavedMsg = true;
+					$scope.getRiskAsmtTemplates();
+					$scope.riskAsmtTemplateForm.$setPristine();
+					$scope.isAddEditDisplayRiskFactor = false;
+					$scope.newRiskFactor = {};
+					$location.hash('displayRecordSavedMsg');
+					$anchorScroll();
+					dialogMessageFactory.hideProgressBar();
+				} else {
+					$scope.errorMsg = response.error.error.description;
+					$scope.errorFromRestService = true;
+					$scope.displayAddNewRiskAsmtTplPanel = false;
+					$scope.displayOnlyRiskAsmtTemplate = false;
+					$scope.displayEditCurrentRiskAsmtTplPanel = false;
+					$scope.displayRecordSavedMsg = false;
+					$scope.riskAsmtTemplateForm.$setPristine();
+					$location.hash('errorMessageDisplay');
+					$anchorScroll();
+					dialogMessageFactory.hideProgressBar();
+				}
+			});
 			
             }
             $scope.isNewTemplate = false;
             $scope.isFutureTemplate = false;
             $scope.isCurrentTemplate = false;
-        //}
     };
 
     $scope.cancelRiskAssessmentTemplate = function() {
