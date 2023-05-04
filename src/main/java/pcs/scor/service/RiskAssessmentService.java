@@ -10,6 +10,10 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedResources.PageMetadata;
 import org.springframework.stereotype.Service;
 
 //import pcs.scor.data.risk.repository.AssessedRiskFactorRepository;
@@ -35,13 +39,17 @@ public class RiskAssessmentService {
 	@Autowired
     private ModelMapper modelMapper;
 	
-	public List<RiskAssessment> getRiskAssessmentsByContractId(long contractId){
-		List<RiskAssessmentEntity> riskAssessmentEntities = riskAssessmentRepository.findByContractId(contractId);
+	public PagedResources<RiskAssessment> getRiskAssessmentsByContractId(long contractId, Pageable page){
+		Page<RiskAssessmentEntity> riskAssessmentEntities = riskAssessmentRepository.findByContractId(contractId, page);
 		List<RiskAssessment> riskAssessments = new ArrayList<RiskAssessment>();
 		
-		riskAssessmentEntities.forEach(entity -> riskAssessments.add(modelMapper.map(entity, RiskAssessment.class)));
+		riskAssessmentEntities.forEach(entity -> riskAssessments.add(getRiskAssessment(entity)));
 		
-		return riskAssessments;
+		PagedResources<RiskAssessment> pagedRiskAssessments = new PagedResources<RiskAssessment>(riskAssessments,
+				new PageMetadata(riskAssessmentEntities.getSize(), riskAssessmentEntities.getNumber(),
+						riskAssessmentEntities.getTotalElements()));
+		
+		return pagedRiskAssessments;
 	}
 	
 	public RiskAssessment getContractRiskAssessment(long riskAssessmentId){
@@ -106,7 +114,7 @@ public class RiskAssessmentService {
 			for(AssessedRiskFactorEntity factor: riskRange.getAssessedRiskFactors()) {
 				AssessedRiskFactor assessedFactor = modelMapper.map(factor, AssessedRiskFactor.class);
 				assessedFactor.setRiskFactorLevelId(factor.getRiskFactorLevel().getRiskFactorLevelId());
-				assessedFactor.setName(factor.getRiskFactor().getFactorDesc());
+				assessedFactor.setFactorDesc(factor.getRiskFactor().getFactorDesc());
 				assessedFactor.setScore(factor.getRiskFactorLevel().getScore());
 				assessedFactor.setWeightMultiplier(factor.getWeightMultiplier());
 				assessedFactor.getRiskFactorLevels().sort(Comparator.comparing(RiskFactorLevel::getRiskFactorLevelId));

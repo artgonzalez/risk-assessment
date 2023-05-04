@@ -3,6 +3,8 @@ package pcs.scor.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,8 +26,8 @@ public class RiskAssessmentController {
 	RiskAssessmentService riskAssessmentService;
 	
 	@RequestMapping(method = RequestMethod.GET, value="/contracts/{contractId}/risk-assessments")
-	ResponseEntity<List<RiskAssessment>> getRiskAssessmentsByContractId(@PathVariable("contractId") long contractId){
-		List<RiskAssessment> riskAssessments = riskAssessmentService.getRiskAssessmentsByContractId(contractId);
+	ResponseEntity<PagedResources<RiskAssessment>> getRiskAssessmentsByContractId(@PathVariable("contractId") long contractId, Pageable page){
+		PagedResources<RiskAssessment> riskAssessments = riskAssessmentService.getRiskAssessmentsByContractId(contractId, page);
 		
 		return new ResponseEntity<>(riskAssessments, HttpStatus.OK);
 	}

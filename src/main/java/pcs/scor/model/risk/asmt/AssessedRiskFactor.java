@@ -23,7 +23,7 @@ public class AssessedRiskFactor {
 	private long riskRangeTypeId;
 	private long riskFactorId;
 	private long riskFactorLevelId;
-	private String name;
+	private String factorDesc;
 	private int weightMultiplier;
 	//private RiskFactor riskFactor;
 	private RiskFactorLevel riskFactorLevel;

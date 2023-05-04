@@ -114,7 +114,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		
 		riskAssessment.baseLineRiskRangesText = function (){
 			//if(riskAssessment.baseLineRiskRanges == undefined){
-				riskAssessment.createBaseLineRiskRanges();
+				//riskAssessment.createBaseLineRiskRanges();
 			//}
 			
 			var riskRangesText = "";
@@ -129,7 +129,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		
 		riskAssessment.baseLineRiskRangeText = function(){
 			//if(riskAssessment.baseLineRiskRanges == undefined){
-				riskAssessment.createBaseLineRiskRanges();
+				//riskAssessment.createBaseLineRiskRanges();
 			//}
 			
 			var riskRanges = riskAssessment.baseLineRiskRanges;
@@ -160,13 +160,13 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 		riskAssessment.baseLineRiskLevel = 
 			function(){
 				//if(riskAssessment.baseLineRiskRanges == undefined){
-					riskAssessment.createBaseLineRiskRanges();
+					//riskAssessment.createBaseLineRiskRanges();
 				//}
 				
 				var riskLevel = "";
 				var riskScore = riskAssessment.baseLineRiskLevelScore();
 				var ranges = riskAssessment.baseLineRiskRanges;
-				
+				console.log(ranges);
 				for(var i=0; i < ranges.length; i++){
 					if(riskScore >= ranges[i].min && riskScore <= ranges[i].max){
 						riskLevel = ranges[i].level;
@@ -214,10 +214,11 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
         riskAssessmentFactory.getContractRiskAssessments(pageNumber - 1, noOfRecordsPerPage).then(function(response) {
             if (response.success) {
                 $scope.data = response.data;
-				$scope.riskAssessments = $scope.data;
-				
+				$scope.riskAssessments = $scope.data.content;
+				console.log($scope.riskAssessments.length);
 				for(var i=0; i < $scope.riskAssessments.length; i++){
 					$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessments[i]);
+					$scope.riskAssessments[i].createBaseLineRiskRanges();
 				}
 				
                 $scope.totalItems = $scope.data.length;
@@ -275,6 +276,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				
 				$scope.initializeRiskAssessmentModel($scope.riskAssessmentObj);
 				$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
+				$scope.riskAssessmentObj.createBaseLineRiskRanges();
 									
 				for(var i=0; i < response.data.length; i++){
 					$scope.riskRangeTypeTotalScore.push(0);
@@ -416,6 +418,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 				$scope.isEditRiskAssessment = true;
 				$scope.baseLineRiskLevelScore = 0;
 				$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
+				$scope.riskAssessmentObj.createBaseLineRiskRanges();
 			}
 		});
 
@@ -528,6 +531,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 						$scope.isEditRiskAssessment = true;
 						$scope.baseLineRiskLevelScore = 0;
 						$scope.createRiskAssessmentModelCalculatedFields($scope.riskAssessmentObj);
+						$scope.riskAssessmentObj.createBaseLineRiskRanges();
                     });
                     $scope.contractRiskAsmtForm.$setPristine();
                     $scope.getContractRiskAssessments($scope.vm.currentPage, $scope.noOfRecordsPerPage);
