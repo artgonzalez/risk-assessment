@@ -201,6 +201,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
         riskAssessmentFactory.getContractRiskAssessments(pageNumber - 1, noOfRecordsPerPage).then(function(response) {
             if (response.success) {
                 $scope.data = response.data;
+				console.log(response.data);
 				$scope.riskAssessments = $scope.data.content;
 				
 				for(var i=0; i < $scope.riskAssessments.length; i++){
@@ -208,7 +209,7 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 					$scope.riskAssessments[i].createBaseLineRiskRanges();
 				}
 				
-                $scope.totalItems = $scope.riskAssessments.length;
+                $scope.totalItems = $scope.data.page.totalElements;
                 $scope.isNoRecordsMessageDisabled = true;
                 $scope.displayPagination = true;
             } else {
