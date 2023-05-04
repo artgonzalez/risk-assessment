@@ -7,7 +7,7 @@ insert into risk_asmt_template_2(risk_assessment_template_id, comments, effectiv
                               values(seq_risk_asmt_template.nextval,'Testing', 
                               TO_TIMESTAMP('2022-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF') ,
                               TO_TIMESTAMP('2023-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF') , 
-                              '1.0', '00000107183', TO_TIMESTAMP('2021-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF'),
+                              '2.0', '00000107183', TO_TIMESTAMP('2021-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF'),
                               '00000107183' ,TO_TIMESTAMP('2022-07-12 17:16:05.551000000', 'YYYY-MM-DD HH24:MI:SS.FF'));
 
 insert into risk_range_type(risk_range_type_id, name, risk_assessment_template_id) values(seq_risk_range_type.nextval, 'Tier 1', 1);

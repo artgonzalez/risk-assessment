@@ -109,7 +109,20 @@
             <div class="btn-primary sub-header-label text-center">
                 <h2 class="sub-header-font"><strong> {{addEditLabel}}</strong></h2>
             </div-->
-            <div class="row" style="padding-bottom:10px;padding-top:10px" >
+        <div >
+            <uib-accordion close-others="false">
+                <uib-accordion-group id="riskRangeLegendTable" panel-class="panel-primary risk-asmt-tpl-panel-title" is-open="expandCollapseStatus[0].open">
+                    <uib-accordion-heading>
+                        Risk Assessment Template<em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': expandCollapseStatus[0].open, 'glyphicon-plus-sign': !expandCollapseStatus[0].open}"></em>
+                    </uib-accordion-heading>
+					<div class="row">
+                        <div class="col-md-4 text-left">
+                            <button class="btn btn-primary" id='addNewRiskRangebt' ng-click="isAddEditDisplayRiskRangeType=true" ng-disabled="disableAdd" ng-if="false">Add New Risk Range Type</button>
+                        </div>
+                        </div>
+					<div>
+					</div>
+<div class="row" style="padding-bottom:10px;padding-top:10px" >
                 <div class="col-md-2">
                     <span class="mandatory">*</span><label for="newVersion">Version</label>
                     <p class="input-group">
@@ -172,25 +185,7 @@
                     </div>
                     </p>
                 </div>
-            </div>
-            <div class="text-center" ng-if="false">
-                <button type="submit" class="btn btn-sm btn-primary" ng-click="saveRiskAssessmentTemplate(addEditRiskAsmtTplVersion)" ng-disabled="riskAsmtTemplateForm.$invalid">Save</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessmentTemplate($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
-            </div>
-
-        <div >
-            <uib-accordion close-others="false">
-                <uib-accordion-group id="riskRangeLegendTable" panel-class="panel-primary risk-asmt-tpl-panel-title" is-open="expandCollapseStatus[0].open">
-                    <uib-accordion-heading>
-                        Risk Range<em class="pull-right glyphicon" ng-class="{'glyphicon-minus-sign': expandCollapseStatus[0].open, 'glyphicon-plus-sign': !expandCollapseStatus[0].open}"></em>
-                    </uib-accordion-heading>
-					<div class="row">
-                        <div class="col-md-4 text-left">
-                            <button class="btn btn-primary" id='addNewRiskRangebt' ng-click="isAddEditDisplayRiskRangeType=true" ng-disabled="disableAdd" ng-if="false">Add New Risk Range Type</button>
-                        </div>
-                        </div>
-					<div>
-					</div>
+            </div>					
 				<div>
                     <table class="table table-striped">
                         <thead>
