@@ -163,7 +163,7 @@
                 <div class="col-md-4">
                     <span class="mandatory">*</span><label for="newVersion">Comment</label>
                     <p class="input-group">
-                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="0" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
+                        <textarea class="risk-asmt-tpl-comment-box-width" id="newComment" name="comment" ng-model="riskAssessmentObj.comments" ng-minlength="1" ng-maxlength="250" rows="2" required="true" aria-live="assertive" aria-describedby="newCommentValidation"></textarea>
                     <div class="error-wrapper" id="newCommentValidation" ng-messages="riskAsmtTemplateForm.comment.$error" ng-if="riskAsmtTemplateForm.comment.$invalid" role="alert">
                         <div ng-message="required" ng-if="riskAsmtTemplateForm.comment.$error.required"><strong>Comment - is required</strong>
                         </div>
@@ -399,10 +399,14 @@
                                 </td>
 								<td class="table-td-alignment-left" ng-show="!showLevelEdit && !isAddRiskAsmtTemplate">{{riskFactorLevel.levelName}}</td>
                                 <td class="table-td-alignment-left" ng-show="showLevelEdit || isAddRiskAsmtTemplate">
-									<input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="riskFactorLevel.levelName" ng-maxlength="50" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" />
+								<textarea cols="40" rows="3" id="riskLevelDesc{{$index}}" name="riskLevelDesc{{$index}}" ng-model="riskFactorLevel.levelName" ng-minlength="3" ng-maxlength="100" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}">
+                                        </textarea>
+									<!--input type="text" class="form-control" name="riskLevelDesc{{$index}}" id="riskLevelDesc{{$index}}" ng-model="riskFactorLevel.levelName" ng-minlength="3" ng-maxlength="100" ng-required=required aria-live="assertive" aria-describedby="riskLevelDescValidation{{$index}}" /-->
 									<div class="col-md-3 contact-div-padding text-left">
 									<div class="error-wrapper" id="riskLevelDescValidation{{$index}}" ng-messages="riskAsmtTemplateForm['riskLevelDesc' + $index].$error" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$invalid" role="alert">
 										<div ng-message="required" ng-if="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.required"><strong>Level - is a required field.</strong></div>
+										<div ng-message="minlength" ng-show="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.minlength"><strong>Level - min length is 3.</strong></div>
+										<div ng-message="maxlength" ng-show="riskAsmtTemplateForm['riskLevelDesc' + $index].$error.maxlength"><strong>Level - max length is 100.</strong></div>
 									</div>
 									</div>
 
