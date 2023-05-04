@@ -221,9 +221,9 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 					$scope.riskAssessments[i].createBaseLineRiskRanges();
 				}
 				
-                $scope.totalItems = $scope.data.length;
-                /*$scope.isNoRecordsMessageDisabled = true;
-                $scope.displayPagination = true;*/
+                $scope.totalItems = $scope.riskAssessments.length;
+                $scope.isNoRecordsMessageDisabled = true;
+                $scope.displayPagination = true;
             } else {
                 $scope.riskAssessments = [];
                 $scope.totalItems = 0;
