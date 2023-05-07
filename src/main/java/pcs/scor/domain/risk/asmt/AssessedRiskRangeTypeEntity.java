@@ -29,7 +29,7 @@ import pcs.scor.domain.risk.tmpl.RiskRangeTypeEntity;
 @Entity
 @Table(name = "risk_range_type_assessed")
 public class AssessedRiskRangeTypeEntity {
-	public AssessedRiskRangeTypeEntity(RiskAssessmentEntity riskAssessment, RiskRangeTypeEntity riskRangeTypeEntity) {
+	public AssessedRiskRangeTypeEntity(RiskAssessedContractEntity riskAssessment, RiskRangeTypeEntity riskRangeTypeEntity) {
 		this.riskAssessment = riskAssessment;
 		this.riskRangeTypeEntity = riskRangeTypeEntity;
 	}
@@ -42,7 +42,7 @@ public class AssessedRiskRangeTypeEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "risk_assessment_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_ad_rsk_asmt"))
-	private RiskAssessmentEntity riskAssessment;
+	private RiskAssessedContractEntity riskAssessment;
 	
 	@OneToOne
 	@JoinColumn(name="risk_range_type_id", foreignKey=@ForeignKey(name = "FK_rsk_rg_typ_ad_rsk_rg_typ"))

@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "risk_asmt_template_2")
-public class RiskAssessmentTemplateEntity {
+public class RiskAssessmentTemplateEntity{
 	public RiskAssessmentTemplateEntity(long riskAssessmentTemplateId) {
 		this.riskAssessmentTemplateId = riskAssessmentTemplateId;
 	}
@@ -42,7 +42,7 @@ public class RiskAssessmentTemplateEntity {
 	private Date effectiveEndDate;
 	private String comments;
 	private String createdBy;
-	private Date createdDate;
 	private String updatedBy;
+	private Date createdDate;
 	private Date updatedDate;
 }

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import pcs.scor.data.risk.repository.RiskAssessmentRepository;
 import pcs.scor.domain.risk.asmt.AssessedRiskFactorEntity;
 import pcs.scor.domain.risk.asmt.AssessedRiskRangeTypeEntity;
-import pcs.scor.domain.risk.asmt.RiskAssessmentEntity;
+import pcs.scor.domain.risk.asmt.RiskAssessedContractEntity;
 import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorEntity;
 import pcs.scor.domain.risk.tmpl.RiskFactorLevelEntity;
@@ -34,28 +34,28 @@ import pcs.scor.model.risk.tmpl.RiskFactorLevel;
 import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 
 @Service
-public class RiskAssessmentService {
+public class RiskAssessedContractService {
 	@Autowired
 	RiskAssessmentRepository riskAssessmentRepository;
 	@Autowired
     private ModelMapper modelMapper;
 	
 	public PagedResources<RiskAssessment> getRiskAssessmentsByContractId(long contractId, Pageable page){
-		Page<RiskAssessmentEntity> riskAssessmentEntities = riskAssessmentRepository.findByContractId(contractId, page);
+		Page<RiskAssessedContractEntity> riskAssessedContractEntities = riskAssessmentRepository.findByContractId(contractId, page);
 		List<RiskAssessment> riskAssessments = new ArrayList<RiskAssessment>();
 		
-		riskAssessmentEntities.forEach(entity -> riskAssessments.add(getRiskAssessment(entity)));
+		riskAssessedContractEntities.forEach(entity -> riskAssessments.add(getRiskAssessment(entity)));
 		
 		PagedResources<RiskAssessment> pagedRiskAssessments = new PagedResources<RiskAssessment>(riskAssessments,
-				new PageMetadata(riskAssessmentEntities.getSize(), riskAssessmentEntities.getNumber(),
-						riskAssessmentEntities.getTotalElements()));
+				new PageMetadata(riskAssessedContractEntities.getSize(), riskAssessedContractEntities.getNumber(),
+						riskAssessedContractEntities.getTotalElements()));
 		
 		return pagedRiskAssessments;
 	}
 	
 	public RiskAssessment getContractRiskAssessment(long riskAssessmentId){
-		RiskAssessmentEntity riskAssessmentEntity = riskAssessmentRepository.findOne(riskAssessmentId);
-		RiskAssessment riskAssessment = getRiskAssessment(riskAssessmentEntity);
+		RiskAssessedContractEntity riskAssessedContractEntity = riskAssessmentRepository.findOne(riskAssessmentId);
+		RiskAssessment riskAssessment = getRiskAssessment(riskAssessedContractEntity);
 		
 		return riskAssessment;
 	}
@@ -63,17 +63,17 @@ public class RiskAssessmentService {
 	@Transactional
 	public RiskAssessment save(RiskAssessment riskAssessment) {
 		
-		RiskAssessmentEntity riskAssessmentEntity = new RiskAssessmentEntity(0,
+		RiskAssessedContractEntity riskAssessedContractEntity = new RiskAssessedContractEntity(0,
 				riskAssessment.getContractId(),
 				riskAssessment.getRiskAssessmentDate(),
 				riskAssessment.getPrimaryRiskAssessor(),
 				riskAssessment.getFiscalYear());
 		
-		riskAssessmentEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId()));
-		prepareForSave(riskAssessment, riskAssessmentEntity);
+		riskAssessedContractEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId()));
+		prepareForSave(riskAssessment, riskAssessedContractEntity);
 		
-		riskAssessmentEntity.setCreatedDate(new Date());
-		RiskAssessmentEntity newRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessmentEntity);
+		riskAssessedContractEntity.setCreatedDate(new Date());
+		RiskAssessedContractEntity newRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessedContractEntity);
 		
 		RiskAssessment newRiskAssessment = modelMapper.map(newRiskAssessmentEntity, RiskAssessment.class);
 		
@@ -82,38 +82,38 @@ public class RiskAssessmentService {
 	
 	@Transactional
 	public RiskAssessment update(RiskAssessment riskAssessment) {
-		RiskAssessmentEntity riskAssessmentEntity = new RiskAssessmentEntity(riskAssessment.getRiskAssessmentId(),
+		RiskAssessedContractEntity riskAssessedContractEntity = new RiskAssessedContractEntity(riskAssessment.getRiskAssessmentId(),
 														riskAssessment.getContractId(),
 														riskAssessment.getRiskAssessmentDate(),
 														riskAssessment.getPrimaryRiskAssessor(),
 														riskAssessment.getFiscalYear());
-		riskAssessmentEntity.setUpdatedDate(new Date());
+		riskAssessedContractEntity.setUpdatedDate(new Date());
 
-		riskAssessmentEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId())); 
-		prepareForSave(riskAssessment, riskAssessmentEntity);
+		riskAssessedContractEntity.setRiskAssessmentTemplate(new RiskAssessmentTemplateEntity(riskAssessment.getRiskAssessmentTemplateId())); 
+		prepareForSave(riskAssessment, riskAssessedContractEntity);
 		
-		RiskAssessmentEntity updatedRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessmentEntity);
+		RiskAssessedContractEntity updatedRiskAssessmentEntity = riskAssessmentRepository.save(riskAssessedContractEntity);
 		RiskAssessment newRiskAssessment = modelMapper.map(updatedRiskAssessmentEntity, RiskAssessment.class);
 		
 		return newRiskAssessment;
 	}
 	
-	private RiskAssessment getRiskAssessment(RiskAssessmentEntity riskAssessmentEntity) {
+	private RiskAssessment getRiskAssessment(RiskAssessedContractEntity riskAssessedContractEntity) {
 		
 		RiskAssessment riskAssessment = new RiskAssessment();
-		riskAssessment.setContractId(riskAssessmentEntity.getContractId());
-		riskAssessment.setFiscalYear(riskAssessmentEntity.getFiscalYear());
-		riskAssessment.setPrimaryRiskAssessor(riskAssessmentEntity.getPrimaryRiskAssessor());
-		riskAssessment.setRiskAssessmentDate(riskAssessmentEntity.getRiskAssessmentDate());
-		riskAssessment.setRiskAssessmentId(riskAssessmentEntity.getRiskAssessmentId());
-		riskAssessment.setRiskAssessmentTemplateId(riskAssessmentEntity.getRiskAssessmentTemplate().getRiskAssessmentTemplateId());
-		riskAssessment.setRiskAssessmentTemplateVersion(riskAssessmentEntity.getRiskAssessmentTemplate().getVersion());
-		riskAssessment.setCreatedBy(riskAssessmentEntity.getCreatedBy());
-		riskAssessment.setCreatedDate(riskAssessmentEntity.getCreatedDate());
-		riskAssessment.setUpdatedBy(riskAssessmentEntity.getUpdatedBy());
-		riskAssessment.setUpdatedDate(riskAssessmentEntity.getUpdatedDate());
+		riskAssessment.setContractId(riskAssessedContractEntity.getContractId());
+		riskAssessment.setFiscalYear(riskAssessedContractEntity.getFiscalYear());
+		riskAssessment.setPrimaryRiskAssessor(riskAssessedContractEntity.getPrimaryRiskAssessor());
+		riskAssessment.setRiskAssessmentDate(riskAssessedContractEntity.getRiskAssessmentDate());
+		riskAssessment.setRiskAssessmentId(riskAssessedContractEntity.getRiskAssessmentId());
+		riskAssessment.setRiskAssessmentTemplateId(riskAssessedContractEntity.getRiskAssessmentTemplate().getRiskAssessmentTemplateId());
+		riskAssessment.setRiskAssessmentTemplateVersion(riskAssessedContractEntity.getRiskAssessmentTemplate().getVersion());
+		riskAssessment.setCreatedBy(riskAssessedContractEntity.getCreatedBy());
+		riskAssessment.setCreatedDate(riskAssessedContractEntity.getCreatedDate());
+		riskAssessment.setUpdatedBy(riskAssessedContractEntity.getUpdatedBy());
+		riskAssessment.setUpdatedDate(riskAssessedContractEntity.getUpdatedDate());
 		
-		for(AssessedRiskRangeTypeEntity riskRange: riskAssessmentEntity.getRiskRangeTypes()) {
+		for(AssessedRiskRangeTypeEntity riskRange: riskAssessedContractEntity.getRiskRangeTypes()) {
 			AssessedRiskRange assessedRiskRange = new AssessedRiskRange(riskRange.getAssessedRiskRangeTypeId(),
 																		riskRange.getRiskRangeTypeEntity().getName());
 			assessedRiskRange.setRiskRangeTypeId(riskRange.getRiskRangeTypeEntity().getRiskRangeTypeId());
@@ -144,12 +144,12 @@ public class RiskAssessmentService {
 		return riskAssessment;
 	}
 	
-	private void prepareForSave(RiskAssessment riskAssessment, RiskAssessmentEntity riskAssessmentEntity) {
+	private void prepareForSave(RiskAssessment riskAssessment, RiskAssessedContractEntity riskAssessedContractEntity) {
 		
 		Set<AssessedRiskRangeTypeEntity> assessedRiskRangeTypeEntities = new HashSet<>();
 		
 		for(AssessedRiskRange riskRange: riskAssessment.getRiskRangeTypes()) {
-			AssessedRiskRangeTypeEntity riskRangeTypeEntity = new AssessedRiskRangeTypeEntity(riskAssessmentEntity,
+			AssessedRiskRangeTypeEntity riskRangeTypeEntity = new AssessedRiskRangeTypeEntity(riskAssessedContractEntity,
 												new RiskRangeTypeEntity(riskRange.getRiskRangeTypeId()));
 			if(riskRange.getAssessedRiskRangeTypeId() != 0) {
 				riskRangeTypeEntity.setAssessedRiskRangeTypeId(riskRange.getAssessedRiskRangeTypeId());
@@ -172,6 +172,6 @@ public class RiskAssessmentService {
 			assessedRiskRangeTypeEntities.add(riskRangeTypeEntity);
 		}
 		
-		riskAssessmentEntity.setRiskRangeTypes(assessedRiskRangeTypeEntities);
+		riskAssessedContractEntity.setRiskRangeTypes(assessedRiskRangeTypeEntities);
 	}
 }

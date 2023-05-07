@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pcs.scor.model.risk.asmt.RiskAssessment;
-import pcs.scor.service.RiskAssessmentService;
+import pcs.scor.service.RiskAssessedContractService;
 
 @CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
 @RestController
 @RequestMapping("/api")
-public class RiskAssessmentController {
+public class RiskAssessedContractController {
 	
 	@Autowired
-	RiskAssessmentService riskAssessmentService;
+	RiskAssessedContractService riskAssessedContractService;
 	
 	@RequestMapping(method = RequestMethod.GET, value="/contracts/{contractId}/risk-assessments")
 	ResponseEntity<PagedResources<RiskAssessment>> getRiskAssessmentsByContractId(@PathVariable("contractId") long contractId, Pageable page){
-		PagedResources<RiskAssessment> riskAssessments = riskAssessmentService.getRiskAssessmentsByContractId(contractId, page);
+		PagedResources<RiskAssessment> riskAssessments = riskAssessedContractService.getRiskAssessmentsByContractId(contractId, page);
 		
 		return new ResponseEntity<>(riskAssessments, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/contracts/risk-assessments/{riskAssessmentId}")
 	ResponseEntity<RiskAssessment> getContractRiskAssessment(@PathVariable("riskAssessmentId") long riskAssessmentId){
-		RiskAssessment riskAssessment = riskAssessmentService.getContractRiskAssessment(riskAssessmentId);
+		RiskAssessment riskAssessment = riskAssessedContractService.getContractRiskAssessment(riskAssessmentId);
 		
 		return new ResponseEntity<>(riskAssessment, HttpStatus.OK);
 	}
@@ -42,7 +42,7 @@ public class RiskAssessmentController {
 			@RequestBody RiskAssessment riskAssessment){
 		
 		riskAssessment.setContractId(contractId);
-		RiskAssessment new_riskAssessment = riskAssessmentService.save(riskAssessment);
+		RiskAssessment new_riskAssessment = riskAssessedContractService.save(riskAssessment);
 		
 		return new ResponseEntity<>(new_riskAssessment, HttpStatus.CREATED);
 	}	 
@@ -51,7 +51,7 @@ public class RiskAssessmentController {
 	public ResponseEntity<RiskAssessment> updateRiskAssessment(@PathVariable("riskAssessmentId") long riskAssessmentId,
 			@RequestBody RiskAssessment riskAssessment){
 		
-		RiskAssessment new_riskAssessment = riskAssessmentService.update(riskAssessment);
+		RiskAssessment new_riskAssessment = riskAssessedContractService.update(riskAssessment);
 		
 		return new ResponseEntity<>(new_riskAssessment, HttpStatus.OK);
 	}	 

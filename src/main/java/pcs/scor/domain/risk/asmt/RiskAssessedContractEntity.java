@@ -27,13 +27,13 @@ import pcs.scor.domain.risk.tmpl.RiskAssessmentTemplateEntity;
 @NoArgsConstructor
 @Entity
 @Table(name = "risk_assessment_2")
-public class RiskAssessmentEntity {
+public class RiskAssessedContractEntity{
 	
-	public RiskAssessmentEntity(long riskAssessmentId) {
+	public RiskAssessedContractEntity(long riskAssessmentId) {
 		this.riskAssessmentId = riskAssessmentId;
 	}
 	
-	public RiskAssessmentEntity(long riskAssessmentId, long contractId, Date riskAssessmentDate, String primaryRiskAssessor, String fiscalYear) {
+	public RiskAssessedContractEntity(long riskAssessmentId, long contractId, Date riskAssessmentDate, String primaryRiskAssessor, String fiscalYear) {
 		this.riskAssessmentId = riskAssessmentId;
 		this.contractId = contractId;
 		this.riskAssessmentDate = riskAssessmentDate;
@@ -56,8 +56,8 @@ public class RiskAssessmentEntity {
 	private String fiscalYear;
 	private String primaryRiskAssessor;
 	private String createdBy;
-	private Date createdDate;
 	private String updatedBy;
+	private Date createdDate;
 	private Date updatedDate;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
