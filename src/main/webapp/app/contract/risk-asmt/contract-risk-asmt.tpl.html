@@ -206,7 +206,6 @@
 											<strong>Risk Factor Level - is a required field.</strong>
 										</div>
 								</div>
-
 						    </td>
 							<td class="table-td-alignment-center">{{riskFactor.riskFactorLevel.score}}</td>
 							<td class="table-td-alignment-center">{{riskFactor.weightMultiplier}}</td>
@@ -243,93 +242,6 @@
 			</div>
             <br/>
             <br/>
-            <br/>
-            <br/>
-            <div ng-if="false">
-                <button type="button" ng-click="addOtherRiskFactor()" class="btn btn-sm btn-primary">Add Other Risk Factor</button>
-            </div>
-            <div class="row" ng-if="false">
-                <div class="col-md-6 contract-riskasmt-div-align-other-risk">
-                    <h5> <strong> Other Risk Factor</strong> </h5>
-                </div>
-                <div class="col-md-6 contract-riskasmt-div-align-other-risk-delete" ng-if="displayDeleteOtherRiskFactorsButton">
-                    <button type="button" class="btn btn-sm btn-primary" ng-click="deleteOtherRiskFactors($index)">Delete</button>
-                </div>
-            </div>
-            <div ng-if="false">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="btn-primary table-th-child" style="width: 3%">No.</th>
-                            <th class="btn-primary" style="width: 50%">Risk Factor</th>
-                            <th class="btn-primary table-th-child" style="width: 12%">Risk Level Score</th>
-                            <th class="btn-primary table-th-child" style="width: 12%">Weight Multiplier</th>
-                            <th class="btn-primary table-th-child" style="width: 12%">Risk Points</th>
-                            <th class="btn-primary" ng-click="selectAllRiskFactors()" style="width: 11%">{{selectOrDeselectLabel}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="otherRiskFactor in riskAssessmentObj.otherRiskFactorList track by $index">
-                            <td class="table-td-alignment-center" style="padding-top: 15px;">{{otherRiskFactor.number}}</td>
-                            <td>
-                                <input type="text" class="form-control" id="otherRiskFactor" name="otherRiskFactor_{{$index}}" aria-label="otherRiskFactor" ng-model="otherRiskFactor.riskFactorName" ng-maxlength="100" ng-required=required aria-live="assertive" aria-describedby="otherRiskFactorValidation">
-                                <div class="error-wrapper" id="otherRiskFactorValidation" ng-messages="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error" ng-show="contractRiskAsmtForm.otherRiskFactor_{{$index}}.$invalid">
-                                    <div ng-message="required" ng-show=contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error.required>
-                                        <strong>Risk Factor - is a required field.</strong>
-                                    </div>
-                                    <div ng-message="maxlength" ng-show=contractRiskAsmtForm.otherRiskFactor_{{$index}}.$error.maxlength><strong> Risk Factor - must be within 100 characters.</strong></div>
-                                </div>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control input-text-align-center" id="otherFactorRiskLevel" name="otherFactorRiskLevel_{{$index}}" aria-label="otherRiskLevelScore" ng-model="otherRiskFactor.otherRiskLevel" ng-keyup="calculateOtherRiskScore()" ng-pattern="/^[0-9]{1,3}$/" ng-required=required aria-live="assertive" aria-describedby="otherFactorRiskLevelValidation">
-                                <div class="error-wrapper" id="otherFactorRiskLevelValidation" ng-messages="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$invalid">
-                                    <div ng-message="required" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error.required">
-                                        <strong>Risk Level Score - is a required field.</strong>
-                                    </div>
-                                    <div ng-message="pattern" ng-show="contractRiskAsmtForm.otherFactorRiskLevel_{{$index}}.$error.pattern"><strong> Risk Level Score - must be numeric, up to 3 digits.</strong>
-                                    </div>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control input-text-align-center" id="weight" name="weight_{{$index}}" aria-label="weightMultiplier" ng-model="otherRiskFactor.otherRiskWeight" ng-keyup="calculateOtherRiskScore()" ng-pattern="/^[0-9]{1,2}$/" ng-required=required aria-live="assertive" aria-describedby="weightValidation">
-                                <div class="error-wrapper" id="weightValidation" ng-messages="contractRiskAsmtForm.weight_{{$index}}.$error" ng-show="contractRiskAsmtForm.weight_{{$index}}.$invalid">
-                                    <div ng-message="required" ng-show="contractRiskAsmtForm.weight_{{$index}}.$error.required">
-                                        <strong>Weight Multiplier - is a required field.</strong>
-                                    </div>
-                                    <div ng-message="pattern" ng-show="
-                                contractRiskAsmtForm.weight_{{$index}}.$error.pattern"><strong> Weight Multiplier - must be numeric, up to 2 digits.</strong>
-                                    </div>
-                            </td>
-                            <td class="table-td-alignment-center wordwrap" style="padding-top: 15px;">{{otherRiskFactor.otherRiskPoint}}</td>
-                            <td class="text-center" style="padding-top: 15px;">
-                                <input type="checkbox" name="selected" aria-label="selectOtherRiskFactor" ng-model="otherRiskFactor.checked" ng-click="checkedIndex(otherRiskFactor)" /> </td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-                <br/>
-                <div ng-if="displayDeleteOtherRiskFactorsButton">
-                    <table>
-                        <tr>
-                            <td class="contract-riskasmt-text-padding-10m">
-                                <label for="selectOtherRiskLevel"> Other Risk Level &nbsp; </label>
-                            </td>
-                            <td>
-                                <select id="selectOtherRiskLevel" name="selectOtherRiskLevel" ng-model="riskAssessmentObj.otherRiskLevelLookup" class="form-control" ng-options="otherRiskLevel.otherRiskLevelName disable when otherRiskLevel.disable for otherRiskLevel in otherRiskLevelLookupList track by otherRiskLevel.otherRiskLevelId" ng-required=isOtherRiskLevelRequired ng-change="validateOtherRiskLevel()" aria-live="assertive" aria-describedby="selectOtherRiskLevelValidation">
-                                    <option selected value="">Please Select</option>
-                                </select>
-                                <div class="error-wrapper" id="selectOtherRiskLevelValidation" ng-messages="contractRiskAsmtForm.selectOtherRiskLevel.$error" ng-if="contractRiskAsmtForm.selectOtherRiskLevel.$invalid">
-                                    <div ng-message="required" ng-if="contractRiskAsmtForm.selectOtherRiskLevel.$error.required">
-                                        <strong>Other Risk Level - is a required field.</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="contract-riskasmt-text-padding-7em">
-                                <span><strong>Other Risk Score &nbsp;</strong></span>
-                            </td>
-                            <td class="wordwrap"> {{riskAssessmentObj.otherRiskScore}} </td>
-                        </tr>
-                    </table>
-                </div>
                 <br/>
                 <div class="contract-riskasmt-padding-bottom-1m text-center">
 					<button type="submit" class="btn btn-sm btn-primary" ng-disabled="contractRiskAsmtForm.$invalid || !contractRiskAsmtForm.$dirty || formNotChanged()">Save</button>&nbsp;&nbsp;&nbsp;
@@ -339,9 +251,4 @@
                 </div>
                 </div>
     </form>
-        <!--div class="contract-riskasmt-padding-bottom-1m text-center">
-			<button type="button" class="btn btn-sm btn-primary" ng-click="saveRiskAssessment(riskAssessmentObj)">Save</button>&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-sm btn-primary" ng-click="cancelRiskAssessment($event)">Cancel</button>&nbsp;&nbsp;&nbsp;
-        </div-->
-    </div>
 </div>
