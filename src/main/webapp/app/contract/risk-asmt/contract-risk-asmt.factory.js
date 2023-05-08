@@ -12,14 +12,14 @@ scorApp.factory('riskAssessmentFactory', function($http, $q, baseUrl, localSessi
 			var contractId = 1;
             //return scorHttpService.getServiceRequest('/contracts/' + contractId + '/riskAssessments?page=' + pageNumber + '&size=' + noOfRecordsPerPage + '&sort=riskAssessmentDate,riskAssessmentId');
 			//return scorHttpService.getServiceRequest('/contracts/' + contractId + '/riskAssessments/risk-assessment-summary-list.json/?page=' + pageNumber + '&size=' + noOfRecordsPerPage + '&sort=riskAssessmentDate,riskAssessmentId');
-			return scorHttpService.getServiceRequest('/api/contracts/'  + contractId +'/risk-assessments');
+			return scorHttpService.getServiceRequest('/api/contracts/'  + contractId +'/risk-assessments?page=' + pageNumber + '&size=' + noOfRecordsPerPage + '&sort=riskAssessmentDate,riskAssessmentId');
         },
         getContractRiskAssessment: function(riskAssessmentId) {
             //var contractId = localSessionFactory.getContractId();
             //return scorHttpService.getServiceRequest('/contracts/' + contractId + '/riskAssessments/' + riskAssessmentId);
 			return scorHttpService.getServiceRequest('/api/contracts/risk-assessments/' + riskAssessmentId);
         },
-		getRiskRangeTypesByRiskAssessmentTemplate: function(riskAssessmentTemplateId) {            
+		getRiskRangeTypesByRiskAssessmentTemplate: function(riskAssessmentTemplateId) {  
             //return scorHttpService.getServiceRequest('/contracts/riskAssessments/' + riskAssessmentTemplateId + '-risk-range-types.json');
 			return scorHttpService.getServiceRequest('/api/risk-asmt-tplts/' + riskAssessmentTemplateId + '/risk-range-types');
         },
