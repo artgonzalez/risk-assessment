@@ -13,14 +13,16 @@ import pcs.scor.model.risk.tmpl.RiskRangeTypeRange;
 @Setter
 @NoArgsConstructor
 public class AssessedRiskRange {
-	public AssessedRiskRange(long id,	String name) {
-		this.assessedRiskRangeTypeId = id;
-		this.name = name;
-	}
+
 	private long assessedRiskRangeTypeId;
 	private long riskRangeTypeId;
 	String name;
 	private RiskRangeType riskRangeType;
 	private List<AssessedRiskFactor> riskFactors = new ArrayList<AssessedRiskFactor>();
 	private List<RiskRangeTypeRange> riskRangeTypeRanges = new ArrayList<RiskRangeTypeRange>();
+
+	public AssessedRiskRange(long id,	String name) {
+		this.assessedRiskRangeTypeId = id;
+		this.name = name;
+	}
 }

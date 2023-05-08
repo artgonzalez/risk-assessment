@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import pcs.scor.domain.risk.asmt.RiskAssessedContractEntity;
 
-public interface RiskAssessmentRepository extends JpaRepository<RiskAssessedContractEntity, Long>{
+public interface AssessedRiskContractRepository extends JpaRepository<RiskAssessedContractEntity, Long>{
 	Page<RiskAssessedContractEntity> findByContractId(long contractId, Pageable page);
 	RiskAssessedContractEntity findByRiskAssessmentId(long riskAssessmentId);
 }

@@ -25,7 +25,6 @@ public class AssessedRiskFactor {
 	private long riskFactorLevelId;
 	private String factorDesc;
 	private int weightMultiplier;
-	//private RiskFactor riskFactor;
 	private RiskFactorLevel riskFactorLevel;
 	private List<RiskFactorLevel> riskFactorLevels;
 	private int score;
