@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RiskAssessment {
+public class RiskAssessedContract {
 	private long riskAssessmentId;
 	private long riskAssessmentTemplateId;
 	private long contractId;
