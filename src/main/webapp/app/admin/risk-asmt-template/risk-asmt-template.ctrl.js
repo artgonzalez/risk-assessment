@@ -2,16 +2,11 @@
 scorApp.controller('riskAssessmentTemplateController', function($scope, $rootScope, $location, $anchorScroll, riskAsmtTemplateFactory, $parse, dialogMessageFactory, formUtilFactory, $state) {
     $rootScope.setChildTab('administration_contract_management_risk_assessment_template');
     $rootScope.displayContractManagementSubmenu = true;
-    $scope.displayAddNewRiskAsmtTplPanel = false;
     $scope.displayOnlyRiskAsmtTemplate = false;
-    $scope.displayEditCurrentRiskAsmtTplPanel = false;
     $scope.vm = { currentPage: 1 };
     $scope.noOfRecordsPerPage = "5";
     $scope.noOfRec = $scope.noOfRecordsPerPage;
     $scope.reverseSort = false;
-    $scope.isPastTemplate = false;
-    $scope.isCurrentTemplate = false;
-    $scope.isFutureTemplate = false;
     $scope.isNewTemplate = false;
     $scope.isNoRecordsMessageDisabled = true;
     $scope.disableAddNewButton = false;
@@ -230,33 +225,18 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                 $scope.isNewTemplate = false;
                 if ($scope.addEditRiskAsmtTplVersion.effectiveDate > new Date() && ($scope.addEditRiskAsmtTplVersion.expirationDate > new Date() || $scope.addEditRiskAsmtTplVersion.expirationDate === null)) {
                     $scope.isNewTemplate = false;
-                    $scope.isPastTemplate = false;
-                    $scope.isCurrentTemplate = false;
-                    $scope.isFutureTemplate = true;
                     $scope.displayOnlyRiskAsmtTemplate = false;
-                    $scope.displayAddNewRiskAsmtTplPanel = true;
-                    $scope.displayEditCurrentRiskAsmtTplPanel = false;
                     $location.hash('addNewRiskAsmtTemplate');
                     $anchorScroll();
                     $scope.addEditLabel = 'Edit Risk Assessment Template - ' + parseFloat($scope.addEditRiskAsmtTplVersion.version).toFixed(1);
                 } else if ($scope.addEditRiskAsmtTplVersion.effectiveDate <= new Date() && ($scope.addEditRiskAsmtTplVersion.expirationDate > new Date() || $scope.addEditRiskAsmtTplVersion.expirationDate === null)) {
                     $scope.isNewTemplate = false;
-                    $scope.isPastTemplate = false;
-                    $scope.isCurrentTemplate = true;
-                    $scope.isFutureTemplate = false;
                     $scope.displayOnlyRiskAsmtTemplate = false;
-                    $scope.displayAddNewRiskAsmtTplPanel = false;
-                    $scope.displayEditCurrentRiskAsmtTplPanel = true;
                     $location.hash('editCurrentRiskAsmtTemplate');
                     $anchorScroll();
                 } else {
                     $scope.isNewTemplate = false;
-                    $scope.isPastTemplate = true;
-                    $scope.isCurrentTemplate = false;
-                    $scope.isFutureTemplate = false;
                     $scope.displayOnlyRiskAsmtTemplate = true;
-                    $scope.displayAddNewRiskAsmtTplPanel = false;
-                    $scope.displayEditCurrentRiskAsmtTplPanel = false;
                     $location.hash('displayOnlyRiskAsmtTemplate');
                     $anchorScroll();
                 }
@@ -303,7 +283,7 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $location.hash(scrollLocation);
         $anchorScroll();
         $scope.isNewTemplate = true;
-        if ($scope.isNewTemplate || $scope.isFutureTemplate) {
+        if ($scope.isNewTemplate) {
             if ($scope.riskAsmtTemplateForm.$dirty && !$scope.formNotChanged()) {
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
@@ -321,14 +301,12 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
                     $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
-                    $scope.displayEditCurrentRiskAsmtTplPanel = false;
                     $scope.isCurrentTemplate = false;
                 }, function() {
                     $scope.displayEditCurrentRiskAsmtTplPanel = true;
                 });
             } else {
                 $scope.editCurrentRiskAsmtTemplateForm.$setPristine();
-                $scope.displayEditCurrentRiskAsmtTplPanel = false;
                 $scope.isCurrentTemplate = false;
 			}
         }
@@ -340,7 +318,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
     };
 
     $scope.createNewTemplateFromExisting = function() {
-        $scope.displayAddNewRiskAsmtTplPanel = true;
         $scope.displayOnlyRiskAsmtTemplate = false;
         $scope.displayEditCurrentRiskAsmtTplPanel = false;
         $scope.isNewTemplate = true;
@@ -362,14 +339,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
         $scope.isAtleastOneLegalRiskFactorEntered = false;
         $scope.isAtleastOneContractRiskFactorEntered = false;
 		
-		/*if($scope.isAddEditDisplayRiskFactor){
-			var newRiskFactorIndex = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors.length;
-			$scope.newRiskFactor.riskFactorId = 0;
-			$scope.newRiskFactor.riskRangeTypeId = $scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskRangeTypeId;
-			
-			$scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex].riskFactors[$scope.newRiskFactorIndex] = $scope.newRiskFactor;
-			$scope.calculateRiskRangeTypeRanges($scope.riskAssessmentObj.riskRangeTypes[$scope.riskRangeTypeIndex]);
-		}*/
 		dialogMessageFactory.showProgressBar();
 		if ($scope.isAddRiskAsmtTemplate) {
 			riskAsmtTemplateFactory.addRiskAsmtTemplate(riskAsmtTemplate).then(function(response) {
@@ -386,7 +355,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 				} else {
 					$scope.errorMsg = response.error.error.description;
 					$scope.errorFromRestService = true;
-					$scope.displayAddNewRiskAsmtTplPanel = false;
 					$scope.displayOnlyRiskAsmtTemplate = false;
 					$scope.displayEditCurrentRiskAsmtTplPanel = false;
 					$scope.displayRecordSavedMsg = false;
@@ -412,7 +380,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 				} else {
 					$scope.errorMsg = response.error.error.description;
 					$scope.errorFromRestService = true;
-					$scope.displayAddNewRiskAsmtTplPanel = false;
 					$scope.displayOnlyRiskAsmtTemplate = false;
 					$scope.displayEditCurrentRiskAsmtTplPanel = false;
 					$scope.displayRecordSavedMsg = false;
@@ -425,8 +392,6 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
 			
             }
             $scope.isNewTemplate = false;
-            $scope.isFutureTemplate = false;
-            $scope.isCurrentTemplate = false;
     };
 
     $scope.cancelRiskAssessmentTemplate = function() {
@@ -440,30 +405,20 @@ scorApp.controller('riskAssessmentTemplateController', function($scope, $rootSco
             if ($scope.riskAsmtTemplateForm.$dirty /*&& !$scope.formNotChanged()*/) {
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
-                    for (var index = 0; index < 5; index++) {
-                        $scope["legalRiskFactorNameRequired_" + index] = false;
-                        $scope["legalRiskLevelScore4TextRequired_" + index] = false;
-                        $scope["contractRiskFactorNameRequired_" + index] = false;
-                        $scope["contractRiskLevelScore4TextRequired_" + index] = false;
-                    }
-                    //$scope.addEditRiskAsmtTplVersion = {};
                     $scope.riskAsmtTemplateForm.$setPristine();
-                    $scope.displayAddNewRiskAsmtTplPanel = false;
                     $scope.isAddRiskAsmtTemplate = false;
                 }, function() {});
             } else {
-                //$scope.addEditRiskAsmtTplVersion = {};
                 $scope.riskAsmtTemplateForm.$setPristine();
-                $scope.displayAddNewRiskAsmtTplPanel = false;
                 $scope.isAddRiskAsmtTemplate = false;
             }
         } else {
-            if ($scope.isCurrentTemplate && $scope.editCurrentRiskAsmtTemplateForm.$dirty) {
+            if ($scope.riskAsmtTemplateForm.$dirty) {
                 msg = 'There are unsaved changes in the form. Do you want to discard?';
                 dialogMessageFactory.getConfirmation(msg).then(function() {
-                    //$scope.editCurrentRiskAsmtTemplateForm.$setPristine();
-                    $scope.displayEditCurrentRiskAsmtTplPanel = false;
-                    $scope.isCurrentTemplate = false;
+					$scope.riskAsmtTemplateForm.$setPristine();
+                    $scope.isAddEditRiskAsmtTemplate = false;
+					$scope.disableAddRiskFactorButton = false;
                 }, function() {
                     $scope.displayEditCurrentRiskAsmtTplPanel = true;
                 });
