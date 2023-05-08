@@ -38,12 +38,12 @@ scorApp.factory('riskAssessmentFactory', function($http, $q, baseUrl, localSessi
         getLookUpValues: function() {
            return scorHttpService.getServiceRequest('/lookups/riskAssessment');
         },
-        createRiskAssessment: function(riskAssessment) {
+        createRiskAssessmentB: function(riskAssessment) {
             //var contractId = localSessionFactory.getContractId();            
 			var contractId = 1;
             return scorHttpService.postServiceRequest('/api/contracts/' + contractId + '/risk-assessments', riskAssessment);
         },
-        updateRiskAssessment: function(riskAssessmentId, riskAssessment) {
+        updateRiskAssessmentB: function(riskAssessmentId, riskAssessment) {
             var contractId = localSessionFactory.getContractId();            
             return scorHttpService.postServiceRequest('/api/contracts/risk-assessments/' + riskAssessmentId, riskAssessment);
         },
