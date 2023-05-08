@@ -3,14 +3,11 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
 
     //$rootScope.setChildTab('contract_risk');
     $scope.riskAssessmentObj = {riskRangeTypes:[{riskFactors:[]}]};
-    $scope.oldRiskAssessmentObj = {};
     $scope.isAddRiskAssessment = false;
 	$scope.isEditRiskAssessment = false;
     $scope.riskAssessments = [];
     $scope.rowCount = 0;
-    $scope.otherRiskFactorInfo = {};
     $scope.displayDeleteButton = false;
-    $scope.riskAsmtIndex = 0;
     $scope.selectedAll = false;
     $scope.selectOrDeselectLabel = 'Select All';
     $scope.displayOnlyRiskAssessment = false;
@@ -408,20 +405,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
         }
     };
 
-    $scope.addOtherRiskFactor = function() {
-        $scope.rowCount = $scope.rowCount + 1;
-        $scope.otherRiskFactorInfo = {
-            number: $scope.rowCount,
-            riskFactorName: '',
-            otherRiskLevel: '',
-            otherRiskWeight: '',
-            otherRiskPoint: ''
-        };
-        $scope.riskAssessmentObj.otherRiskFactorList.push($scope.otherRiskFactorInfo);
-        $scope.displayDeleteOtherRiskFactorsButton = true;
-        $scope.isOtherRiskLevelRequired = true;
-    };
-
     $scope.chckedIndexes = [];
 
     $scope.deleteOtherRiskFactors = function() {
@@ -740,7 +723,6 @@ scorApp.controller('riskAssessmentController', function($scope, $location, $anch
         });
 
     $scope.formNotChanged = function() {
-        return formUtilFactory.trueEqual($scope.oldRiskAssessmentObj, $scope.riskAssessmentObj) &&
-            formUtilFactory.checkEqualityForList($scope.oldRiskAssessmentObj.otherRiskFactorList, $scope.riskAssessmentObj.otherRiskFactorList);
+        
     };
 });
